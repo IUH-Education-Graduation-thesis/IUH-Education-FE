@@ -1,5 +1,5 @@
 export const GET_PROFILE_FRAGMENT = `
-  sinhVienId
+  id
 `;
 
 export default {};
