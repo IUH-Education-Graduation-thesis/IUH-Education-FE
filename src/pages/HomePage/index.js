@@ -7,16 +7,16 @@ import queries from "core/graphql";
 import { GET_PROFILE_FRAGMENT } from "./fragment";
 import HomeModule from "modules/HomePage";
 
-// const getProfileQuery = queries?.query?.getProfile(GET_PROFILE_FRAGMENT);
+const getProfileQuery = queries?.query?.getProfile(GET_PROFILE_FRAGMENT);
 
 const HomePage = () => {
   // const { error } = useQuery(getProfileQuery, {
   //   fetchPolicy: "network-only",
   // });
 
-  /**
-   * detect token --> redirect to login page
-   */
+  // /**
+  //  * detect token --> redirect to login page
+  //  */
   // useEffect(() => {
   //   if (isEmpty(clientCache.getAuthenTokenWithCookie())) {
   //     window.location.href = `${window?.location?.origin}/login`;

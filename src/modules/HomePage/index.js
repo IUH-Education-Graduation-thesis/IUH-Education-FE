@@ -11,7 +11,9 @@ import HocPhan from "components/HocPhan";
 import LopHocPhan from "components/LopHocPhan";
 import "./HomePage.scss";
 import { isEmpty } from "lodash";
-
+import KhoaHocComponent from "components/KhoaHoc";
+import DayNha from "components/DayNha"
+import PhongHoc from "components/PhongHoc";
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
@@ -45,6 +47,18 @@ const listComponent = [
   {
     key: "11",
     component: LopHocPhan,
+  },
+  {
+    key: "12",
+    component: KhoaHocComponent,
+  },
+  {
+    key: "13",
+    component: DayNha,
+  },
+  {
+    key: "14",
+    component: PhongHoc,
   },
 ];
 
@@ -94,6 +108,9 @@ const HomePage = () => {
               <Menu.Item key="9">Học Kỳ</Menu.Item>
               <Menu.Item key="10">Học Phần</Menu.Item>
               <Menu.Item key="11">Lớp Học Phần</Menu.Item>
+              <Menu.Item key="12">Khóa học</Menu.Item>
+              <Menu.Item key="13">Dãy nhà</Menu.Item>
+              <Menu.Item key="14">Phòng học</Menu.Item>
             </SubMenu>
           </Menu>
         </Sider>

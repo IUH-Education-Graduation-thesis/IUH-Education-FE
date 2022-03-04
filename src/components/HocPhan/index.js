@@ -4,8 +4,8 @@ import './index.scss'
 import ModalHocPhan from "./FormAddHocPhan";
 
 const HocPhan = () => {
-    const [visibleModal, setVisibleModal] = useState(false);
-    const [visibleModalSua, setVisibleModalSua] = useState(false);
+    const [visibleModalAdd, setVisibleModalAdd] = useState(false);
+    const [visibleModalEdit, setVisibleModalEdit] = useState(false);
     const [hocPhan, setHocPhan] = useState({});
     const columns = [
         {
@@ -75,7 +75,7 @@ const HocPhan = () => {
             width: 200,
             render: (e) => (
                 <div>
-                    <Button danger onClick={()=> handlerEditButton(e)}>Chỉnh sửa</Button>
+                    <Button danger onClick={() => handlerEditButton(e)}>Chỉnh sửa</Button>
                     <Button>Xóa</Button>
                 </div>
             ),
@@ -104,7 +104,7 @@ const HocPhan = () => {
     const khoaData = ["CNTT", "Công nghệ may", "Kinh doanh quốc tế"];
     const handlerEditButton = (hocPhan) => {
         setHocPhan(hocPhan);
-        setVisibleModalSua(true);
+        setVisibleModalEdit(true);
     };
     React.useState(khoaData[0]);
     return (
@@ -122,17 +122,17 @@ const HocPhan = () => {
                     ))}
                 </Select>
             </div>
-            <Button className='ant-btn-primary' type="primary" onClick={()=>setVisibleModal(true)} >+ Thêm học phần</Button>
+            <Button className='ant-btn-primary' type="primary" onClick={() => setVisibleModalAdd(true)} >+ Thêm học phần</Button>
             <Table columns={columns} dataSource={data} scroll={{ x: 1300 }} />
             <ModalHocPhan
                 type="add"
-                visible={visibleModal}
-                closeModal={setVisibleModal}
+                visible={visibleModalAdd}
+                closeModal={setVisibleModalAdd}
             />
             <ModalHocPhan
-                type="sua"
-                visible={visibleModalSua}
-                closeModal={setVisibleModalSua}
+                type="edit"
+                visible={visibleModalEdit}
+                closeModal={setVisibleModalEdit}
                 data={
                     hocPhan
                 }

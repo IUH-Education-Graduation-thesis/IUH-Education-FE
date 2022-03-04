@@ -3,8 +3,8 @@ import { Table, Select, Button } from 'antd';
 import './index.scss'
 import ModalAddLopHocPhan from "./FormAddLopHocPhan";
 const LopHocPhan = () => {
-    const [visibleModal, setVisibleModal] = useState(false);
-    const [visibleModalSua, setVisibleModalSua] = useState(false);
+    const [visibleModalAdd, setVisibleModalAdd] = useState(false);
+    const [visibleModalEdit, setVisibleModalEdit] = useState(false);
     const [lopHocPhan, setLopHocPhan] = useState({});
     const columns = [
         {
@@ -80,12 +80,12 @@ const LopHocPhan = () => {
             width: 200,
             render: (e) => (
                 <div>
-                    <Button danger onClick={()=> handlerEditButton(e)}>Chỉnh sửa</Button> <Button style={{ marginLeft: 10 }}>Xóa</Button>
+                    <Button danger onClick={() => handlerEditButton(e)}>Chỉnh sửa</Button> <Button style={{ marginLeft: 10 }}>Xóa</Button>
                 </div>
             ),
         },
     ];
-    
+
     const data = [];
     for (let i = 0; i < 13; i++) {
         data.push({
@@ -101,17 +101,17 @@ const LopHocPhan = () => {
             idLopHocPhanTuongUng: `1231241`,
             hocKy: 5,
             moTa: `không`,
-    
+
         });
-    
+
     }
     const handlerEditButton = (lopHocPhan) => {
         setLopHocPhan(lopHocPhan);
-        setVisibleModalSua(true);
+        setVisibleModalEdit(true);
     };
     const { Option } = Select;
     const khoaData = ["CNTT", "Công nghệ may", "Kinh doanh quốc tế"];
-    
+
     React.useState(khoaData[0]);
     return (
         <div className='hocLopPhan'>
@@ -128,19 +128,19 @@ const LopHocPhan = () => {
                     ))}
                 </Select>
             </div>
-            <Button className='ant-btn-primary' type="primary" onClick={()=>setVisibleModal(true)}>+ Thêm lớp học phần</Button>
-            <Table columns={columns} dataSource={data} scroll={{ x: 1300 }} />
+            <Button className='ant-btn-primary' type="primary" onClick={() => setVisibleModalAdd(true)}>+ Thêm lớp học phần</Button>
+            <Table columns={columns} dataSource={data} scroll={{ x: 1500, y: "50vh" }} />
             <ModalAddLopHocPhan
                 type="add"
-                visible={visibleModal}
-                closeModal={setVisibleModal}
+                visible={visibleModalAdd}
+                closeModal={setVisibleModalAdd}
             />
             <ModalAddLopHocPhan
-                type="sua"
-                visible={visibleModalSua}
-                closeModal={setVisibleModalSua}
+                type="edit"
+                visible={visibleModalEdit}
+                closeModal={setVisibleModalEdit}
                 data={
-                   lopHocPhan
+                    lopHocPhan
                 }
             />
         </div>

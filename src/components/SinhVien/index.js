@@ -10,8 +10,8 @@ import "./SinhVien.scss";
 // const getSinhViensQuery = queries.query.getSinhViens(GET_SINHVIENS_FRAGMENT);
 
 const SinhVienComponent = () => {
-  const [visibleModal1, setVisibleModal1] = useState(false);
-  const [visibleModal, setVisibleModal] = useState(false);
+  const [visibleModalEdit, setVisibleModalEdit] = useState(false);
+  const [visibleModalAdd, setVisibleModalAdd] = useState(false);
   const [sinhVien, setSinhVien] = useState({});
   // const [data, setData] = useState([]);
 
@@ -155,7 +155,7 @@ const SinhVienComponent = () => {
 
   const handlerEditButton = (sinhVien) => {
     setSinhVien(sinhVien);
-    setVisibleModal1(true);
+    setVisibleModalEdit(true);
   };
 
   // console.log("dataGetSinhViens", dataGetSinhViens);
@@ -219,7 +219,7 @@ const SinhVienComponent = () => {
         </Select>
       </div>
       <Button
-        onClick={() => setVisibleModal(true)}
+        onClick={() => setVisibleModalAdd(true)}
         className="ant-btn-primary"
         type="primary"
       >
@@ -233,13 +233,13 @@ const SinhVienComponent = () => {
 
       <ModalAddSinhVien
         type="add"
-        visible={visibleModal}
-        closeModal={setVisibleModal}
+        visible={visibleModalAdd}
+        closeModal={setVisibleModalAdd}
       />
       <ModalAddSinhVien
-        type="sua"
-        visible={visibleModal1}
-        closeModal={setVisibleModal1}
+        type="edit"
+        visible={visibleModalEdit}
+        closeModal={setVisibleModalEdit}
         data={sinhVien}
       />
     </div>
