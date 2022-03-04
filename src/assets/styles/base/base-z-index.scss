@@ -1,0 +1,16 @@
+$zVals: 0, 1, 100, 3000, 9000, 10000, 20000;
+
+:root {
+  @each $zVal in $zVals {
+    --z-#{$zVal}: #{$zVal};
+  }
+}
+
+.z {
+  @each $zVal in $zVals {
+    $val: --z-#{$zVal};
+    &-#{$zVal} {
+      z-index: var($val);
+    }
+  }
+}

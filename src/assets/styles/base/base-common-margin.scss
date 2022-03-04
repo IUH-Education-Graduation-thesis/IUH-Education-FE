@@ -1,0 +1,125 @@
+$sizeMPs: 160, 140, 120, 112, 96, 92, 80, 78, 76, 72, 68, 66, 64, 57, 56, 52, 50,
+  48, 42, 40, 37, 36, 32, 30, 29, 28, 26, 25, 24, 21, 20, 19, 18, 17, 16, 15, 14,
+  12, 11, 10, 9, 8, 6, 7, 5, 4, 3, 2, 1, 0;
+
+.m {
+  &-0 {
+    margin: 0;
+  }
+  &-auto {
+    margin: 0 auto;
+  }
+  &l-auto {
+    margin-left: auto;
+  }
+  &r-auto {
+    margin-right: auto;
+  }
+  @each $sizeMP in $sizeMPs {
+    // $val: calc-to-rem($sizeMP);
+    $val: calc-to-rem($sizeMP);
+    &-#{$sizeMP} {
+      margin: $val;
+    }
+  }
+  @each $sizeMP in $sizeMPs {
+    $val: calc-to-rem($sizeMP);
+    &-i-#{$sizeMP} {
+      margin: -$val;
+    }
+  }
+  @each $sizeMP in $sizeMPs {
+    $val: calc-to-rem($sizeMP);
+    &y-#{$sizeMP} {
+      margin-top: $val;
+      margin-bottom: $val;
+    }
+  }
+  @each $sizeMP in $sizeMPs {
+    $val: calc-to-rem($sizeMP);
+    &y-i-#{$sizeMP} {
+      margin-top: -$val;
+      margin-bottom: -$val;
+    }
+  }
+  @each $sizeMP in $sizeMPs {
+    $val: calc-to-rem($sizeMP);
+    &x-#{$sizeMP} {
+      margin-left: $val;
+      margin-right: $val;
+    }
+  }
+  @each $sizeMP in $sizeMPs {
+    $val: calc-to-rem($sizeMP);
+    &x-i-#{$sizeMP} {
+      margin-left: -$val;
+      margin-right: -$val;
+    }
+  }
+  @each $sizeMP in $sizeMPs {
+    $val: calc-to-rem($sizeMP);
+    &t-#{$sizeMP} {
+      margin-top: $val;
+    }
+  }
+  @each $sizeMP in $sizeMPs {
+    $val: calc-to-rem($sizeMP);
+    &t-i-#{$sizeMP} {
+      margin-top: -$val;
+    }
+  }
+  @each $sizeMP in $sizeMPs {
+    $val: calc-to-rem($sizeMP);
+    &b-#{$sizeMP} {
+      margin-bottom: $val;
+    }
+  }
+  @each $sizeMP in $sizeMPs {
+    $val: calc-to-rem($sizeMP);
+    &b-im-#{$sizeMP} {
+      margin-bottom: $val !important;
+    }
+  }
+  @each $sizeMP in $sizeMPs {
+    $val: calc-to-rem($sizeMP);
+    &b-i-#{$sizeMP} {
+      margin-bottom: -$val;
+    }
+  }
+  @each $sizeMP in $sizeMPs {
+    $val: calc-to-rem($sizeMP);
+    &r-#{$sizeMP} {
+      margin-right: $val;
+    }
+  }
+  @each $sizeMP in $sizeMPs {
+    $val: calc-to-rem($sizeMP);
+    &r-i-#{$sizeMP} {
+      margin-right: -$val;
+    }
+  }
+  @each $sizeMP in $sizeMPs {
+    $val: calc-to-rem($sizeMP);
+    &l-#{$sizeMP} {
+      margin-left: $val;
+    }
+  }
+  @each $sizeMP in $sizeMPs {
+    $val: calc-to-rem($sizeMP);
+    &l-i-#{$sizeMP} {
+      margin-left: -$val;
+    }
+  }
+  &b-0 {
+    margin-bottom: 0;
+  }
+  &t-0 {
+    margin-top: 0;
+  }
+  &l {
+    margin-left: 0;
+  }
+  &r-0 {
+    margin-right: 0;
+  }
+}

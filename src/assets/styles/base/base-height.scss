@@ -1,0 +1,48 @@
+$percentSteps: 0, 5, 10, 15, 20, 25, 30, 32, 35, 40, 45, 50, 55, 60, 65, 68, 70,
+  73, 75, 80, 85, 86, 90, 95, 100;
+
+$absValScreen: 0, 1, 4, 8, 10, 12, 14, 16, 18, 20, 24, 25, 26, 32, 35, 36, 38,
+  40, 45, 58, 60, 66, 72, 78, 79, 80, 83, 86, 88, 100, 120, 112, 116, 124, 130,
+  133, 137, 142, 144, 172, 200, 218, 240, 244, 246, 250, 258, 270, 280, 286, 289,
+  300, 312, 336, 345, 360, 386, 400, 452, 466, 514, 554, 600, 640, 800, 880, 960,
+  1040, 1120, 1200, 1280, 1360, 1440, 1520, 1600;
+
+.h {
+  &-auto {
+    height: auto;
+  }
+
+  @each $step in $percentSteps {
+    &-#{$step} {
+      height: #{$step + '%'};
+    }
+    &-max-#{$step} {
+      max-height: #{$step + '%'};
+    }
+    &-min-#{$step} {
+      min-height: #{$step + '%'};
+    }
+  }
+}
+
+.h-abs {
+  @each $absValHeight in $absValScreen {
+    $val: calc-to-rem($absValHeight);
+    &-max-#{$absValHeight} {
+      max-height: $val;
+    }
+  }
+  @each $absValHeight in $absValScreen {
+    $val: calc-to-rem($absValHeight);
+    &-min-#{$absValHeight} {
+      min-height: $val;
+    }
+  }
+  @each $absValHeight in $absValScreen {
+    $val: calc-to-rem($absValHeight);
+    &-#{$absValHeight} {
+      max-height: 100%;
+      height: $val;
+    }
+  }
+}

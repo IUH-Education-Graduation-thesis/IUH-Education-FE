@@ -1,0 +1,11 @@
+.home-page {
+  .header {
+    .logo {
+      color: white;
+    }
+  }
+
+  .ant-layout-has-sider {
+    min-height: calc(100vh - 64px);
+  }
+}

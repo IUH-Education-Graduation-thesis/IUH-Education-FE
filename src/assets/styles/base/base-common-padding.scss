@@ -1,0 +1,62 @@
+$sizeMPs: 160, 120, 112, 96, 92, 80, 72, 68, 64, 57, 56, 50, 45, 42, 40, 36, 32,
+  29, 28, 27, 26, 25, 24, 21, 20, 19, 18, 16, 15, 13, 12, 11, 10, 9, 8, 6, 7, 5,
+  4, 3, 2, 1, 0;
+
+.p {
+  @each $sizeMP in $sizeMPs {
+    $val: calc-to-rem($sizeMP);
+    &-#{$sizeMP} {
+      padding: $val;
+    }
+  }
+  @each $sizeMP in $sizeMPs {
+    $val: calc-to-rem($sizeMP);
+    &y-#{$sizeMP} {
+      padding-top: $val;
+      padding-bottom: $val;
+    }
+  }
+  @each $sizeMP in $sizeMPs {
+    $val: calc-to-rem($sizeMP);
+    &x-#{$sizeMP} {
+      padding-left: $val;
+      padding-right: $val;
+    }
+  }
+  @each $sizeMP in $sizeMPs {
+    $val: calc-to-rem($sizeMP);
+    &t-#{$sizeMP} {
+      padding-top: $val;
+    }
+  }
+  @each $sizeMP in $sizeMPs {
+    $val: calc-to-rem($sizeMP);
+    &b-#{$sizeMP} {
+      padding-bottom: $val;
+    }
+  }
+  @each $sizeMP in $sizeMPs {
+    $val: calc-to-rem($sizeMP);
+    &r-#{$sizeMP} {
+      padding-right: $val;
+    }
+  }
+  @each $sizeMP in $sizeMPs {
+    $val: calc-to-rem($sizeMP);
+    &l-#{$sizeMP} {
+      padding-left: $val;
+    }
+  }
+  &b-0 {
+    padding-bottom: 0;
+  }
+  &t-0 {
+    padding-top: 0;
+  }
+  &l-0 {
+    padding-left: 0 !important;
+  }
+  &r-0 {
+    padding-right: 0;
+  }
+}

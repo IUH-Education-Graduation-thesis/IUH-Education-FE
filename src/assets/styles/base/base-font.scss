@@ -1,0 +1,47 @@
+:root {
+  //font-size
+  --double-extra-small-size: 0.625rem;
+  --min-small-size: 0.875rem; // 14px
+  --extra-small-size: 1rem; //16px
+  --small-size: 1.125rem; // 18px
+  --medium-size: 1.25rem; // 20px
+  --extra-medium-size: 1.5rem; // 24px
+  --large-size: 1.625rem;
+  --extra-large-size: 1.875rem;
+  --double-extra-large-size: 2.375rem; // 38px
+  --double-extra-size: 3rem;
+
+  --size-100: 100%;
+  --size-120: 120%;
+
+  --main-h1: 3.25rem;
+  --main-h2: 2.35rem;
+  --main-h3: 1.75rem;
+  --main-h4: 1.5rem; // 24px
+  --main-h5: 1.25rem;
+  --main-h6: 1.125rem;
+  --main-h7: 1rem;
+
+  //font-family
+  --font-family-main: 'Darker Grotesque', sans-serif;
+  --font-family-bold: 'Darker Grotesque bold', sans-serif;
+  --font-family-light: 'Darker Grotesque light', sans-serif;
+  --font-family-black: 'Darker Grotesque black', sans-serif;
+  --font-family-extrabold: 'Darker Grotesque extrabold', sans-serif;
+  --font-family-regular: 'Darker Grotesque regular', sans-serif;
+  --font-family-semibold: 'Darker Grotesque semibold', sans-serif;
+
+  //font-style
+  --font-style-normal: normal;
+  --font-style-italic: italic;
+  --font-style-oblique: oblique;
+
+  //font-weight
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-main: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
+}

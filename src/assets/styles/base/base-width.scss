@@ -1,0 +1,48 @@
+$percentSteps: 0, 5, 10, 15, 16, 20, 25, 30, 32, 35, 40, 45, 50, 55, 60, 65, 68,
+  70, 73, 75, 80, 85, 86, 90, 95, 100;
+
+$absValScreen: 0, 1, 4, 8, 10, 12, 14, 16, 18, 20, 24, 26, 32, 35, 36, 38, 40,
+  59, 60, 66, 72, 76, 79, 80, 83, 86, 88, 100, 110, 112, 116, 120, 124, 130, 133,
+  144, 145, 158, 165, 172, 180, 200, 218, 229, 240, 244, 246, 250, 258, 270, 280,
+  286, 300, 310, 312, 336, 345, 360, 386, 400, 452, 466, 514, 554, 600, 640, 656,
+  800, 880, 890, 960, 1040, 1120, 1200, 1280, 1360, 1440, 1520, 1600;
+
+.w {
+  &-auto {
+    width: auto;
+  }
+
+  @each $step in $percentSteps {
+    &-#{$step} {
+      width: #{$step + '%'};
+    }
+    &-max-#{$step} {
+      max-width: #{$step + '%'};
+    }
+    &-min-#{$step} {
+      min-width: #{$step + '%'};
+    }
+  }
+}
+
+.w-abs {
+  @each $absValWidth in $absValScreen {
+    $val: calc-to-rem($absValWidth);
+    &-max-#{$absValWidth} {
+      max-width: $val;
+    }
+  }
+  @each $absValWidth in $absValScreen {
+    $val: calc-to-rem($absValWidth);
+    &-min-#{$absValWidth} {
+      min-width: $val;
+    }
+  }
+  @each $absValWidth in $absValScreen {
+    $val: calc-to-rem($absValWidth);
+    &-#{$absValWidth} {
+      max-width: 100%;
+      width: $val;
+    }
+  }
+}

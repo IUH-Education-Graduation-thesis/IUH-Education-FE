@@ -1,0 +1,47 @@
+body {
+  background-color: var(--color-white) !important;
+  font-family: var(--font-family-main) !important;
+  font-size: var(--medium-size) !important;
+}
+
+h1 {
+  font-size: var(--main-h1);
+  letter-spacing: -1.5;
+  font-weight: 800;
+}
+
+h2 {
+  font-size: var(--main-h2);
+  letter-spacing: -0.5;
+  font-weight: 800;
+}
+
+h3 {
+  font-size: var(--main-h3);
+  letter-spacing: 0;
+  font-weight: 800;
+}
+
+h4 {
+  font-size: var(--main-h4);
+  letter-spacing: 0.25;
+  font-weight: 800;
+}
+
+h5 {
+  font-size: var(--main-h5);
+  letter-spacing: 0;
+  font-weight: 800;
+}
+
+h6 {
+  font-size: var(--main-h6);
+  letter-spacing: 0.15;
+  font-weight: 800;
+}
+
+h6 {
+  font-size: var(--main-h7);
+  letter-spacing: 0.15;
+  font-weight: 800;
+}
