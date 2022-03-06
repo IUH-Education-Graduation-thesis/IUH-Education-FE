@@ -14,6 +14,7 @@ import { isEmpty } from "lodash";
 import KhoaHocComponent from "components/KhoaHoc";
 import DayNha from "components/DayNha"
 import PhongHoc from "components/PhongHoc";
+import NamHoc from "components/NamHoc";
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
@@ -59,6 +60,10 @@ const listComponent = [
   {
     key: "14",
     component: PhongHoc,
+  },
+  {
+    key: "15",
+    component: NamHoc,
   },
 ];
 
@@ -111,6 +116,7 @@ const HomePage = () => {
               <Menu.Item key="12">Khóa học</Menu.Item>
               <Menu.Item key="13">Dãy nhà</Menu.Item>
               <Menu.Item key="14">Phòng học</Menu.Item>
+              <Menu.Item key="15">Năm học</Menu.Item>
             </SubMenu>
           </Menu>
         </Sider>
