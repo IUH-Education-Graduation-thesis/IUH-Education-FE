@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table } from 'antd';
+import { Button, notification, Table } from 'antd';
 import './NamHoc.scss'
 import ModalNamHoc from './FormAddNamHoc'
 import { GET_DAYNHA_FRAGMENT, GET_NAMHOC_FRAGMENT } from "./fragment";
@@ -85,7 +85,9 @@ const NamHoc = () => {
 
     const errors = get(dataReturn, 'xoaNamHoc.errors', []);
     if (!isEmpty(errors)) {
-      errors?.map(item => console.log(item.message));
+      errors?.map(item => notification["error"]({
+        message: item?.message,
+      }));
       return;
     }
 
@@ -100,7 +102,10 @@ const NamHoc = () => {
       ];
 
       setData(_listNamHoc);
-
+      notification.open({
+        message: 'Thông báo',
+        description: status,
+      })
       return;
     }
 

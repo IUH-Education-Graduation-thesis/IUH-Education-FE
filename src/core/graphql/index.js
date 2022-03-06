@@ -10,6 +10,10 @@ import xoaPhongHoc from "./xoaPhongHoc";
 import xoaNamHoc from "./xoaNamHoc";
 import findNamHoc from "./findNamHoc";
 import themNamHoc from "./themNamHoc";
+import findKhoaHocs from "./findKhoaHocs";
+import xoaKhoaHoc from "./xoaKhoaHoc";
+import xoaDayNha from "./xoaDayNha";
+import themKhoaHoc from "./themKhoaHoc";
 
 
 const query = {
@@ -17,6 +21,7 @@ const query = {
   ...findDayNha.query,
   ...findPhongHoc.query,
   ...findNamHoc.query,
+  ...findKhoaHocs.query,
 };
 
 const mutation = {
@@ -28,6 +33,8 @@ const mutation = {
   ...xoaPhongHoc.mutation,
   ...themNamHoc.mutation,
   ...xoaNamHoc.mutation,
+  ...themKhoaHoc.mutation,
+  ...xoaKhoaHoc.mutation,
 };
 
 export default {
