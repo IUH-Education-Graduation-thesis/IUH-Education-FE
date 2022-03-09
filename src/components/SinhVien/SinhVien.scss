@@ -1,20 +1,22 @@
-.sinhvien{
+.sinhvien {
+  margin: 0px;
+  h1 {
     margin: 0px;
-    h1{
-        margin: 0px;
-        text-align: center;
+    text-align: center;
+  }
+  .ant-btn-primary {
+    margin-bottom: 5px;
+  }
+  .combox-sv {
+    text-align: center;
+    span {
+      font-size: 20px;
+      font-weight: bold;
     }
-    .ant-btn-primary{
-        margin-bottom: 5px;
+    .ant-select-selector {
+      margin-left: 15px;
     }
-   .combox-sv{
-        text-align: center;
-        span{
-            font-size: 20px;
-            font-weight: bold;  
-        }
-        .ant-select-selector{
-            margin-left: 15px; 
-        }
-   }
+  }
 }
+
+@import "./FilterExpand/FilterExpand.scss";

@@ -1,32 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button, Select, Modal } from "antd";
-import { useQuery, useMutation } from "@apollo/client";
+import { Table, Button, Select, Modal, Collapse } from "antd";
 
-import queries from "core/graphql";
 import ModalAddSinhVien from "./FormAddStudent";
-import { GET_SINHVIENS_FRAGMENT } from "./fragment";
 import "./SinhVien.scss";
-
-// const getSinhViensQuery = queries.query.getSinhViens(GET_SINHVIENS_FRAGMENT);
+import ExpandFilter from "./FilterExpand";
 
 const SinhVienComponent = () => {
   const [visibleModalEdit, setVisibleModalEdit] = useState(false);
   const [visibleModalAdd, setVisibleModalAdd] = useState(false);
   const [sinhVien, setSinhVien] = useState({});
-  // const [data, setData] = useState([]);
+
+  const [currentFilter, setCurrentFilter] = useState({});
 
   const columns = [
     {
       title: "ID",
       width: 50,
-      dataIndex: "sinhVienId",
-      key: "sinhVienId",
+      dataIndex: "id",
+      key: "id",
       fixed: "left",
     },
     {
       title: "MSSV",
       width: 100,
-      dataIndex: "maSinhVien",
+      dataIndex: "hoTenDem",
       key: "maSinhVien",
       fixed: "left",
     },
@@ -150,20 +147,11 @@ const SinhVienComponent = () => {
     },
   ];
 
-  // const { data: dataGetSinhViens, loading: loadingGetSinhViens } =
-  //   useQuery(getSinhViensQuery);
-
   const handlerEditButton = (sinhVien) => {
     setSinhVien(sinhVien);
     setVisibleModalEdit(true);
   };
 
-  // console.log("dataGetSinhViens", dataGetSinhViens);
-
-  // useEffect(() => {
-  //   const _listSinhVien = dataGetSinhViens?.getSinhViens?.data || [];
-  //   setData(_listSinhVien);
-  // }, [dataGetSinhViens]);
   const data = [];
   for (let i = 0; i < 100; i++) {
     data.push({
@@ -195,7 +183,6 @@ const SinhVienComponent = () => {
       danToc: `Kinh`,
       tonGiao: `Phật`,
       doiTuong: `Không`,
-
     });
   }
   const { Option } = Select;
@@ -203,34 +190,28 @@ const SinhVienComponent = () => {
 
   React.useState(khoaData[0]);
 
+  const handleFilterChange = (fieldChange, currentFilterData, name) => {
+    setCurrentFilter({
+      ...currentFilter,
+      ...fieldChange,
+    });
+  };
+
   return (
     <div className="sinhvien">
       <h1>DANH SÁCH SINH VIÊN</h1>
-      <div className="combox-sv">
-        <span>Khoa</span>
-        <Select
-          className="ant-select-selector"
-          defaultValue={khoaData[0]}
-          style={{ width: 300 }}
-        >
-          {khoaData.map((khoaData) => (
-            <Option key={khoaData}>{khoaData}</Option>
-          ))}
-        </Select>
-      </div>
-      <Button
-        onClick={() => setVisibleModalAdd(true)}
-        className="ant-btn-primary"
-        type="primary"
-      >
-        + Thêm sinh viên
-      </Button>
+      <ExpandFilter
+        currentFilterData={currentFilter}
+        onFilterChange={handleFilterChange}
+        onAddAStudentClick={() => setVisibleModalAdd(true)}
+      />
+
       <Table
+        style={{ marginTop: 24 }}
         columns={columns}
         dataSource={data}
         scroll={{ x: 1500, y: "50vh" }}
       />
-
       <ModalAddSinhVien
         type="add"
         visible={visibleModalAdd}
