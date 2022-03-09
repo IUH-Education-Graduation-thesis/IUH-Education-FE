@@ -1,11 +1,14 @@
-.khoa{
+.khoa {
+  margin: 0px;
+  h1 {
     margin: 0px;
-    h1{
-        margin: 0px;
-        text-align: center;
-    }
-    .ant-btn-primary{
-        margin-bottom: 5px;
-    }
-    
+    text-align: center;
+  }
+  .ant-btn-primary {
+    margin-bottom: 5px;
+  }
+
+  .ant-table-wrapper {
+    margin-top: 24px;
+  }
 }
