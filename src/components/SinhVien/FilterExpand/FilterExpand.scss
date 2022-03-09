@@ -1,0 +1,43 @@
+.sinh-vien--filter {
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &__left {
+      display: flex;
+      column-gap: 16px;
+
+      .ant-row.ant-form-item {
+        margin: 0;
+      }
+    }
+
+    &__right {
+      display: flex;
+      align-items: center;
+      column-gap: 16px;
+
+      button {
+        margin: 0 !important;
+      }
+    }
+  }
+
+  &__expand {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 24px;
+    margin-top: 24px;
+
+    display: none;
+
+    &.expanded {
+      display: block;
+    }
+
+    &__all {
+      grid-column: 1/3;
+    }
+  }
+}
