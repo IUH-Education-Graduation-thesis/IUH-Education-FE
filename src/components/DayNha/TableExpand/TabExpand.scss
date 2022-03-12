@@ -1,0 +1,12 @@
+.day-nha-expand {
+  .ant-divider.ant-divider-horizontal {
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+
+  &__head {
+    display: flex;
+    flex-direction: row-reverse;
+    column-gap: 16px;
+  }
+}
