@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table } from "antd";
+import { Button, Divider, Table } from "antd";
 import { GET_DAYNHA_FRAGMENT } from "./fragment";
 import queries from "core/graphql";
 import { useMutation, useQuery } from "@apollo/client";
@@ -8,6 +8,7 @@ import { get, isEmpty } from "lodash";
 import TableExpand from "./TableExpand";
 import ModalAddDayNha from "./FormAddDayNha";
 import "./DayNha.scss";
+import ExpandFilter from "./FilterExpand";
 
 // Call API
 const getAllDayNhaQuery = queries.query.findDayNha(GET_DAYNHA_FRAGMENT);
@@ -18,6 +19,7 @@ const DayNha = () => {
   const [visibleModalAdd, setVisibleModalAdd] = useState(false);
   const [dayNha, setDayNha] = useState({});
   const [data, setData] = useState([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const { data: dataGetDayNha, loading: loadingGetDayNha } =
     useQuery(getAllDayNhaQuery);
@@ -137,21 +139,36 @@ const DayNha = () => {
 
     setData(_data);
   };
+
+  const handleSelectedRowChange = (payload) => {
+    setSelectedRowKeys(payload);
+  };
+
+  /**
+   * render view
+   * ===========================================================
+   */
+
   return (
     <div className="daynha">
       <h3>DANH SÁCH DÃY NHÀ </h3>
-      <Button
-        className="ant-btn-primary"
-        type="primary"
-        onClick={() => setVisibleModalAdd(true)}
-      >
-        + Thêm dãy nhà
-      </Button>
+      <ExpandFilter />
+
+      <Divider />
+
+      <div className="daynha__action">
+        <Button danger>Xóa dãy nhà đã chọn</Button>
+      </div>
+
       <Table
         className="ant-table-wrapper"
         columns={columns}
         dataSource={data}
         scroll={{ x: 1500, y: "50vh" }}
+        rowSelection={{
+          selectedRowKeys,
+          onChange: handleSelectedRowChange,
+        }}
         expandable={{
           expandedRowRender: (record) => (
             <TableExpand data={record?.phongHocs} />

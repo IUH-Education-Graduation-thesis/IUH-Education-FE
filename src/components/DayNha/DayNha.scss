@@ -7,6 +7,18 @@
   .ant-btn-primary {
     margin-bottom: 5px;
   }
+
+  &__action {
+    display: flex;
+    column-gap: 16px;
+    flex-direction: row-reverse;
+    margin-bottom: 16px;
+  }
+
+  .ant-divider.ant-divider-horizontal {
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
 }
 
 @import "TableExpand/TabExpand.scss";

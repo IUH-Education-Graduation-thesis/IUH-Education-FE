@@ -114,7 +114,6 @@ const HomePage = () => {
               <Menu.Item key="11">Lớp Học Phần</Menu.Item>
               <Menu.Item key="12">Khóa học</Menu.Item>
               <Menu.Item key="13">Dãy nhà</Menu.Item>
-              <Menu.Item key="14">Phòng học</Menu.Item>
               <Menu.Item key="15">Năm học</Menu.Item>
             </SubMenu>
           </Menu>
