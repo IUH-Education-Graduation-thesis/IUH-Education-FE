@@ -12,7 +12,7 @@ import LopHocPhan from "components/LopHocPhan";
 import "./HomePage.scss";
 import { isEmpty } from "lodash";
 import KhoaHocComponent from "components/KhoaHoc";
-import DayNha from "components/DayNha"
+import DayNha from "components/DayNha";
 import PhongHoc from "components/PhongHoc";
 import NamHoc from "components/NamHoc";
 const { SubMenu } = Menu;
@@ -108,7 +108,6 @@ const HomePage = () => {
             <SubMenu key="sub2" icon={<LaptopOutlined />} title="Chức năng">
               <Menu.Item key="5">Sinh Viên</Menu.Item>
               <Menu.Item key="6">Khoa</Menu.Item>
-              <Menu.Item key="7">Chuyên Ngành</Menu.Item>
               <Menu.Item key="8">Môn Học</Menu.Item>
               <Menu.Item key="9">Học Kỳ</Menu.Item>
               <Menu.Item key="10">Học Phần</Menu.Item>

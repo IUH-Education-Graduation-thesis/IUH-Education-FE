@@ -11,4 +11,14 @@
   .ant-table-wrapper {
     margin-top: 24px;
   }
+
+  .table {
+    &__child-wrapper {
+      &__head {
+        display: flex;
+        flex-direction: row-reverse;
+        column-gap: 16px;
+      }
+    }
+  }
 }
