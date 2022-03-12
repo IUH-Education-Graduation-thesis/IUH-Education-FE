@@ -3,7 +3,6 @@ import { Modal, Form, Input } from "antd";
 
 import { isEmpty } from "lodash";
 
-
 const ModalKhoa = ({ visible, closeModal, type, data }) => {
   const layout = {
     labelCol: { span: 4 },
@@ -18,32 +17,22 @@ const ModalKhoa = ({ visible, closeModal, type, data }) => {
       maKhoa: data.maKhoa,
       tenKhoa: data.tenKhoa,
       moTa: data.moTa,
-    })
-  }, [data])
+    });
+  }, [data]);
 
-  
-  function handleChange(value) {
-    console.log(`selected ${value}`);
-  }
   const renderForm = () => {
     return (
       <Form {...layout} form={form} name="nest-messages">
-        <Form.Item
-          name={"maKhoa"}
-          label="Mã khoa"
-        >
+        <Form.Item name={"id"} label="Mã khoa">
           <Input disabled />
         </Form.Item>
-        <Form.Item
-          name={"tenKhoa"}
-          label="Tên khoa"
-        >
+        <Form.Item name={"ten"} label="Tên khoa">
           <Input />
         </Form.Item>
-        <Form.Item
-          name={"moTa"}
-          label="Mô tả"
-        >
+        <Form.Item name={"moTa"} label="Mô tả">
+          <Input />
+        </Form.Item>
+        <Form.Item name={"link"} label="Link">
           <Input />
         </Form.Item>
       </Form>
@@ -52,7 +41,7 @@ const ModalKhoa = ({ visible, closeModal, type, data }) => {
 
   return (
     <Modal
-      title={type === 'add' ? 'Thêm khoa' : 'Sửa khoa'}
+      title={type === "add" ? "Thêm khoa" : "Sửa khoa"}
       centered
       visible={visible}
       onCancel={() => closeModal(false)}
