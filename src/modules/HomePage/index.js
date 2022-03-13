@@ -105,7 +105,7 @@ const HomePage = () => {
             <SubMenu key="sub1" icon={<UserOutlined />} title="Tài khoản">
               <Menu.Item key="1">Đăng xuất</Menu.Item>
             </SubMenu>
-            <SubMenu key="sub2" icon={<LaptopOutlined />} title="Chức năng">
+            <SubMenu key="sub2" icon={<LaptopOutlined />} title="Quản lý">
               <Menu.Item key="5">Sinh Viên</Menu.Item>
               <Menu.Item key="6">Khoa</Menu.Item>
               <Menu.Item key="8">Môn Học</Menu.Item>
