@@ -106,16 +106,30 @@ const HocPhan = () => {
     setHocPhan(hocPhan);
     setVisibleModalEdit(true);
   };
+
+  const handleOnRowClick = (event, record) => {
+    const _origin = window?.location?.origin;
+
+    window.location.href = `${_origin}/hoc-phan/${record?.id}`;
+  };
+
   React.useState(khoaData[0]);
   return (
     <div className="hocPhan">
       <h3>DANH SÁCH HỌC PHẦN</h3>
       <ExpandFilter />
       <Divider />
-			<div className="hocPhan__action">
-				<Button danger>Xóa học phần đã chọn</Button>
-			</div>
-      <Table columns={columns} dataSource={data} scroll={{ x: 1300 }} />
+      <div className="hocPhan__action">
+        <Button danger>Xóa học phần đã chọn</Button>
+      </div>
+      <Table
+        onRow={(record, index) => ({
+          onClick: (e) => handleOnRowClick(e, record),
+        })}
+        columns={columns}
+        dataSource={data}
+        scroll={{ x: 1300 }}
+      />
       <ModalHocPhan
         type="add"
         visible={visibleModalAdd}

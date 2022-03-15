@@ -1,0 +1,19 @@
+.hoc-phan-mon-hoc {
+  &__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .head {
+      &__left {
+        margin: 0;
+      }
+
+      &__right {
+        display: flex;
+        align-items: center;
+        column-gap: 16px;
+      }
+    }
+  }
+}
