@@ -38,6 +38,12 @@ const LopHocPhanList = () => {
     setSelectedRowKeys(payload);
   };
 
+  const handleClickRowTable = (e, record) => {
+    const _origin = window?.location?.origin;
+
+    window.location.href = `${_origin}/lop-hoc-phan/${record?.id}`;
+  };
+
   /**
    * render view
    * =====================================
@@ -97,6 +103,9 @@ const LopHocPhanList = () => {
   return (
     <Card className={prefix} title={renderTitle()}>
       <Table
+        onRow={(record, index) => ({
+          onClick: (e) => handleClickRowTable(e, record),
+        })}
         rowSelection={{
           selectedRowKeys,
           onChange: handleSelectedRowChange,

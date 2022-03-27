@@ -5,7 +5,12 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import client from "core/apollo";
 import reportWebVitals from "./reportWebVitals";
-import { LoginPage as Login, HomePage, HocPhanPage } from "pages";
+import {
+  LoginPage as Login,
+  HomePage,
+  HocPhanPage,
+  LopHocPhanPage,
+} from "pages";
 
 import "./index.css";
 import "assets/styles/main.scss";
@@ -21,6 +26,9 @@ ReactDOM.render(
           </Route>
           <Route exact path="/hoc-phan/:id">
             <HocPhanPage />
+          </Route>
+          <Route path="/lop-hoc-phan/:id">
+            <LopHocPhanPage />
           </Route>
           <Route path="/login">
             <Login />
