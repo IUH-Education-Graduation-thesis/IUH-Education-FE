@@ -10,6 +10,7 @@ import {
   HomePage,
   HocPhanPage,
   LopHocPhanPage,
+  KhoaVienPage,
 } from "pages";
 
 import "./index.css";
@@ -29,6 +30,9 @@ ReactDOM.render(
           </Route>
           <Route path="/lop-hoc-phan/:id">
             <LopHocPhanPage />
+          </Route>
+          <Route path="/khoa-vien/:id">
+            <KhoaVienPage />
           </Route>
           <Route path="/login">
             <Login />

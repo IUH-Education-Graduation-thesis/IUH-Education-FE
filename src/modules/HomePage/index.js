@@ -108,7 +108,6 @@ const HomePage = () => {
             <SubMenu key="sub2" icon={<LaptopOutlined />} title="Quản lý">
               <Menu.Item key="5">Sinh Viên</Menu.Item>
               <Menu.Item key="6">Khoa</Menu.Item>
-              <Menu.Item key="8">Môn Học</Menu.Item>
               <Menu.Item key="10">Học Phần</Menu.Item>
               <Menu.Item key="12">Khóa học</Menu.Item>
               <Menu.Item key="13">Dãy nhà</Menu.Item>

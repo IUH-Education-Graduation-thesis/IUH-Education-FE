@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table, Modal } from "antd";
+import { Button, Table, Modal, Divider } from "antd";
 import "./Khoa.scss";
 import ModalAddKhoa from "./FormAddKhoa";
 import FilterExpand from "./FilterExpand";
@@ -12,6 +12,8 @@ const KhoaComponent = () => {
     useState(false);
   const [listKhoa, setListKhoa] = useState([]);
   const [khoa, setKhoa] = useState({});
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
   const columns = [
     {
       title: "Mã khoa",
@@ -52,10 +54,29 @@ const KhoaComponent = () => {
     },
   ];
 
+  /**
+   * Function
+   * =============================================================
+   */
+
   const handlerEditButton = (khoa) => {
     setKhoa(khoa);
     setVisibleModal1(true);
   };
+
+  const handleChangeSelectedRowKey = (payload) => {
+    setSelectedRowKeys(payload);
+  };
+
+  const handleClickRowTable = (e, record) => {
+    const _origin = window?.location?.origin;
+    window.location.href = `${_origin}/khoa-vien/${record?.id}`;
+  };
+
+  /**
+   * useEffect
+   * ==============================================================
+   */
 
   /**
    * handle mock data for table when init page
@@ -85,58 +106,29 @@ const KhoaComponent = () => {
    * =======================================================================
    */
 
-  const renderExpand = (data) => {
-    return (
-      <div className="table__child-wrapper">
-        <div className="table__child-wrapper__head">
-          <Button
-            onClick={() => setvisibelModalThemChuyenNganh(true)}
-            type="primary"
-          >
-            {" "}
-            + Thêm 1 chuyên ngành
-          </Button>
-          <Button type="ghost"> + Thêm bằng file excel</Button>
-        </div>
-        {renderExpandTable(data?.chuyenNganhs)}
-      </div>
-    );
-  };
-
-  const renderExpandTable = (data) => {
-    const _columns = [
-      { title: "ID", dataIndex: "id", key: "id" },
-      { title: "Tên chuyên ngành", dataIndex: "ten", key: "ten" },
-      { title: "Mô tả", dataIndex: "moTa", key: "moTa" },
-      {
-        title: "Action",
-        dataIndex: "",
-        key: "",
-        render: () => {
-          return (
-            <div>
-              <Button danger>Chỉnh sửa</Button>
-              <Button style={{ marginLeft: 10 }}>Xóa</Button>
-            </div>
-          );
-        },
-      },
-    ];
-
-    return <Table columns={_columns} dataSource={data} pagination={false} />;
-  };
-
   return (
     <div className="khoa">
       <h3>DANH SÁCH KHOA</h3>
       <FilterExpand onAddAStudentClick={() => setVisibleModal(true)} />
 
+      <Divider />
+
+      <div className="khoa__action">
+        <Button danger>Xóa học phần đã chọn</Button>
+      </div>
+
       <Table
         className="ant-table-wrapper"
         columns={columns}
         dataSource={listKhoa}
-        expandable={{
-          expandedRowRender: renderExpand,
+        onRow={(record, index) => {
+          return {
+            onClick: (e) => handleClickRowTable(e, record),
+          };
+        }}
+        rowSelection={{
+          selectedRowKeys,
+          onChange: handleChangeSelectedRowKey,
         }}
       />
       <ModalAddKhoa

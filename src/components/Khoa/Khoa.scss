@@ -1,4 +1,10 @@
 .khoa {
+
+  &__action {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
   margin: 0px;
   h1 {
     margin: 0px;
