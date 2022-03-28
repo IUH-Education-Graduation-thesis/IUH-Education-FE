@@ -1,5 +1,11 @@
 .sinhvien {
   margin: 0px;
+
+  &__action {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
   h1 {
     margin: 0px;
     text-align: center;

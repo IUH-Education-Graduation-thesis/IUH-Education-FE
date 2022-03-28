@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button, Select, Modal, Collapse } from "antd";
+import { Table, Button, Select, Modal, Collapse, Divider } from "antd";
 
 import ModalAddSinhVien from "./FormAddStudent";
 import "./SinhVien.scss";
@@ -9,6 +9,7 @@ const SinhVienComponent = () => {
   const [visibleModalEdit, setVisibleModalEdit] = useState(false);
   const [visibleModalAdd, setVisibleModalAdd] = useState(false);
   const [sinhVien, setSinhVien] = useState({});
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const [currentFilter, setCurrentFilter] = useState({});
 
@@ -147,10 +148,31 @@ const SinhVienComponent = () => {
     },
   ];
 
+  /**
+   * Function
+   * ==========================================================================
+   */
+
   const handlerEditButton = (sinhVien) => {
     setSinhVien(sinhVien);
     setVisibleModalEdit(true);
   };
+
+  const handleFilterChange = (fieldChange, currentFilterData, name) => {
+    setCurrentFilter({
+      ...currentFilter,
+      ...fieldChange,
+    });
+  };
+
+  const handleOnChangeSelectedRow = (payload) => {
+    setSelectedRowKeys(payload);
+  };
+
+  /**
+   * useEffect
+   * ===================================================
+   */
 
   const data = [];
   for (let i = 0; i < 100; i++) {
@@ -185,17 +207,9 @@ const SinhVienComponent = () => {
       doiTuong: `Không`,
     });
   }
-  const { Option } = Select;
   const khoaData = ["CNTT", "Công nghệ may", "Kinh doanh quốc tế"];
 
   React.useState(khoaData[0]);
-
-  const handleFilterChange = (fieldChange, currentFilterData, name) => {
-    setCurrentFilter({
-      ...currentFilter,
-      ...fieldChange,
-    });
-  };
 
   return (
     <div className="sinhvien">
@@ -206,11 +220,21 @@ const SinhVienComponent = () => {
         onAddAStudentClick={() => setVisibleModalAdd(true)}
       />
 
+      <Divider />
+
+      <div className="sinhvien__action">
+        <Button danger>Xóa sinh vien đã chọn</Button>
+      </div>
+
       <Table
         style={{ marginTop: 24 }}
         columns={columns}
         dataSource={data}
         scroll={{ x: 1500, y: "50vh" }}
+        rowSelection={{
+          selectedRowKeys,
+          onChange: handleOnChangeSelectedRow,
+        }}
       />
       <ModalAddSinhVien
         type="add"
