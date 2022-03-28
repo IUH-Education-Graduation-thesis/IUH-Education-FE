@@ -2,9 +2,9 @@ import { gql } from "@apollo/client";
 
 export default {
   query: {
-    findNamHoc: (fragment) => gql`
-      query ($inputs: FindNamHocInputs) {
-        findNamHoc(inputs: $inputs) {
+    findHocPhan: (fragment) => gql`
+      query ($inputs: FindHocPhanInputs) {
+        findHocPhans(inputs: $inputs) {
           status
           errors {
             message

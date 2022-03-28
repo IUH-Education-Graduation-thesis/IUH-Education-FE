@@ -1,6 +1,8 @@
 import React, { useMemo, useState } from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
+import { useQuery } from "@apollo/client";
+import moment from "moment";
 
 import { Button, Form, Input, Select } from "antd";
 import {
@@ -9,31 +11,14 @@ import {
   ClearOutlined,
   ArrowUpOutlined,
 } from "@ant-design/icons";
+import queries from "core/graphql";
+import { FIND_KHOA_VIEN_FRAGMENT, FIND_NAM_HOC_FRAGMENT } from "../fragment";
+
+const findKhoaVienQuery = queries.query.findKhoaVien(FIND_KHOA_VIEN_FRAGMENT);
+const findNamHocQuery = queries.query.findNamHoc(FIND_NAM_HOC_FRAGMENT);
 
 const prefix = "sinh-vien--filter";
 
-const dataMockKhoaVien = [
-  {
-    id: 1,
-    label: "Công nghệ thông tin",
-    value: 2,
-  },
-  {
-    id: 2,
-    label: "May thời trang",
-    value: 3,
-  },
-  {
-    id: 3,
-    label: "Tài ngân",
-    value: 4,
-  },
-  {
-    id: 4,
-    label: "Xây dựng",
-    value: 25,
-  },
-];
 
 const { useForm } = Form;
 
@@ -47,13 +32,89 @@ const ExpandFilter = ({
   const [form] = useForm();
 
   const [expanded, setExpanded] = useState(false);
+  const [dataForSelectMonHoc, setDataForSelectMonHoc] = useState([]);
+  const [dataForSelectHocKy, setDataForSelectHocKy] = useState([]);
+
+  /**
+   * API
+   * ==================================================
+   */
+
+  const { data: dataFindNamHoc, loading: loadingFindNamHoc } =
+    useQuery(findNamHocQuery);
+
+  const { data: dataFindKhoaVien, loading: loadingFindKhoaVien } =
+    useQuery(findKhoaVienQuery);
+
+  const listKhoaVien = dataFindKhoaVien?.findKhoaVien?.data?.[0]?.data;
+  const dataForSelectKhoaVien = listKhoaVien?.map((item) => ({
+    value: item?.id,
+    label: item?.ten,
+  }));
+
+  const formatYear = (fromDate, toDate) => {
+    const _formYear = moment(fromDate).format("YYYY");
+    const _toYear = moment(toDate).format("YYYY");
+
+    return `${_formYear} - ${_toYear}`;
+  };
+
+  const listNamHoc = dataFindNamHoc?.findNamHoc?.data?.[0]?.data;
+
+  const dataForSelectNamHoc = listNamHoc?.map((item) => ({
+    value: item?.id,
+    label: formatYear(item?.ngayBatDau, item?.ngayKetThuc),
+  }));
 
   /**
    * function
    * ==========================================
    */
 
+  const handleDataForMonHoc = () => {
+    const _listSelectedKhoaVien = form?.getFieldValue("khoaVienIds");
+
+    const _listDataForMonHoc = _listSelectedKhoaVien?.map((item) => {
+      return listKhoaVien
+        ?.filter((_item) => _item?.id == item)
+        ?.map((_item) => {
+          return _item?.monHocs
+            ?.map((__item) => ({
+              label: __item?.ten,
+              value: __item?.id,
+            }))
+            ?.flat();
+        })
+        ?.flat();
+    });
+
+    setDataForSelectMonHoc(_listDataForMonHoc?.flat());
+  };
+
+  const handleDataForHocKy = () => {
+    const _listSelectedNamHoc = form?.getFieldValue("namHocIds");
+
+    const _listDataForHocKy = _listSelectedNamHoc?.map((item) => {
+      return listNamHoc
+        ?.filter((_item) => _item?.id == item)
+        ?.map((_item) => {
+          return _item?.hocKys
+            ?.map((__item) => ({
+              label: `Học kỳ: ${__item?.thuTu}`,
+              value: __item?.id,
+            }))
+            ?.flat();
+        })
+        ?.flat();
+    });
+
+    setDataForSelectHocKy(_listDataForHocKy?.flat());
+  };
+
   const handleFilterCHange = (payload) => {
+    handleDataForMonHoc();
+    handleDataForHocKy();
+
     const _fieldChange = {
       [payload?.[0]?.name?.[0]]: payload?.[0]?.value,
     };
@@ -63,7 +124,7 @@ const ExpandFilter = ({
       ..._fieldChange,
     };
 
-    onFilterChange(_fieldChange, _currentFilterData, payload?.name?.[0]);
+    onFilterChange(_fieldChange, _currentFilterData, payload?.[0]?.name?.[0]);
   };
 
   const handleClearFilter = () => {
@@ -94,7 +155,7 @@ const ExpandFilter = ({
               placeholder="Nhập id học phần..."
             />
           </Form.Item>
-          <Form.Item name="ma_hoc_phan">
+          <Form.Item name="maHocPhan">
             <Input
               prefix={<SearchOutlined />}
               placeholder="Nhập mã học phần..."
@@ -120,37 +181,31 @@ const ExpandFilter = ({
           expanded,
         })}
       >
-        <Form.Item name="khoa_vien">
+        <Form.Item name="khoaVienIds">
           <Select
-            options={dataMockKhoaVien}
+            options={dataForSelectKhoaVien}
+            loading={loadingFindKhoaVien}
             mode="multiple"
             placeholder="Khoa Viện"
           ></Select>
         </Form.Item>
-        <Form.Item name="chuyen_nganh">
+        <Form.Item name="monHocIds">
           <Select
-            options={dataMockKhoaVien}
-            mode="multiple"
-            placeholder="Chuyên ngành"
-          ></Select>
-        </Form.Item>
-        <Form.Item className={`${prefix}__expand__all`} name="mon_hoc">
-          <Select
-            options={dataMockKhoaVien}
+            options={dataForSelectMonHoc}
             mode="multiple"
             placeholder="Môn học"
           ></Select>
         </Form.Item>
-        <Form.Item name="nam_hoc">
+        <Form.Item name="namHocIds">
           <Select
-            options={dataMockKhoaVien}
+            options={dataForSelectNamHoc}
             mode="multiple"
             placeholder="Năm học"
           ></Select>
         </Form.Item>
-        <Form.Item name="hoc_ky">
+        <Form.Item name="hocKyIds">
           <Select
-            options={dataMockKhoaVien}
+            options={dataForSelectHocKy}
             mode="multiple"
             placeholder="Học kỳ"
           ></Select>

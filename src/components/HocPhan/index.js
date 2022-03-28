@@ -1,13 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Table, Button, Divider } from "antd";
+import { useLazyQuery } from "@apollo/client";
+import queries from "core/graphql";
+import { isEmpty } from "lodash";
+
 import "./index.scss";
 import ModalHocPhan from "./FormAddHocPhan";
 import ExpandFilter from "./FilterExpand";
+import { FIND_HOC_PHAN_FRAGMENT } from "./fragment";
+
+const FindHocPhanQuery = queries?.query?.findHocPhan(FIND_HOC_PHAN_FRAGMENT);
 
 const HocPhan = () => {
   const [visibleModalAdd, setVisibleModalAdd] = useState(false);
   const [visibleModalEdit, setVisibleModalEdit] = useState(false);
   const [hocPhan, setHocPhan] = useState({});
+  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPageSize, setCurrentPageSize] = useState(10);
+  const [seletedRowKeys, setSelectedRowKeys] = useState([]);
+  const [currentFilterData, setCurrentFilterData] = useState({
+    id: "",
+    maHocPhan: "",
+    namHocIds: [],
+    hocKyIds: [],
+    khoaVienIds: [],
+    monHocIds: [],
+  });
+
   const columns = [
     {
       title: "ID",
@@ -23,44 +42,20 @@ const HocPhan = () => {
     },
     {
       title: "Môn học",
-      dataIndex: "monHoc",
-      key: "monHoc",
+      dataIndex: "tenMonHoc",
+      key: "tenMonHoc",
       width: 400,
     },
     {
       title: "Số tín chỉ LT",
-      dataIndex: "tinChiLT",
-      key: "tinChiLT",
+      dataIndex: "soTinChiLyThuyet",
+      key: "soTinChiLyThuyet",
       width: 300,
     },
     {
       title: "Số tín chỉ TH",
-      dataIndex: "tinChiTH",
-      key: "tinChiTH",
-      width: 300,
-    },
-    {
-      title: "Học phần bắt buộc",
-      dataIndex: "hocPhanBatBuoc",
-      key: "hocPhanBatBuoc",
-      width: 300,
-    },
-    {
-      title: "Môn học tiên quyết",
-      dataIndex: "monHocTienQuyet",
-      key: "monHocTienQuyet",
-      width: 300,
-    },
-    {
-      title: "Môn học song hành",
-      dataIndex: "monHocSongHanh",
-      key: "monHocSongHanh",
-      width: 300,
-    },
-    {
-      title: "Môn học tương đương",
-      dataIndex: "monHocTuongDuong",
-      key: "monHocTuongDuong",
+      dataIndex: "soTinChiThucHanh",
+      key: "soTinChiThucHanh",
       width: 300,
     },
     {
@@ -85,23 +80,33 @@ const HocPhan = () => {
     },
   ];
 
-  const data = [];
-  for (let i = 0; i < 13; i++) {
-    data.push({
-      key: i,
-      id: `${i}`,
-      maHocPhan: `400129343${i}`,
-      monHoc: `Kiến trúc và thiết kế phần mềm`,
-      tinChiLT: 3,
-      tinChiTH: 4,
-      hocPhanBatBuoc: `i`,
-      monHocTienQuyet: ` Lập trình WWW`,
-      monHocSongHanh: `..`,
-      monHocTuongDuong: `không`,
-      moTa: `không`,
+  /**
+   * API
+   * ==========================================================================================
+   */
+
+  const [actFindHocPhan, { data: dataFindHocPhan, loadingFindHocPhan }] =
+    useLazyQuery(FindHocPhanQuery, {
+      fetchPolicy: "network-only",
     });
-  }
-  const khoaData = ["CNTT", "Công nghệ may", "Kinh doanh quốc tế"];
+
+  const dataForTable = dataFindHocPhan?.findHocPhans?.data?.[0]?.data?.map(
+    (item) => ({
+      key: item?.id,
+      id: item?.id,
+      maHocPhan: item?.maHocPhan,
+      moTa: item?.moTa,
+      tenMonHoc: item?.monHoc?.ten,
+      soTinChiLyThuyet: item?.monHoc?.soTinChiLyThuyet,
+      soTinChiThucHanh: item?.monHoc?.soTinChiThucHanh,
+    })
+  );
+
+  /**
+   * Function
+   * ================================================
+   */
+
   const handlerEditButton = (hocPhan) => {
     setHocPhan(hocPhan);
     setVisibleModalEdit(true);
@@ -113,11 +118,70 @@ const HocPhan = () => {
     window.location.href = `${_origin}/hoc-phan/${record?.id}`;
   };
 
-  React.useState(khoaData[0]);
+  const handleCallAPIWithFilter = (filterData) => {
+    const _inputs = {
+      id: !isEmpty(filterData?.id) ? filterData?.id : undefined,
+      maHocPhan: !isEmpty(filterData?.maHocPhan)
+        ? filterData?.maHocPhan
+        : undefined,
+      namHocIds: !isEmpty(filterData?.namHocIds)
+        ? filterData?.namHocIds
+        : undefined,
+      hocKyIds: !isEmpty(filterData?.hocKyIds)
+        ? filterData?.hocKyIds
+        : undefined,
+      khoaVienIds: !isEmpty(filterData?.khoaVienIds)
+        ? filterData?.khoaVienIds
+        : undefined,
+      monHocIds: !isEmpty(filterData?.monHocIds)
+        ? filterData?.monHocIds
+        : undefined,
+    };
+
+    actFindHocPhan({
+      variables: {
+        inputs: _inputs,
+      },
+    });
+  };
+
+  const handleOnFilterChange = (
+    currentFieldChange,
+    currentFilterDataComp,
+    name
+  ) => {
+    const _data = {
+      ...currentFilterData,
+      ...currentFieldChange,
+    };
+
+    setCurrentFilterData(_data);
+
+    handleCallAPIWithFilter(_data);
+  };
+
+  const handleSelectedRowKeyChange = (payload) => {
+    setSelectedRowKeys(payload);
+  };
+
+  /**
+   * useEffect
+   * =================================================
+   */
+
+  useEffect(() => {
+    handleCallAPIWithFilter(currentFilterData);
+  }, []);
+
+  /**
+   * Render view
+   * ============================================================
+   */
+
   return (
     <div className="hocPhan">
       <h3>DANH SÁCH HỌC PHẦN</h3>
-      <ExpandFilter />
+      <ExpandFilter onFilterChange={handleOnFilterChange} />
       <Divider />
       <div className="hocPhan__action">
         <Button danger>Xóa học phần đã chọn</Button>
@@ -127,8 +191,12 @@ const HocPhan = () => {
           onClick: (e) => handleOnRowClick(e, record),
         })}
         columns={columns}
-        dataSource={data}
+        dataSource={dataForTable}
         scroll={{ x: 1300 }}
+        rowSelection={{
+          selectedRowKeys: seletedRowKeys,
+          onChange: handleSelectedRowKeyChange,
+        }}
       />
       <ModalHocPhan
         type="add"
