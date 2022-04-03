@@ -1,21 +1,52 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
+import classNames from "classnames";
 import PropTypes from "prop-types";
 
-import { Button, DatePicker, Form, Input } from "antd";
-import { SearchOutlined, ClearOutlined } from "@ant-design/icons";
+import { Button, Form, Input, Select } from "antd";
+import {
+  SearchOutlined,
+  ArrowDownOutlined,
+  ClearOutlined,
+  ArrowUpOutlined,
+} from "@ant-design/icons";
 
-const { RangePicker } = DatePicker;
 const prefix = "sinh-vien--filter";
+
+const dataMockKhoaVien = [
+  {
+    id: 1,
+    label: "Công nghệ thông tin",
+    value: 2,
+  },
+  {
+    id: 2,
+    label: "May thời trang",
+    value: 3,
+  },
+  {
+    id: 3,
+    label: "Tài ngân",
+    value: 4,
+  },
+  {
+    id: 4,
+    label: "Xây dựng",
+    value: 25,
+  },
+];
 
 const { useForm } = Form;
 
 const ExpandFilter = ({
   onAddAStudentClick,
+  onAddWithFileClick,
   onFilterChange,
   currentFilterData,
   onClear,
 }) => {
   const [form] = useForm();
+
+  const [expanded, setExpanded] = useState(false);
 
   /**
    * function
@@ -45,13 +76,26 @@ const ExpandFilter = ({
    * ==================================
    */
 
+  const renderArrow = useMemo(() => {
+    if (expanded) {
+      return <ArrowDownOutlined onClick={() => setExpanded(false)} />;
+    }
+
+    return <ArrowUpOutlined onClick={() => setExpanded(true)} />;
+  }, [expanded]);
+
   return (
     <Form form={form} onFieldsChange={handleFilterCHange} className={prefix}>
       <div className={`${prefix}__top`}>
         <div className={`${prefix}__top__left`}>
-          <Form.Item name="name">
+          <Form.Item name="ma_khoa_hoc">
             <Input
-              type="number"
+              prefix={<SearchOutlined />}
+              placeholder="Nhập mã khóa học..."
+            />
+          </Form.Item>
+          <Form.Item name="ten_khoa_hoc">
+            <Input
               prefix={<SearchOutlined />}
               placeholder="Nhập tên khóa học..."
             />
@@ -64,8 +108,29 @@ const ExpandFilter = ({
             + Thêm 1 khóa học
           </Button>
 
+          {renderArrow}
           <ClearOutlined onClick={handleClearFilter} />
         </div>
+      </div>
+      <div
+        className={classNames(`${prefix}__expand`, {
+          expanded,
+        })}
+      >
+        <Form.Item name="khoa_vien">
+          <Select
+            options={dataMockKhoaVien}
+            mode="multiple"
+            placeholder="Khoa Viện"
+          ></Select>
+        </Form.Item>
+        <Form.Item name="chuyen_nganh">
+          <Select
+            options={dataMockKhoaVien}
+            mode="multiple"
+            placeholder="Chuyên ngành"
+          ></Select>
+        </Form.Item>
       </div>
     </Form>
   );
@@ -75,6 +140,7 @@ export default ExpandFilter;
 
 ExpandFilter.propTypes = {
   onAddAStudentClick: PropTypes.func,
+  onAddWithFileClick: PropTypes.func,
   onFilterChange: PropTypes.func,
   currentFilterData: PropTypes.objectOf(PropTypes.any).isRequired,
   onClear: PropTypes.func,
@@ -82,6 +148,7 @@ ExpandFilter.propTypes = {
 
 ExpandFilter.defaultProps = {
   onAddAStudentClick: () => {},
+  onAddWithFileClick: () => {},
   onFilterChange: () => {},
   currentFilterData: {},
   onClear: () => {},

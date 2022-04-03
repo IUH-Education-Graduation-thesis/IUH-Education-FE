@@ -29,26 +29,7 @@ const listComponent = [
     key: "6",
     component: KhoaComponent,
   },
-  {
-    key: "7",
-    component: ChuyenNganh,
-  },
-  {
-    key: "8",
-    component: MonHoc,
-  },
-  {
-    key: "9",
-    component: HocKy,
-  },
-  {
-    key: "10",
-    component: HocPhan,
-  },
-  {
-    key: "11",
-    component: LopHocPhan,
-  },
+
   {
     key: "12",
     component: KhoaHocComponent,
@@ -56,14 +37,6 @@ const listComponent = [
   {
     key: "13",
     component: DayNha,
-  },
-  {
-    key: "14",
-    component: PhongHoc,
-  },
-  {
-    key: "15",
-    component: NamHoc,
   },
 ];
 
@@ -108,10 +81,8 @@ const HomePage = () => {
             <SubMenu key="sub2" icon={<LaptopOutlined />} title="Quản lý">
               <Menu.Item key="5">Sinh Viên</Menu.Item>
               <Menu.Item key="6">Khoa</Menu.Item>
-              <Menu.Item key="10">Học Phần</Menu.Item>
               <Menu.Item key="12">Khóa học</Menu.Item>
               <Menu.Item key="13">Dãy nhà</Menu.Item>
-              <Menu.Item key="15">Năm học</Menu.Item>
             </SubMenu>
           </Menu>
         </Sider>

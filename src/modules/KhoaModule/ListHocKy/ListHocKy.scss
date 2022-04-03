@@ -1,0 +1,19 @@
+@import "modules/KhoaModule/ListHocKy/ListHocPhan/ListHocPhan.scss";
+
+.khoa-hoc-ky {
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &__left {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    &__right {
+      display: flex;
+      column-gap: 16px;
+    }
+  }
+}

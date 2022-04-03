@@ -18,6 +18,21 @@ const KhoaHocComponent = () => {
   const [data, setData] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
+  const dataMockKhoaHoc = [...Array(10)?.keys()]?.map((i) => ({
+    id: i,
+    key: i,
+    khoa: i,
+    namBatDau: 2014,
+    namKetThuc: 2015,
+    moTa: `Day la mo ta`,
+    chuyenNganh: {
+      id: i,
+      khoaVien: {
+        id: i,
+      },
+    },
+  }));
+
   const { data: dataGetKhoaHoc, loading: loadingGetKhoaHoc } =
     useQuery(getAllKhoaHocQuery);
   const [actDelete, { data: dataDeleteDayNha, loading: loadingDeleteDayNha }] =
@@ -139,6 +154,15 @@ const KhoaHocComponent = () => {
     setSelectedRowKeys(payload);
   };
 
+  const handleClickTableRow = (e, record) => {
+    const _origin = window?.location?.origin;
+
+    const _khoaVienId = record?.chuyenNganh?.khoaVien?.id;
+    const _chuyenNganhId = record?.chuyenNganh?.id;
+
+    window.location.href = `${_origin}/khoa-vien/${_khoaVienId}/chuyen-nganh/${_chuyenNganhId}/khoa/${record?.id}`;
+  };
+
   /**
    * Render view
    * ===========================================================
@@ -155,11 +179,16 @@ const KhoaHocComponent = () => {
       <Table
         className="ant-table-wrapper"
         columns={columns}
-        dataSource={data}
+        dataSource={dataMockKhoaHoc}
         scroll={{ x: 1500, y: "50vh" }}
         rowSelection={{
           selectedRowKeys,
           onChange: handleSelectedRowChange,
+        }}
+        onRow={(record) => {
+          return {
+            onClick: (e) => handleClickTableRow(e, record),
+          };
         }}
       />
       <ModalAddKhoaHoc

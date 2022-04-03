@@ -18,6 +18,7 @@ import {
   KhoaVienPage,
   ChuyenNganhPage,
   LopPage,
+  KhoaHocPage,
 } from "pages";
 
 import "./index.css";
@@ -49,6 +50,12 @@ ReactDOM.render(
             path="/khoa-vien/:id/chuyen-nganh/:chuyen_nganh_id/lop/:lop_id"
           >
             <LopPage />
+          </Route>
+          <Route
+            exact
+            path="/khoa-vien/:id/chuyen-nganh/:chuyen_nganh_id/khoa/:khoa_id"
+          >
+            <KhoaHocPage />
           </Route>
           <Route path="/login">
             <Login />
