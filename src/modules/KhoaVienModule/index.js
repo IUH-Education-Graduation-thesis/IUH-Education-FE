@@ -8,6 +8,28 @@ import "modules/KhoaVienModule/KhoaVienModule.scss";
 const prefix = "khoa-vien-module";
 
 const KhoaVienModule = () => {
+  const dataForListMonHoc = [...Array(10)?.keys()]?.map((item) => ({
+    id: item,
+    key: item,
+    ten: `ten mon hoc ${item}`,
+    giangViens: [...Array(10)?.keys()]?.map((_item) => ({
+      id: _item,
+      key: _item,
+      hoTenDem: `Ho ten dem ${_item}`,
+      ten: `ten ${_item}`,
+      email: `hoantruong681${_item}@gmail.com`,
+      soDienThoai: `034938077${_item}`,
+      hocHamString: `Thac si`,
+    })),
+  }));
+
+  const dataForListChuyenNganh = [...Array(10)?.keys()]?.map((item) => ({
+    id: item,
+    key: item,
+    ten: `Ten chuyen nganh ${item}`,
+    moTa: `Mo ta ${item}`,
+  }));
+
   return (
     <Row className={prefix}>
       <Col span={4}></Col>
@@ -19,39 +41,21 @@ const KhoaVienModule = () => {
           onBack={() => null}
           title="Chi tiết khoa viện"
         />
-        <Card title="Thôn tin học phần">
+        <Card title="Thôn tin khoa/viện">
           <Row gutter={[24, 16]}>
             <Col span={8}>
               <b>Khoa/Viện:</b> Công nghệ thông tin
             </Col>
             <Col span={8}>
-              <b>Chuyên ngành:</b> Kỹ thuật phần mềm
+              <b>Liên kết:</b> fit.iuh.edu.vn
             </Col>
             <Col span={8}>
-              <b>Môn học:</b> Lập trình hướng đối tượng
-            </Col>
-            <Col span={8}>
-              <b>Năm học:</b> 2018-2019
-            </Col>
-            <Col span={8}>
-              <b>Học kỳ:</b> 2
-            </Col>
-            <Col span={8}>
-              <b>ID:</b> 2
-            </Col>
-            <Col span={8}>
-              <b>Mã học phần:</b> 24123124512
-            </Col>
-            <Col span={8}>
-              <b>Mô tả:</b> Đây là mô tả
-            </Col>
-            <Col span={8}>
-              <b>Bắt buộc:</b> có
+              <b>Mô tả:</b> Đây là mô tả của khoa viện
             </Col>
           </Row>
         </Card>
-        <ListMonHoc />
-        <ListChuyenNganh />
+        <ListMonHoc data={dataForListMonHoc} />
+        <ListChuyenNganh data={dataForListChuyenNganh} />
       </Col>
       <Col span={4}></Col>
     </Row>

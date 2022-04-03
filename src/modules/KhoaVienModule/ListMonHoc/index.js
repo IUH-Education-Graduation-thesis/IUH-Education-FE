@@ -1,10 +1,13 @@
 import { Button, Collapse, Table } from "antd";
-import React from "react";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+
+import ListGiangVien from "./ListGiangVien";
 
 const prefix = "khoa-vien-mon-hoc";
 const { Panel } = Collapse;
 
-const ListMonHoc = () => {
+const ListMonHoc = ({ data }) => {
   const columns = [
     {
       key: "id",
@@ -12,44 +15,9 @@ const ListMonHoc = () => {
       title: "ID",
     },
     {
-      key: "isLichThi",
-      dataIndex: "isLichThi",
-      title: "Lịch thi",
-    },
-    {
-      key: "ngayHocTrongTuan",
-      dataIndex: "ngayHocTrongTuan",
-      title: "Thứ",
-    },
-    {
-      key: "nhomThucHanh",
-      dataIndex: "nhomThucHanh",
-      title: "Nhóm thực hành",
-    },
-    {
-      key: "thoiGianBatDau",
-      dataIndex: "thoiGianBatDau",
-      title: "Thời gian bắt đầu",
-    },
-    {
-      key: "thoiGianKetThuc",
-      dataIndex: "thoiGianKetThuc",
-      title: "Thời gian kết thúc",
-    },
-    {
-      key: "tietHocBatDau",
-      dataIndex: "tietHocBatDau",
-      title: "Tiết học bắt đầu",
-    },
-    {
-      key: "tietHocKetThuc",
-      dataIndex: "tietHocKetThuc",
-      title: "Tiết học kết thúc",
-    },
-    {
-      key: "ghiChu",
-      dataIndex: "ghiChu",
-      title: "Ghi chú",
+      key: "ten",
+      dataIndex: "ten",
+      title: "Tên môn học",
     },
     {
       title: "Action",
@@ -64,6 +32,15 @@ const ListMonHoc = () => {
       ),
     },
   ];
+
+  const [selectedRowKeys, setSelectedRowsKey] = useState([]);
+  /**
+   * Function
+   * ====================================================
+   */
+  const handleSelectedKeyChange = (payload) => {
+    setSelectedRowsKey(payload);
+  };
 
   /**
    * Render view
@@ -89,10 +66,26 @@ const ListMonHoc = () => {
         header={renderHeadOfPanel()}
         key="1"
       >
-        <Table columns={columns} />
+        <Table
+          rowSelection={{
+            selectedRowKeys,
+            onChange: handleSelectedKeyChange,
+          }}
+          expandable={{
+            expandedRowRender: (record) => (
+              <ListGiangVien data={record?.giangViens} />
+            ),
+          }}
+          columns={columns}
+          dataSource={data}
+        />
       </Panel>
     </Collapse>
   );
 };
 
 export default ListMonHoc;
+
+ListMonHoc.propTypes = {
+  data: PropTypes.array.isRequired,
+};

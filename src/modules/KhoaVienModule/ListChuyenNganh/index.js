@@ -1,10 +1,11 @@
 import { Button, Collapse, Table } from "antd";
-import React from "react";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 
 const { Panel } = Collapse;
 const prefix = "khoa-vien-chuyen-nganh";
 
-const ChuyenNganhList = () => {
+const ChuyenNganhList = ({ data }) => {
   const columns = [
     {
       key: "id",
@@ -12,44 +13,14 @@ const ChuyenNganhList = () => {
       title: "ID",
     },
     {
-      key: "isLichThi",
-      dataIndex: "isLichThi",
-      title: "Lịch thi",
+      key: "ten",
+      dataIndex: "ten",
+      title: "Tên chuyên ngành",
     },
     {
-      key: "ngayHocTrongTuan",
-      dataIndex: "ngayHocTrongTuan",
-      title: "Thứ",
-    },
-    {
-      key: "nhomThucHanh",
-      dataIndex: "nhomThucHanh",
-      title: "Nhóm thực hành",
-    },
-    {
-      key: "thoiGianBatDau",
-      dataIndex: "thoiGianBatDau",
-      title: "Thời gian bắt đầu",
-    },
-    {
-      key: "thoiGianKetThuc",
-      dataIndex: "thoiGianKetThuc",
-      title: "Thời gian kết thúc",
-    },
-    {
-      key: "tietHocBatDau",
-      dataIndex: "tietHocBatDau",
-      title: "Tiết học bắt đầu",
-    },
-    {
-      key: "tietHocKetThuc",
-      dataIndex: "tietHocKetThuc",
-      title: "Tiết học kết thúc",
-    },
-    {
-      key: "ghiChu",
-      dataIndex: "ghiChu",
-      title: "Ghi chú",
+      key: "moTa",
+      dataIndex: "moTa",
+      title: "Mô tả",
     },
     {
       title: "Action",
@@ -64,6 +35,17 @@ const ChuyenNganhList = () => {
       ),
     },
   ];
+
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+  /**
+   * Function
+   * ==================================================
+   */
+
+  const handleSelectedRowChange = (payload) => {
+    setSelectedRowKeys(payload);
+  };
 
   /**
    * Render view
@@ -89,10 +71,35 @@ const ChuyenNganhList = () => {
         header={renderHeadOfPanel()}
         key="1"
       >
-        <Table columns={columns} />
+        <Table
+          onRow={(record) => {
+            return {
+              onClick: (e) => {
+                const _origin = window?.location?.origin;
+
+                window.location.href = `${_origin}/lop-hoc-phan/${record?.id}`;
+              },
+            };
+          }}
+          rowSelection={{
+            selectedRowKeys,
+            onChange: handleSelectedRowChange,
+          }}
+          columns={columns}
+          dataSource={data}
+        />
       </Panel>
     </Collapse>
   );
 };
 
 export default ChuyenNganhList;
+
+ChuyenNganhList.propTypes = {
+  data: PropTypes.arrayOf({
+    id: PropTypes.number,
+    key: PropTypes.number,
+    ten: PropTypes.string,
+    moTa: PropTypes.string,
+  }).isRequired,
+};
