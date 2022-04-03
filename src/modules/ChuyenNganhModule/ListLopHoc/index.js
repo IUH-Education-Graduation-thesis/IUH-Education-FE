@@ -1,14 +1,15 @@
-import { Button, Collapse, Table } from "antd";
+import { Button, Collapse, Select, Table } from "antd";
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const { Panel } = Collapse;
-const prefix = "khoa-vien-chuyen-nganh";
+const prefix = "chuyen-nganh-lop-hoc";
+const dataMockForSelect = [
+  { label: "Khoa 11", value: 11 },
+  { label: "Khoa 12", value: 12 },
+];
 
-const ChuyenNganhList = ({ data }) => {
-  const { id: khoaVienId } = useParams();
-
+const ListLopHoc = ({ data }) => {
   const columns = [
     {
       key: "id",
@@ -18,7 +19,7 @@ const ChuyenNganhList = ({ data }) => {
     {
       key: "ten",
       dataIndex: "ten",
-      title: "Tên chuyên ngành",
+      title: "Tên lớp",
     },
     {
       key: "moTa",
@@ -57,10 +58,10 @@ const ChuyenNganhList = ({ data }) => {
   const renderHeadOfPanel = () => {
     return (
       <div className={`${prefix}__header`}>
-        <div className={`${prefix}__header__left`}>Danh sách chuyên ngành</div>
+        <div className={`${prefix}__header__left`}>Danh sách Lớp học</div>
         <div className={`${prefix}__header__right`}>
-          <Button danger>Xóa chuyên ngành đã chọn</Button>
-          <Button type="primary">Thêm chuyên ngành</Button>
+          <Button danger>Xóa lớp học đã chọn</Button>
+          <Button type="primary">Thêm lớp học</Button>
         </div>
       </div>
     );
@@ -74,16 +75,8 @@ const ChuyenNganhList = ({ data }) => {
         header={renderHeadOfPanel()}
         key="1"
       >
+        <Select options={dataMockForSelect} />
         <Table
-          onRow={(record) => {
-            return {
-              onClick: (e) => {
-                const _origin = window?.location?.origin;
-
-                window.location.href = `${_origin}/khoa-vien/${khoaVienId}/chuyen-nganh/${record?.id}`;
-              },
-            };
-          }}
           rowSelection={{
             selectedRowKeys,
             onChange: handleSelectedRowChange,
@@ -96,9 +89,9 @@ const ChuyenNganhList = ({ data }) => {
   );
 };
 
-export default ChuyenNganhList;
+export default ListLopHoc;
 
-ChuyenNganhList.propTypes = {
+ListLopHoc.propTypes = {
   data: PropTypes.arrayOf({
     id: PropTypes.number,
     key: PropTypes.number,

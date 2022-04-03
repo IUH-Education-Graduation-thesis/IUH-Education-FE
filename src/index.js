@@ -1,7 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { ApolloProvider } from "@apollo/client";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Routes,
+} from "react-router-dom";
 
 import client from "core/apollo";
 import reportWebVitals from "./reportWebVitals";
@@ -11,6 +16,8 @@ import {
   HocPhanPage,
   LopHocPhanPage,
   KhoaVienPage,
+  ChuyenNganhPage,
+  LopPage,
 } from "pages";
 
 import "./index.css";
@@ -31,8 +38,17 @@ ReactDOM.render(
           <Route path="/lop-hoc-phan/:id">
             <LopHocPhanPage />
           </Route>
-          <Route path="/khoa-vien/:id">
+          <Route exact path="/khoa-vien/:id">
             <KhoaVienPage />
+          </Route>
+          <Route exact path="/khoa-vien/:id/chuyen-nganh/:chuyen_nganh_id">
+            <ChuyenNganhPage />
+          </Route>
+          <Route
+            exact
+            path="/khoa-vien/:id/chuyen-nganh/:chuyen_nganh_id/lop/:lop_id"
+          >
+            <LopPage />
           </Route>
           <Route path="/login">
             <Login />

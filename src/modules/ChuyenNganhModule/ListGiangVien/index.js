@@ -1,14 +1,11 @@
 import { Button, Collapse, Table } from "antd";
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const { Panel } = Collapse;
 const prefix = "khoa-vien-chuyen-nganh";
 
-const ChuyenNganhList = ({ data }) => {
-  const { id: khoaVienId } = useParams();
-
+const ListGiangVien = ({ data }) => {
   const columns = [
     {
       key: "id",
@@ -16,14 +13,24 @@ const ChuyenNganhList = ({ data }) => {
       title: "ID",
     },
     {
-      key: "ten",
-      dataIndex: "ten",
-      title: "Tên chuyên ngành",
+      key: "hoTenDem",
+      dataIndex: "hoTenDem",
+      title: "Họ tên đệm",
     },
     {
-      key: "moTa",
-      dataIndex: "moTa",
-      title: "Mô tả",
+      key: "ten",
+      dataIndex: "ten",
+      title: "Tên",
+    },
+    {
+      key: "email",
+      dataIndex: "email",
+      title: "Email",
+    },
+    {
+      key: "soDienThoai",
+      dataIndex: "soDienThoai",
+      title: "Số điện thoại",
     },
     {
       title: "Action",
@@ -57,10 +64,10 @@ const ChuyenNganhList = ({ data }) => {
   const renderHeadOfPanel = () => {
     return (
       <div className={`${prefix}__header`}>
-        <div className={`${prefix}__header__left`}>Danh sách chuyên ngành</div>
+        <div className={`${prefix}__header__left`}>Danh sách giảng viên</div>
         <div className={`${prefix}__header__right`}>
-          <Button danger>Xóa chuyên ngành đã chọn</Button>
-          <Button type="primary">Thêm chuyên ngành</Button>
+          <Button danger>Xóa giảng viên đã chọn</Button>
+          <Button type="primary">Thêm giảng viên</Button>
         </div>
       </div>
     );
@@ -75,15 +82,6 @@ const ChuyenNganhList = ({ data }) => {
         key="1"
       >
         <Table
-          onRow={(record) => {
-            return {
-              onClick: (e) => {
-                const _origin = window?.location?.origin;
-
-                window.location.href = `${_origin}/khoa-vien/${khoaVienId}/chuyen-nganh/${record?.id}`;
-              },
-            };
-          }}
           rowSelection={{
             selectedRowKeys,
             onChange: handleSelectedRowChange,
@@ -96,13 +94,15 @@ const ChuyenNganhList = ({ data }) => {
   );
 };
 
-export default ChuyenNganhList;
+export default ListGiangVien;
 
-ChuyenNganhList.propTypes = {
+ListGiangVien.propTypes = {
   data: PropTypes.arrayOf({
     id: PropTypes.number,
     key: PropTypes.number,
+    hoTenDem: PropTypes.string,
     ten: PropTypes.string,
-    moTa: PropTypes.string,
+    email: PropTypes.string,
+    soDienThoai: PropTypes.string,
   }).isRequired,
 };
