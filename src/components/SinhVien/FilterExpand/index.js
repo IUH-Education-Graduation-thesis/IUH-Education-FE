@@ -88,13 +88,13 @@ const ExpandFilter = ({
     <Form form={form} onFieldsChange={handleFilterCHange} className={prefix}>
       <div className={`${prefix}__top`}>
         <div className={`${prefix}__top__left`}>
-          <Form.Item name="ma_sinh_vien">
+          <Form.Item name="maSinhVien">
             <Input
               prefix={<SearchOutlined />}
               placeholder="Nhập mã sinh viên..."
             />
           </Form.Item>
-          <Form.Item name="ten_sinh_vien">
+          <Form.Item name="tenSinhVien">
             <Input
               prefix={<SearchOutlined />}
               placeholder="Nhập tên sinh viên..."
@@ -120,28 +120,28 @@ const ExpandFilter = ({
           expanded,
         })}
       >
-        <Form.Item className={`${prefix}__expand__all`} name="khoa_vien">
+        <Form.Item className={`${prefix}__expand__all`} name="khoaVienIds">
           <Select
             options={dataMockKhoaVien}
             mode="multiple"
             placeholder="Khoa Viện"
           ></Select>
         </Form.Item>
-        <Form.Item name="chuyen_nganh">
+        <Form.Item name="chuyenNganhIds">
           <Select
             options={dataMockKhoaVien}
             mode="multiple"
             placeholder="Chuyên ngành"
           ></Select>
         </Form.Item>
-        <Form.Item name="khoa">
+        <Form.Item name="khoaHocIds">
           <Select
             options={dataMockKhoaVien}
             mode="multiple"
             placeholder="Khóa"
           ></Select>
         </Form.Item>
-        <Form.Item className={`${prefix}__expand__all`} name="lop">
+        <Form.Item className={`${prefix}__expand__all`} name="lopIds">
           <Select
             options={dataMockKhoaVien}
             mode="multiple"

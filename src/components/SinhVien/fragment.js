@@ -20,3 +20,17 @@ ngayVaoDang
 email
 tonGiao
 `;
+
+export const FIND_SINH_VIEN_FRAGMENT = `
+id
+maSinhVien
+maHoSo
+hoTenDem
+ten
+gioiTinh
+ngaySinh
+bacDaoTaoString
+soDienThoai
+email
+loaiHinhDaoTaoString
+`
