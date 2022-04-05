@@ -33,12 +33,7 @@ ReactDOM.render(
           <Route exact path="/">
             <HomePage />
           </Route>
-          <Route exact path="/hoc-phan/:id">
-            <HocPhanPage />
-          </Route>
-          <Route path="/lop-hoc-phan/:id">
-            <LopHocPhanPage />
-          </Route>
+
           <Route exact path="/khoa-vien/:id">
             <KhoaVienPage />
           </Route>
@@ -56,6 +51,18 @@ ReactDOM.render(
             path="/khoa-vien/:id/chuyen-nganh/:chuyen_nganh_id/khoa/:khoa_id"
           >
             <KhoaHocPage />
+          </Route>
+          <Route
+            exact
+            path="/khoa-vien/:id/chuyen-nganh/:chuyen_nganh_id/khoa/:khoa_id/hoc-ky/:hoc_ky_id/hoc-phan/:hoc_phan_id"
+          >
+            <HocPhanPage />
+          </Route>
+          <Route
+            exact
+            path="/khoa-vien/:id/chuyen-nganh/:chuyen_nganh_id/khoa/:khoa_id/hoc-ky/:hoc_ky_id/hoc-phan/:hoc_phan_id/lop-hoc-phan/:lop_hoc_phan_id"
+          >
+            <LopHocPhanPage />
           </Route>
           <Route path="/login">
             <Login />
