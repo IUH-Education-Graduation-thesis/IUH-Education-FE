@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Table, Button, Divider } from "antd";
-import { useQuery, useLazyQuery } from "@apollo/client";
+import React, { useCallback, useEffect, useState } from "react";
+import { Table, Button, Divider, notification } from "antd";
+import { useQuery, useLazyQuery, useMutation } from "@apollo/client";
 import queries from "core/graphql";
 
 import ModalAddSinhVien from "./FormAddStudent";
@@ -10,6 +10,7 @@ import { FIND_SINH_VIEN_FRAGMENT } from "./fragment";
 import { isEmpty } from "lodash";
 
 const findSinhVienQuery = queries.query.findSinhVien(FIND_SINH_VIEN_FRAGMENT);
+const xoaSinhViensQuery = queries.mutation.xoaSinhViens("id");
 
 const SinhVienComponent = () => {
   const [visibleModalEdit, setVisibleModalEdit] = useState(false);
@@ -90,10 +91,12 @@ const SinhVienComponent = () => {
       title: "Thao tác",
       key: "operation",
       fixed: "right",
-      width: 200,
+      width: 250,
 
       render: (e) => (
-        <div>
+        <div
+          style={{ display: "flex", alignItems: "center", columnGap: "10px" }}
+        >
           <Button danger onClick={() => handlerEditButton(e)}>
             Chỉnh sửa
           </Button>
@@ -108,10 +111,15 @@ const SinhVienComponent = () => {
    * =======================================================
    */
 
+  const [actXoaSinhViens, { data: dataXoaSinhViens, loadingXoaSinhViens }] =
+    useMutation(xoaSinhViensQuery);
+
   const [
     actFindSinhVien,
     { data: dataFindSinhVien, loading: loadingFindSinhVien },
-  ] = useLazyQuery(findSinhVienQuery);
+  ] = useLazyQuery(findSinhVienQuery, {
+    fetchPolicy: "network-only",
+  });
 
   const listSinhVien = dataFindSinhVien?.findSinhVien?.data?.[0]?.data?.map(
     (item) => ({
@@ -160,6 +168,80 @@ const SinhVienComponent = () => {
    * Function
    * ==========================================================================
    */
+  const callAPIFindSinhVien = useCallback(() => {
+    const _inputs = {
+      id: !isEmpty(currentFilter?.id) ? currentFilter?.id : undefined,
+      maSinhVien: !isEmpty(currentFilter?.maSinhVien)
+        ? currentFilter?.maSinhVien
+        : undefined,
+      tenSinhVien: !isEmpty(currentFilter?.tenSinhVien)
+        ? currentFilter?.tenSinhVien
+        : undefined,
+      khoaVienIds: !isEmpty(currentFilter?.khoaVienIds)
+        ? currentFilter?.khoaVienIds
+        : undefined,
+      chuyenNganhIds: !isEmpty(currentFilter?.chuyenNganhIds)
+        ? currentFilter?.chuyenNganhIds
+        : undefined,
+      khoaHocIds: !isEmpty(currentFilter?.khoaHocIds)
+        ? currentFilter?.khoaHocIds
+        : undefined,
+      lopIds: !isEmpty(currentFilter?.lopIds)
+        ? currentFilter?.lopIds
+        : undefined,
+    };
+
+    actFindSinhVien({
+      variables: {
+        inputs: {
+          ..._inputs,
+        },
+      },
+    });
+  }, [
+    actFindSinhVien,
+    currentFilter?.chuyenNganhIds,
+    currentFilter?.id,
+    currentFilter?.khoaHocIds,
+    currentFilter?.khoaVienIds,
+    currentFilter?.lopIds,
+    currentFilter?.maSinhVien,
+    currentFilter?.tenSinhVien,
+  ]);
+
+  const handleXoaSinhViens = useCallback(async () => {
+    if (isEmpty(selectedRowKeys)) return;
+
+    const _dataRes = await actXoaSinhViens({
+      variables: {
+        ids: [...selectedRowKeys],
+      },
+    });
+
+    const _errors = _dataRes?.data?.xoaSinhViens?.errors || [];
+    const _data = _dataRes?.data?.xoaSinhViens?.data || [];
+
+    if (!isEmpty(_errors)) {
+      return _errors?.map((item) =>
+        notification["error"]({
+          message: item?.message,
+        })
+      );
+    }
+
+    if (isEmpty(_data)) {
+      notification["error"]({
+        message: "Lỗi kết nối!",
+      });
+      return;
+    }
+
+    callAPIFindSinhVien();
+    setSelectedRowKeys([]);
+    notification["success"]({
+      message: `Xóa thành công ${_data?.length}`,
+    });
+  }, [selectedRowKeys, actXoaSinhViens, callAPIFindSinhVien]);
 
   const handleClearFilter = () => {
     setCurrentFilter({
@@ -207,7 +289,13 @@ const SinhVienComponent = () => {
       <Divider />
 
       <div className="sinhvien__action">
-        <Button danger>Xóa sinh vien đã chọn</Button>
+        <Button
+          onClick={handleXoaSinhViens}
+          disabled={isEmpty(selectedRowKeys)}
+          danger
+        >
+          Xóa sinh vien đã chọn
+        </Button>
       </div>
 
       <Table
