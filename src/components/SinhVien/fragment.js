@@ -20,3 +20,34 @@ ngayVaoDang
 email
 tonGiao
 `;
+
+export const FIND_SINH_VIEN_FRAGMENT = `
+id
+maSinhVien
+maHoSo
+hoTenDem
+ten
+gioiTinh
+ngaySinh
+bacDaoTaoString
+soDienThoai
+email
+loaiHinhDaoTaoString
+`;
+
+export const FIND_KHOA_VIEN = `
+id
+ten
+chuyenNganhs {
+  id
+  ten
+  khoas {
+    id
+    khoa
+    lops {
+      id
+      ten
+    }
+  }
+}
+`;

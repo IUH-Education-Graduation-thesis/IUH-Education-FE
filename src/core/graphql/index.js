@@ -16,6 +16,7 @@ import xoaDayNha from "./xoaDayNha";
 import themKhoaHoc from "./themKhoaHoc";
 import findHocPhan from "./findHocPhan";
 import findKhoaVien from "./findKhoaVien";
+import findSinhVien from "./findSinhVien";
 
 const query = {
   ...GetProfile.query,
@@ -25,6 +26,7 @@ const query = {
   ...findKhoaHocs.query,
   ...findHocPhan.query,
   ...findKhoaVien.query,
+  ...findSinhVien.query,
 };
 
 const mutation = {

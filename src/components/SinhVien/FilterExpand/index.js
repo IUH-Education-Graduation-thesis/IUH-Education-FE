@@ -1,6 +1,8 @@
 import React, { useMemo, useState } from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
+import { useQuery } from "@apollo/client";
+import queries from "core/graphql";
 
 import { Button, Form, Input, Select } from "antd";
 import {
@@ -9,8 +11,10 @@ import {
   ClearOutlined,
   ArrowUpOutlined,
 } from "@ant-design/icons";
+import { FIND_KHOA_VIEN } from "../fragment";
 
 const prefix = "sinh-vien--filter";
+const findKhoaVienQuery = queries.query.findKhoaVien(FIND_KHOA_VIEN);
 
 const dataMockKhoaVien = [
   {
@@ -47,6 +51,60 @@ const ExpandFilter = ({
   const [form] = useForm();
 
   const [expanded, setExpanded] = useState(false);
+
+  const { data: dataFindKhoaVien, loading: loadingFindKhoaVien } =
+    useQuery(findKhoaVienQuery);
+
+  const dataForFilter = dataFindKhoaVien?.findKhoaVien?.data?.[0]?.data;
+
+  const dataForKhoaVien = dataForFilter?.map((item) => ({
+    value: item?.id,
+    label: item?.ten,
+  }));
+
+  const dataForChuyenNganh = dataForFilter
+    ?.filter((item) => currentFilterData?.khoaVienIds?.includes(item?.id))
+    ?.map((item) => {
+      return item?.chuyenNganhs
+        ?.map((_item) => ({
+          value: _item?.id,
+          label: _item?.ten,
+          lops: _item?.khoas
+            ?.map((__item) => __item)
+            ?.flat()
+            ?.map((_i) => _i?.lops?.map((__i) => __i)?.flat())
+            ?.flat(),
+          khoas: _item?.khoas?.map((__item) => __item)?.flat(),
+        }))
+        ?.flat();
+    })
+    ?.flat();
+
+  const dataForKhoa = dataForChuyenNganh
+    ?.filter((item) => currentFilterData?.chuyenNganhIds?.includes(item?.value))
+    ?.map((item) =>
+      item?.khoas
+        ?.map((_item) => ({
+          ..._item,
+          value: _item?.id,
+          label: _item?.khoa,
+        }))
+        ?.flat()
+    )
+    ?.flat();
+
+  const dataForLop = dataForKhoa
+    ?.filter((item) => currentFilterData?.khoaHocIds?.includes(item?.value))
+    ?.map((item) =>
+      item?.lops
+        ?.map((_item) => ({
+          ..._item,
+          value: _item?.id,
+          label: _item?.ten,
+        }))
+        ?.flat()
+    )
+    ?.flat();
 
   /**
    * function
@@ -88,13 +146,13 @@ const ExpandFilter = ({
     <Form form={form} onFieldsChange={handleFilterCHange} className={prefix}>
       <div className={`${prefix}__top`}>
         <div className={`${prefix}__top__left`}>
-          <Form.Item name="ma_sinh_vien">
+          <Form.Item name="maSinhVien">
             <Input
               prefix={<SearchOutlined />}
               placeholder="Nhập mã sinh viên..."
             />
           </Form.Item>
-          <Form.Item name="ten_sinh_vien">
+          <Form.Item name="tenSinhVien">
             <Input
               prefix={<SearchOutlined />}
               placeholder="Nhập tên sinh viên..."
@@ -120,30 +178,30 @@ const ExpandFilter = ({
           expanded,
         })}
       >
-        <Form.Item className={`${prefix}__expand__all`} name="khoa_vien">
+        <Form.Item className={`${prefix}__expand__all`} name="khoaVienIds">
           <Select
-            options={dataMockKhoaVien}
+            options={dataForKhoaVien}
             mode="multiple"
             placeholder="Khoa Viện"
           ></Select>
         </Form.Item>
-        <Form.Item name="chuyen_nganh">
+        <Form.Item name="chuyenNganhIds">
           <Select
-            options={dataMockKhoaVien}
+            options={dataForChuyenNganh}
             mode="multiple"
             placeholder="Chuyên ngành"
           ></Select>
         </Form.Item>
-        <Form.Item name="khoa">
+        <Form.Item name="khoaHocIds">
           <Select
-            options={dataMockKhoaVien}
+            options={dataForKhoa}
             mode="multiple"
             placeholder="Khóa"
           ></Select>
         </Form.Item>
-        <Form.Item className={`${prefix}__expand__all`} name="lop">
+        <Form.Item className={`${prefix}__expand__all`} name="lopIds">
           <Select
-            options={dataMockKhoaVien}
+            options={dataForLop}
             mode="multiple"
             placeholder="Lớp"
           ></Select>
