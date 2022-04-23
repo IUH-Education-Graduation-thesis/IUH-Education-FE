@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Form, Input, DatePicker, Select } from "antd";
+import { useQuery } from "@apollo/client";
+import queries from "core/graphql";
 
 import { isEmpty } from "lodash";
+import { FIND_KHOA_VIEN } from "../fragment";
 const { Option, OptGroup } = Select;
+
+const findKhoaVienQuery = queries?.query.findKhoaVien(FIND_KHOA_VIEN);
 
 const ModalStudent = ({ visible, closeModal, type, data }) => {
   const layout = {
@@ -10,6 +15,27 @@ const ModalStudent = ({ visible, closeModal, type, data }) => {
     wrapperCol: { span: 24 },
   };
   const [form] = Form.useForm();
+
+  /**
+   * API
+   * =======================================================================
+   */
+
+  const { data: dataFindKhoaVien, loading: loadingFindKhoaVien } =
+    useQuery(findKhoaVienQuery);
+
+  const dataForKhoaVienSelect =
+    dataFindKhoaVien?.findKhoaVien?.data?.[0]?.data?.map((item) => ({
+      ...item,
+      value: item?.id,
+      label: item?.ten,
+    }));
+
+  /**
+   * useEffect
+   * ======================================================================
+   */
+
   useEffect(() => {
     if (isEmpty(data)) {
       return;
@@ -38,56 +64,65 @@ const ModalStudent = ({ visible, closeModal, type, data }) => {
       danToc: data.danToc,
       tonGiao: data.tonGiao,
       doiTuong: data.doiTuong,
-    })
-  }, [data])
+    });
+  }, [data]);
 
   const bacDaoTao = [
-    { value: 'Cd', label: 'Cao dang' },
-    { value: 'dh', label: 'Dai hoc' },
-    { value: 'tc', label: 'Trung cap' }
-  ]
+    { value: "Cd", label: "Cao dang" },
+    { value: "dh", label: "Dai hoc" },
+    { value: "tc", label: "Trung cap" },
+  ];
   const khoaHoc = [
-    { value: 'k14', label: '2018-2022' },
-    { value: 'k13', label: '2019-2022' },
-
-  ]
+    { value: "k14", label: "2018-2022" },
+    { value: "k13", label: "2019-2022" },
+  ];
   function handleChange(value) {
     console.log(`selected ${value}`);
   }
   const renderForm = () => {
     return (
       <Form {...layout} form={form} name="nest-messages">
-        <Form.Item
-          name={"ID"}
-          label="ID"
-        >
+        <Form.Item name={"ID"} label="ID">
           <Input disabled />
         </Form.Item>
+        <Form.Item name={"MSSV"} label="MSSV">
+          <Input disabled placeholder="Mã số sinh viên..." />
+        </Form.Item>
         <Form.Item
-          name={"MSSV"}
-          label="MSSV"
+          rules={[
+            {
+              required: true,
+              message: "Họ tên đệm không được bỏ trống",
+            },
+          ]}
+          name={"hoTenDem"}
+          label="Họ tên đệm"
         >
           <Input />
         </Form.Item>
         <Form.Item
-          name={"name"}
-          label="Họ tên"
+          rules={[
+            {
+              required: true,
+              message: "Tên không được bỏ trống!",
+            },
+          ]}
+          name={"ten"}
+          label="Tên"
         >
           <Input />
         </Form.Item>
-        <Form.Item
-          name={"sdt"}
-          label="Số điện thoại"
-        >
+        <Form.Item name={"sdt"} label="Số điện thoại">
           <Input />
         </Form.Item>
-        <Form.Item
-          name={"cmnd"}
-          label="CMND"
-        >
+        <Form.Item name={"cmnd"} label="CMND">
           <Input />
         </Form.Item>
-        <Select style={{ width: 200, margin: 10, marginLeft: 40 }} placeholder='Chuyên ngành' onChange={handleChange}>
+        <Select
+          style={{ width: 200, margin: 10, marginLeft: 40 }}
+          placeholder="Chuyên ngành"
+          onChange={handleChange}
+        >
           <OptGroup label="CNTT">
             <Option value="jack">Ky thuat phan mem</Option>
             <Option value="lucy">Khoa hoc du lieu</Option>
@@ -96,62 +131,85 @@ const ModalStudent = ({ visible, closeModal, type, data }) => {
             <Option value="tcnh">Tai chinh ngan hang</Option>
           </OptGroup>
         </Select>
-        <Select options={bacDaoTao} style={{ width: 290, margin: 10, marginLeft: 40 }} placeholder='Bậc đào tạo' onChange={handleChange} />
-        <Select options={khoaHoc} style={{ width: 290, margin: 10, marginLeft: 40 }} placeholder='Khóa học' onChange={handleChange} />
-        <Form.Item
-          name={"email1"}
-          label="Email"
-        >
+        <Select
+          options={bacDaoTao}
+          style={{ width: 290, margin: 10, marginLeft: 40 }}
+          placeholder="Bậc đào tạo"
+          onChange={handleChange}
+        />
+        <Select
+          options={khoaHoc}
+          style={{ width: 290, margin: 10, marginLeft: 40 }}
+          placeholder="Khóa học"
+          onChange={handleChange}
+        />
+        <Form.Item name={"email1"} label="Email">
           <Input />
         </Form.Item>
-        <Form.Item
-          name={"mahs"}
-          label="Mã hồ sơ"
-        >
+        <Form.Item name={"mahs"} label="Mã hồ sơ">
           <Input />
         </Form.Item>
         <Form.Item label="Ngày sinh">
-          <DatePicker placeholder='Ngày sinh' />
+          <DatePicker placeholder="Ngày sinh" />
         </Form.Item>
         <Form.Item label="Ngày vào trường">
-          <DatePicker placeholder='Ngày vào trường' />
+          <DatePicker placeholder="Ngày vào trường" />
         </Form.Item>
-        <Form.Item label="Ngày vào đoàn" >
-          <DatePicker placeholder='Ngày vào đoàn' />
+        <Form.Item label="Ngày vào đoàn">
+          <DatePicker placeholder="Ngày vào đoàn" />
         </Form.Item>
-        <Form.Item label="Ngày vào Đảng" >
-          <DatePicker placeholder='Ngày vào Đảng' />
+        <Form.Item label="Ngày vào Đảng">
+          <DatePicker placeholder="Ngày vào Đảng" />
         </Form.Item>
-        <Form.Item
-          name={"maKhuVuc"}
-          label="Mã khu vực"
-        >
+        <Form.Item name={"maKhuVuc"} label="Mã khu vực">
           <Input />
         </Form.Item>
-        <Form.Item
-          name={"diaChilh"}
-          label="Địa chỉ liên hệ"
-        >
+        <Form.Item name={"diaChilh"} label="Địa chỉ liên hệ">
           <Input />
         </Form.Item>
-        <Form.Item
-          name={"hoKhau"}
-          label="Hộ khẩu thường trú"
-        >
+        <Form.Item name={"hoKhau"} label="Hộ khẩu thường trú">
           <Input />
         </Form.Item>
-        <Select options={khoaHoc} style={{ width: 290, margin: 10, marginLeft: 160 }} placeholder='Trang thái học tập' onChange={handleChange} />
-        <Select options={khoaHoc} style={{ width: 290, margin: 10, marginLeft: 160 }} placeholder='Loại hình đào tạo' onChange={handleChange} />
-        <Select options={khoaHoc} style={{ width: 290, margin: 10, marginLeft: 160 }} placeholder='Dân tộc' onChange={handleChange} />
-        <Select options={khoaHoc} style={{ width: 290, margin: 10, marginLeft: 160 }} placeholder='Tôn giáo' onChange={handleChange} />
-        <Select options={khoaHoc} style={{ width: 290, margin: 10, marginLeft: 160 }} placeholder='Đối tượng' onChange={handleChange} />
+        <Form.Item label="Khoa viện" name="khoaViens">
+          <Select options={dataForKhoaVienSelect} />
+        </Form.Item>
+        <Select
+          options={khoaHoc}
+          style={{ width: 290, margin: 10, marginLeft: 160 }}
+          placeholder="Trang thái học tập"
+          onChange={handleChange}
+        />
+        <Select
+          options={khoaHoc}
+          style={{ width: 290, margin: 10, marginLeft: 160 }}
+          placeholder="Loại hình đào tạo"
+          onChange={handleChange}
+        />
+        <Select
+          options={khoaHoc}
+          style={{ width: 290, margin: 10, marginLeft: 160 }}
+          placeholder="Dân tộc"
+          onChange={handleChange}
+        />
+        <Select
+          options={khoaHoc}
+          style={{ width: 290, margin: 10, marginLeft: 160 }}
+          placeholder="Tôn giáo"
+          onChange={handleChange}
+        />
+        <Select
+          options={khoaHoc}
+          style={{ width: 290, margin: 10, marginLeft: 160 }}
+          placeholder="Đối tượng"
+          onChange={handleChange}
+        />
       </Form>
     );
   };
 
   return (
     <Modal
-      title={type === 'add' ? 'Thêm sinh viên' : 'Sửa sinh viên'}
+      title={type === "add" ? "Thêm sinh viên" : "Sửa sinh viên"}
       centered
       visible={visible}
       onCancel={() => closeModal(false)}

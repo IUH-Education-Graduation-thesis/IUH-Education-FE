@@ -33,4 +33,21 @@ bacDaoTaoString
 soDienThoai
 email
 loaiHinhDaoTaoString
-`
+`;
+
+export const FIND_KHOA_VIEN = `
+id
+ten
+chuyenNganhs {
+  id
+  ten
+  khoas {
+    id
+    khoa
+    lops {
+      id
+      ten
+    }
+  }
+}
+`;

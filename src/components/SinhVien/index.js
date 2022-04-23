@@ -37,7 +37,7 @@ const SinhVienComponent = () => {
     },
     {
       title: "MSSV",
-      width: 100,
+      width: 150,
       dataIndex: "maSinhVien",
       key: "maSinhVien",
       fixed: "left",
@@ -54,6 +54,7 @@ const SinhVienComponent = () => {
       width: 250,
       dataIndex: "ten",
       key: "ten",
+      fixed: "left",
     },
     {
       title: "Giới tính",
@@ -160,6 +161,18 @@ const SinhVienComponent = () => {
    * ==========================================================================
    */
 
+  const handleClearFilter = () => {
+    setCurrentFilter({
+      maSinhVien: "",
+      tenSinhVien: "",
+      id: "",
+      khoaVienIds: [],
+      chuyenNganhIds: [],
+      khoaHocIds: [],
+      lopIds: [],
+    });
+  };
+
   const handlerEditButton = (sinhVien) => {
     setSinhVien(sinhVien);
     setVisibleModalEdit(true);
@@ -188,6 +201,7 @@ const SinhVienComponent = () => {
         currentFilterData={currentFilter}
         onFilterChange={handleFilterChange}
         onAddAStudentClick={() => setVisibleModalAdd(true)}
+        onClear={handleClearFilter}
       />
 
       <Divider />
