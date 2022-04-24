@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Button, Table, Modal, Divider } from "antd";
 import queries from "core/graphql";
 import { useLazyQuery } from "@apollo/client";
@@ -54,9 +54,9 @@ const KhoaComponent = () => {
       title: "Thao tác",
       key: "thaoTac",
       width: 300,
-      render: (e) => (
+      render: (_, record) => (
         <div>
-          <Button danger onClick={() => handlerEditButton(e)}>
+          <Button danger onClick={(e) => handlerEditButton(e, record)}>
             Chỉnh sửa
           </Button>
           <Button style={{ marginLeft: 10 }}>Xóa</Button>
@@ -86,8 +86,25 @@ const KhoaComponent = () => {
    * Function
    * =============================================================
    */
+  const callAPIFindKhoaVien = useCallback(() => {
+    const _inputs = checkTrulyObject(currentConfig);
 
-  const handlerEditButton = (khoa) => {
+    actFindKhoaVien({
+      variables: {
+        inputs: {
+          ..._inputs,
+        },
+      },
+    });
+  }, [actFindKhoaVien, currentConfig]);
+
+  const handleWhenAddKhoaVienSuccess = (payload) => {
+    callAPIFindKhoaVien();
+    setVisibleModal(false);
+  };
+
+  const handlerEditButton = (e, khoa) => {
+    e.stopPropagation();
     setKhoa(khoa);
     setVisibleModal1(true);
   };
@@ -166,6 +183,7 @@ const KhoaComponent = () => {
         type="add"
         visible={visibleModal}
         closeModal={setVisibleModal}
+        onCallAPISuccess={handleWhenAddKhoaVienSuccess}
       />
       <ModalAddKhoa
         type="sua"
