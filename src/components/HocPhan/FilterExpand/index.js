@@ -1,24 +1,23 @@
-import React, { useMemo, useState } from "react";
-import classNames from "classnames";
-import PropTypes from "prop-types";
-import { useQuery } from "@apollo/client";
-import moment from "moment";
+import React, { useMemo, useState } from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import { useQuery } from '@apollo/client';
+import moment from 'moment';
 
-import { Button, Form, Input, Select } from "antd";
+import { Button, Form, Input, Select } from 'antd';
 import {
   SearchOutlined,
   ArrowDownOutlined,
   ClearOutlined,
   ArrowUpOutlined,
-} from "@ant-design/icons";
-import queries from "core/graphql";
-import { FIND_KHOA_VIEN_FRAGMENT, FIND_NAM_HOC_FRAGMENT } from "../fragment";
+} from '@ant-design/icons';
+import queries from 'core/graphql';
+import { FIND_KHOA_VIEN_FRAGMENT, FIND_NAM_HOC_FRAGMENT } from '../fragment';
 
 const findKhoaVienQuery = queries.query.findKhoaVien(FIND_KHOA_VIEN_FRAGMENT);
 const findNamHocQuery = queries.query.findNamHoc(FIND_NAM_HOC_FRAGMENT);
 
-const prefix = "sinh-vien--filter";
-
+const prefix = 'sinh-vien--filter';
 
 const { useForm } = Form;
 
@@ -53,8 +52,8 @@ const ExpandFilter = ({
   }));
 
   const formatYear = (fromDate, toDate) => {
-    const _formYear = moment(fromDate).format("YYYY");
-    const _toYear = moment(toDate).format("YYYY");
+    const _formYear = moment(fromDate).format('YYYY');
+    const _toYear = moment(toDate).format('YYYY');
 
     return `${_formYear} - ${_toYear}`;
   };
@@ -72,7 +71,7 @@ const ExpandFilter = ({
    */
 
   const handleDataForMonHoc = () => {
-    const _listSelectedKhoaVien = form?.getFieldValue("khoaVienIds");
+    const _listSelectedKhoaVien = form?.getFieldValue('khoaVienIds');
 
     const _listDataForMonHoc = _listSelectedKhoaVien?.map((item) => {
       return listKhoaVien
@@ -92,7 +91,7 @@ const ExpandFilter = ({
   };
 
   const handleDataForHocKy = () => {
-    const _listSelectedNamHoc = form?.getFieldValue("namHocIds");
+    const _listSelectedNamHoc = form?.getFieldValue('namHocIds');
 
     const _listDataForHocKy = _listSelectedNamHoc?.map((item) => {
       return listNamHoc
@@ -165,11 +164,11 @@ const ExpandFilter = ({
 
         <div className={`${prefix}__top__right`}>
           <Button onClick={onAddAStudentClick} type="primary">
-            {" "}
+            {' '}
             + Thêm 1 Học phần
           </Button>
           <Button onClick={onAddWithFileClick} type="ghost">
-            {" "}
+            {' '}
             + Thêm bằng file excel
           </Button>
           {renderArrow}

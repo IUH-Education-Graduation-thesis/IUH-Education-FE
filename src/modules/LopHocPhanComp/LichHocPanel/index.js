@@ -1,60 +1,60 @@
-import { Button, Collapse, Table } from "antd";
-import React from "react";
+import { Button, Collapse, Table } from 'antd';
+import React from 'react';
 
-const prefix = "list-lich-hoc-panel";
+const prefix = 'list-lich-hoc-panel';
 const { Panel } = Collapse;
 
 const ListLichHocPanel = () => {
   const columns = [
     {
-      key: "id",
-      dataIndex: "id",
-      title: "ID",
+      key: 'id',
+      dataIndex: 'id',
+      title: 'ID',
     },
     {
-      key: "isLichThi",
-      dataIndex: "isLichThi",
-      title: "Lịch thi",
+      key: 'isLichThi',
+      dataIndex: 'isLichThi',
+      title: 'Lịch thi',
     },
     {
-      key: "ngayHocTrongTuan",
-      dataIndex: "ngayHocTrongTuan",
-      title: "Thứ",
+      key: 'ngayHocTrongTuan',
+      dataIndex: 'ngayHocTrongTuan',
+      title: 'Thứ',
     },
     {
-      key: "nhomThucHanh",
-      dataIndex: "nhomThucHanh",
-      title: "Nhóm thực hành",
+      key: 'nhomThucHanh',
+      dataIndex: 'nhomThucHanh',
+      title: 'Nhóm thực hành',
     },
     {
-      key: "thoiGianBatDau",
-      dataIndex: "thoiGianBatDau",
-      title: "Thời gian bắt đầu",
+      key: 'thoiGianBatDau',
+      dataIndex: 'thoiGianBatDau',
+      title: 'Thời gian bắt đầu',
     },
     {
-      key: "thoiGianKetThuc",
-      dataIndex: "thoiGianKetThuc",
-      title: "Thời gian kết thúc",
+      key: 'thoiGianKetThuc',
+      dataIndex: 'thoiGianKetThuc',
+      title: 'Thời gian kết thúc',
     },
     {
-      key: "tietHocBatDau",
-      dataIndex: "tietHocBatDau",
-      title: "Tiết học bắt đầu",
+      key: 'tietHocBatDau',
+      dataIndex: 'tietHocBatDau',
+      title: 'Tiết học bắt đầu',
     },
     {
-      key: "tietHocKetThuc",
-      dataIndex: "tietHocKetThuc",
-      title: "Tiết học kết thúc",
+      key: 'tietHocKetThuc',
+      dataIndex: 'tietHocKetThuc',
+      title: 'Tiết học kết thúc',
     },
     {
-      key: "ghiChu",
-      dataIndex: "ghiChu",
-      title: "Ghi chú",
+      key: 'ghiChu',
+      dataIndex: 'ghiChu',
+      title: 'Ghi chú',
     },
     {
-      title: "Action",
-      key: "operation",
-      fixed: "right",
+      title: 'Action',
+      key: 'operation',
+      fixed: 'right',
       width: 200,
       render: (e) => (
         <div>

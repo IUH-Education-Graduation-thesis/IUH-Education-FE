@@ -1,4 +1,4 @@
-@import "./responsive.scss";
+@import './responsive.scss';
 
 // Box Shadow
 @mixin box-shadow($shadow...) {
@@ -282,19 +282,19 @@ display: flex;         // NEW, Spec - Firefox, Chrome, Opera
 }
 
 // Positioning helpers
-@mixin absolute($args: "") {
+@mixin absolute($args: '') {
   @include position(absolute, $args);
 }
 
-@mixin fixed($args: "") {
+@mixin fixed($args: '') {
   @include position(fixed, $args);
 }
 
-@mixin relative($args: "") {
+@mixin relative($args: '') {
   @include position(relative, $args);
 }
 
-@mixin sticky($args: "") {
+@mixin sticky($args: '') {
   @include position(sticky, $args);
 }
 
@@ -333,11 +333,11 @@ display: flex;         // NEW, Spec - Firefox, Chrome, Opera
 
   .ant-form-item-label {
     label::before {
-      content: "";
+      content: '';
     }
 
     label::after {
-      content: "*";
+      content: '*';
       color: var(--flamingo);
     }
   }

@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import { HocPhanModule } from "modules";
+import { HocPhanModule } from 'modules';
 
 const HocPhanPage = () => {
   return <HocPhanModule />;

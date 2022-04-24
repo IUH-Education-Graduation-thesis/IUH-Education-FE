@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo } from "react";
-import { Modal, Form, Input, Select } from "antd";
-import PropTypes from "prop-types";
+import React, { useEffect, useMemo } from 'react';
+import { Modal, Form, Input, Select } from 'antd';
+import PropTypes from 'prop-types';
 
-import { isEmpty } from "lodash";
+import { isEmpty } from 'lodash';
 
 const ModalChuyenNganh = ({ visible, closeModal, type, data, isKhoaMode }) => {
   const layout = {
@@ -26,8 +26,8 @@ const ModalChuyenNganh = ({ visible, closeModal, type, data, isKhoaMode }) => {
     console.log(`selected ${value}`);
   }
   const khoa = [
-    { value: "cnnt", label: "CNTT" },
-    { value: "taiNgan", label: "Tài ngân" },
+    { value: 'cnnt', label: 'CNTT' },
+    { value: 'taiNgan', label: 'Tài ngân' },
   ];
 
   const renderInputKhoaVien = useMemo(() => {
@@ -48,13 +48,13 @@ const ModalChuyenNganh = ({ visible, closeModal, type, data, isKhoaMode }) => {
   const renderForm = () => {
     return (
       <Form {...layout} form={form} name="nest-messages">
-        <Form.Item name={"maChuyenNganh"} label="Mã chuyên ngành">
+        <Form.Item name={'maChuyenNganh'} label="Mã chuyên ngành">
           <Input disabled />
         </Form.Item>
-        <Form.Item name={"tenChuyenNganh"} label="Tên chuyên ngành">
+        <Form.Item name={'tenChuyenNganh'} label="Tên chuyên ngành">
           <Input />
         </Form.Item>
-        <Form.Item name={"moTa"} label="Mô tả">
+        <Form.Item name={'moTa'} label="Mô tả">
           <Input />
         </Form.Item>
         {renderInputKhoaVien}
@@ -64,7 +64,7 @@ const ModalChuyenNganh = ({ visible, closeModal, type, data, isKhoaMode }) => {
 
   return (
     <Modal
-      title={type === "add" ? "Thêm chuyên ngành" : "Sửa chuyên ngành"}
+      title={type === 'add' ? 'Thêm chuyên ngành' : 'Sửa chuyên ngành'}
       centered
       visible={visible}
       onCancel={() => closeModal(false)}
@@ -80,7 +80,7 @@ export default ModalChuyenNganh;
 ModalChuyenNganh.propTypes = {
   visible: PropTypes.bool,
   closeModal: PropTypes.func,
-  type: PropTypes.oneOf(["add", "edit"]).isRequired,
+  type: PropTypes.oneOf(['add', 'edit']).isRequired,
   data: PropTypes.objectOf(PropTypes.any),
   isKhoaVienMode: PropTypes.bool,
 };

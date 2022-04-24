@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
-import { Modal, Form, Input } from "antd";
+import React, { useEffect } from 'react';
+import { Modal, Form, Input } from 'antd';
 
-import { isEmpty } from "lodash";
+import { isEmpty } from 'lodash';
 
 const ModalKhoa = ({ visible, closeModal, type, data }) => {
   const layout = {
@@ -23,16 +23,16 @@ const ModalKhoa = ({ visible, closeModal, type, data }) => {
   const renderForm = () => {
     return (
       <Form {...layout} form={form} name="nest-messages">
-        <Form.Item name={"id"} label="Mã khoa">
+        <Form.Item name={'id'} label="Mã khoa">
           <Input disabled />
         </Form.Item>
-        <Form.Item name={"ten"} label="Tên khoa">
+        <Form.Item name={'ten'} label="Tên khoa">
           <Input />
         </Form.Item>
-        <Form.Item name={"moTa"} label="Mô tả">
+        <Form.Item name={'moTa'} label="Mô tả">
           <Input />
         </Form.Item>
-        <Form.Item name={"link"} label="Link">
+        <Form.Item name={'link'} label="Link">
           <Input />
         </Form.Item>
       </Form>
@@ -41,7 +41,7 @@ const ModalKhoa = ({ visible, closeModal, type, data }) => {
 
   return (
     <Modal
-      title={type === "add" ? "Thêm khoa" : "Sửa khoa"}
+      title={type === 'add' ? 'Thêm khoa' : 'Sửa khoa'}
       centered
       visible={visible}
       onCancel={() => closeModal(false)}

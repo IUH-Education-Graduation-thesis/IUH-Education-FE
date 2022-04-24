@@ -1,41 +1,41 @@
-import { Button, Divider, Table } from "antd";
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import { Button, Divider, Table } from 'antd';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
-const prefix = "day-nha-expand";
+const prefix = 'day-nha-expand';
 
 const TableExpand = ({ data, onAddClassRoom, onDeleteMultipleClassroom }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
       width: 100,
     },
     {
-      title: "Tên phòng học",
-      dataIndex: "tenPhongHoc",
-      key: "tenPhongHoc",
+      title: 'Tên phòng học',
+      dataIndex: 'tenPhongHoc',
+      key: 'tenPhongHoc',
       width: 400,
     },
 
     {
-      title: "Sức chứa",
-      dataIndex: "sucChua",
-      key: "sucChua",
+      title: 'Sức chứa',
+      dataIndex: 'sucChua',
+      key: 'sucChua',
       width: 400,
     },
     {
-      title: "Mô tả",
-      dataIndex: "moTa",
-      key: "moTa",
+      title: 'Mô tả',
+      dataIndex: 'moTa',
+      key: 'moTa',
       width: 300,
     },
     {
-      title: "Thao tác",
-      key: "thaoTac",
+      title: 'Thao tác',
+      key: 'thaoTac',
       width: 300,
       render: (e) => (
         <div>

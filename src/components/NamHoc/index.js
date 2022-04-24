@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { Button, Divider, notification, Table } from "antd";
+import React, { useEffect, useState } from 'react';
+import { Button, Divider, notification, Table } from 'antd';
 
-import queries from "core/graphql";
-import { useMutation, useQuery } from "@apollo/client";
-import { get, isEmpty } from "lodash";
+import queries from 'core/graphql';
+import { useMutation, useQuery } from '@apollo/client';
+import { get, isEmpty } from 'lodash';
 
-import "./NamHoc.scss";
-import { GET_NAMHOC_FRAGMENT } from "./fragment";
-import ModalNamHoc from "./FormAddNamHoc";
-import TableExpand from "./TableExpand";
-import ExpandFilter from "./FilterExpand";
+import './NamHoc.scss';
+import { GET_NAMHOC_FRAGMENT } from './fragment';
+import ModalNamHoc from './FormAddNamHoc';
+import TableExpand from './TableExpand';
+import ExpandFilter from './FilterExpand';
 
 // Call API
 const getAllNamHocQuery = queries.query.findNamHoc(GET_NAMHOC_FRAGMENT);
@@ -34,32 +34,32 @@ const NamHoc = () => {
 
   const columns = [
     {
-      title: "Mã năm học",
-      dataIndex: "id",
-      key: "id",
+      title: 'Mã năm học',
+      dataIndex: 'id',
+      key: 'id',
       width: 130,
     },
     {
-      title: "Ngày bắt đầu",
-      dataIndex: "ngayBatDau",
-      key: "ngayBatDau",
+      title: 'Ngày bắt đầu',
+      dataIndex: 'ngayBatDau',
+      key: 'ngayBatDau',
       width: 300,
     },
     {
-      title: "Ngày kết thúc",
-      dataIndex: "ngayKetThuc",
-      key: "ngayKetThuc",
+      title: 'Ngày kết thúc',
+      dataIndex: 'ngayKetThuc',
+      key: 'ngayKetThuc',
       width: 300,
     },
     {
-      title: "Mô tả",
-      dataIndex: "moTa",
-      key: "moTa",
+      title: 'Mô tả',
+      dataIndex: 'moTa',
+      key: 'moTa',
       width: 300,
     },
     {
-      title: "Thao tác",
-      key: "thaoTac",
+      title: 'Thao tác',
+      key: 'thaoTac',
       width: 400,
       render: (e) => (
         <div>
@@ -95,20 +95,20 @@ const NamHoc = () => {
       },
     });
 
-    const dataReturn = get(_dataReutrn, "data", {});
+    const dataReturn = get(_dataReutrn, 'data', {});
 
-    const errors = get(dataReturn, "xoaNamHoc.errors", []);
+    const errors = get(dataReturn, 'xoaNamHoc.errors', []);
     if (!isEmpty(errors)) {
       errors?.map((item) =>
-        notification["error"]({
+        notification['error']({
           message: item?.message,
         })
       );
       return;
     }
 
-    const status = get(dataReturn, "xoaNamHoc.status", "");
-    if (status === "OK") {
+    const status = get(dataReturn, 'xoaNamHoc.status', '');
+    if (status === 'OK') {
       const _index = data?.findIndex((item) => item?.id === e?.id);
 
       let _listNamHoc = data;
@@ -119,13 +119,13 @@ const NamHoc = () => {
 
       setData(_listNamHoc);
       notification.open({
-        message: "Thông báo",
+        message: 'Thông báo',
         description: status,
       });
       return;
     }
 
-    console.log("Loi ket noi");
+    console.log('Loi ket noi');
   };
 
   const handleCreateComplete = (e) => {
@@ -157,7 +157,7 @@ const NamHoc = () => {
         className="ant-table-wrapper"
         columns={columns}
         dataSource={data}
-        scroll={{ x: 1500, y: "50vh" }}
+        scroll={{ x: 1500, y: '50vh' }}
         rowSelection={{
           selectedRowKeys,
           onChange: handleSelectedRowChange,

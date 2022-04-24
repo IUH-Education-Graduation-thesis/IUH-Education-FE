@@ -1,9 +1,9 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export default {
-    mutation: {
-        xoaPhongHoc: (fragment) => gql`
+  mutation: {
+    xoaPhongHoc: (fragment) => gql`
         mutation DELETE_PHONGHOC($phongHocId: ID!) {
             xoaPhongHoc(phongHocId: $phongHocId) {
                 status
@@ -17,6 +17,6 @@ export default {
                 }
               }
         }
-        `
-    }
-}
+        `,
+  },
+};

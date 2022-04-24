@@ -1,11 +1,11 @@
-import { Card, Col, PageHeader, Row } from "antd";
-import React from "react";
+import { Card, Col, PageHeader, Row } from 'antd';
+import React from 'react';
 
-import ListMonHoc from "./ListMonHoc";
-import ListChuyenNganh from "./ListChuyenNganh";
-import "modules/KhoaVienModule/KhoaVienModule.scss";
+import ListMonHoc from './ListMonHoc';
+import ListChuyenNganh from './ListChuyenNganh';
+import 'modules/KhoaVienModule/KhoaVienModule.scss';
 
-const prefix = "khoa-vien-module";
+const prefix = 'khoa-vien-module';
 
 const KhoaVienModule = () => {
   const dataForListMonHoc = [...Array(10)?.keys()]?.map((item) => ({
@@ -36,7 +36,7 @@ const KhoaVienModule = () => {
       <Col span={16}>
         <PageHeader
           style={{
-            border: "1px solid rgb(235, 237, 240)",
+            border: '1px solid rgb(235, 237, 240)',
           }}
           onBack={() => null}
           title="Chi tiết khoa viện"

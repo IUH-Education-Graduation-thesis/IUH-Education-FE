@@ -1,12 +1,12 @@
-import React from "react";
+import React from 'react';
 
-import { Row, Col, PageHeader, Card } from "antd";
-import ListGiangVien from "./ListGiangVien";
-import ListLopHoc from "./ListLopHoc";
+import { Row, Col, PageHeader, Card } from 'antd';
+import ListGiangVien from './ListGiangVien';
+import ListLopHoc from './ListLopHoc';
 
-import "modules/ChuyenNganhModule/ChuyenNganhModule.scss";
+import 'modules/ChuyenNganhModule/ChuyenNganhModule.scss';
 
-const prefix = "chuyen-nganh";
+const prefix = 'chuyen-nganh';
 
 const mockDataForListGiangVien = [...Array(10)?.keys()]?.map((item) => ({
   id: item,
@@ -31,7 +31,7 @@ const ChuyenNganhModule = () => {
       <Col span={16}>
         <PageHeader
           style={{
-            border: "1px solid rgb(235, 237, 240)",
+            border: '1px solid rgb(235, 237, 240)',
           }}
           onBack={() => null}
           title="Chi tiết Chuyên ngành"

@@ -1,10 +1,10 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import { Button, Form, Input } from "antd";
-import { SearchOutlined, ClearOutlined } from "@ant-design/icons";
+import { Button, Form, Input } from 'antd';
+import { SearchOutlined, ClearOutlined } from '@ant-design/icons';
 
-const prefix = "sinh-vien--filter";
+const prefix = 'sinh-vien--filter';
 
 const { useForm } = Form;
 
@@ -64,7 +64,7 @@ const ExpandFilter = ({
 
         <div className={`${prefix}__top__right`}>
           <Button onClick={onAddAStudentClick} type="primary">
-            {" "}
+            {' '}
             + Thêm 1 Dãy nhà
           </Button>
 

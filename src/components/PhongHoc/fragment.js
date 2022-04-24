@@ -3,4 +3,4 @@ id
 tenPhongHoc
 sucChua
 moTa
-`
+`;

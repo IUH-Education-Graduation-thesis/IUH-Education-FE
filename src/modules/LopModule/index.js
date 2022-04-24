@@ -1,16 +1,16 @@
-import { Card, Col, PageHeader, Row } from "antd";
-import React from "react";
+import { Card, Col, PageHeader, Row } from 'antd';
+import React from 'react';
 
-const prefix = "chi-tiet-lop";
+const prefix = 'chi-tiet-lop';
 
 const LopModule = () => {
   return (
     <Row className={prefix}>
-      <Col span={4}></Col>
+      <Col span={4} />
       <Col span={16}>
         <PageHeader
           style={{
-            border: "1px solid rgb(235, 237, 240)",
+            border: '1px solid rgb(235, 237, 240)',
           }}
           onBack={() => null}
           title="Chi tiết lớp"
@@ -35,7 +35,7 @@ const LopModule = () => {
           </Row>
         </Card>
       </Col>
-      <Col span={4}></Col>
+      <Col span={4} />
     </Row>
   );
 };

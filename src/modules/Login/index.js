@@ -1,15 +1,15 @@
-import React from "react";
-import { Form, Input, Button, notification } from "antd";
-import { useLazyQuery, useMutation } from "@apollo/client";
-import { get, isEmpty } from "lodash";
+import React from 'react';
+import { Form, Input, Button, notification } from 'antd';
+import { useLazyQuery, useMutation } from '@apollo/client';
+import { get, isEmpty } from 'lodash';
 
-import LogoIUH from "assets/images/Logo_IUH.png";
-import queries from "core/graphql";
-import { LOGIN_FRAGMENT } from "./fragment";
-import { clientCache } from "helpers";
-import "./login.scss";
+import LogoIUH from 'assets/images/Logo_IUH.png';
+import queries from 'core/graphql';
+import { LOGIN_FRAGMENT } from './fragment';
+import { clientCache } from 'helpers';
+import './login.scss';
 
-const prefix = "login";
+const prefix = 'login';
 const loginQuery = queries.mutation.login(LOGIN_FRAGMENT);
 
 const Login = () => {
@@ -20,19 +20,19 @@ const Login = () => {
    */
 
   const [actLogin, { loading: loadingLogin }] = useMutation(loginQuery, {
-    fetchPolicy: "network-only",
+    fetchPolicy: 'network-only',
     onCompleted: (dataReturn) => {
-      const errors = get(dataReturn, "login.errors", []);
+      const errors = get(dataReturn, 'login.errors', []);
 
       if (!isEmpty(errors)) {
         return errors?.map((item) =>
-          notification["error"]({
+          notification['error']({
             message: item?.message,
           })
         );
       }
 
-      const token = get(dataReturn, "login.data.token", "");
+      const token = get(dataReturn, 'login.data.token', '');
 
       if (!isEmpty(token)) {
         clientCache?.setAuthenTokenWithCookie({ id_token: token });
@@ -40,8 +40,8 @@ const Login = () => {
         return;
       }
 
-      notification["error"]({
-        message: "Lỗi kết nối!",
+      notification['error']({
+        message: 'Lỗi kết nối!',
       });
     },
   });
@@ -71,7 +71,7 @@ const Login = () => {
             <Form.Item
               name="username"
               rules={[
-                { required: true, message: "Please input your username!" },
+                { required: true, message: 'Please input your username!' },
               ]}
             >
               <Input placeholder="Tài khoản..." />
@@ -80,7 +80,7 @@ const Login = () => {
             <Form.Item
               name="password"
               rules={[
-                { required: true, message: "Please input your password!" },
+                { required: true, message: 'Please input your password!' },
               ]}
             >
               <Input.Password placeholder="Mật khẩu..." />

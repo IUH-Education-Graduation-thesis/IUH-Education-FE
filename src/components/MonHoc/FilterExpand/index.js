@@ -1,36 +1,36 @@
-import React, { useMemo, useState } from "react";
-import classNames from "classnames";
-import PropTypes from "prop-types";
+import React, { useMemo, useState } from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
 
-import { Button, Form, Input, Select } from "antd";
+import { Button, Form, Input, Select } from 'antd';
 import {
   SearchOutlined,
   ArrowDownOutlined,
   ClearOutlined,
   ArrowUpOutlined,
-} from "@ant-design/icons";
+} from '@ant-design/icons';
 
-const prefix = "sinh-vien--filter";
+const prefix = 'sinh-vien--filter';
 
 const dataMockKhoaVien = [
   {
     id: 1,
-    label: "Công nghệ thông tin",
+    label: 'Công nghệ thông tin',
     value: 2,
   },
   {
     id: 2,
-    label: "May thời trang",
+    label: 'May thời trang',
     value: 3,
   },
   {
     id: 3,
-    label: "Tài ngân",
+    label: 'Tài ngân',
     value: 4,
   },
   {
     id: 4,
-    label: "Xây dựng",
+    label: 'Xây dựng',
     value: 25,
   },
 ];
@@ -104,11 +104,11 @@ const ExpandFilter = ({
 
         <div className={`${prefix}__top__right`}>
           <Button onClick={onAddAStudentClick} type="primary">
-            {" "}
+            {' '}
             + Thêm 1 môn học
           </Button>
           <Button onClick={onAddWithFileClick} type="ghost">
-            {" "}
+            {' '}
             + Thêm bằng file excel
           </Button>
           {renderArrow}

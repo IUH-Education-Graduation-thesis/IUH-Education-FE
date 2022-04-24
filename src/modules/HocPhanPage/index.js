@@ -1,10 +1,10 @@
-import React from "react";
-import { Row, Col, PageHeader, Card } from "antd";
-import "modules/HocPhanPage/HocPhanPage.scss";
-import MonHocCollapse from "./MonHocCollapse";
-import LopHocPhanList from "./LopHocPhanList";
+import React from 'react';
+import { Row, Col, PageHeader, Card } from 'antd';
+import 'modules/HocPhanPage/HocPhanPage.scss';
+import MonHocCollapse from './MonHocCollapse';
+import LopHocPhanList from './LopHocPhanList';
 
-const prefix = "hoc-phan-module";
+const prefix = 'hoc-phan-module';
 
 const HocPhanModule = () => {
   /**
@@ -18,7 +18,7 @@ const HocPhanModule = () => {
       <Col span={16}>
         <PageHeader
           style={{
-            border: "1px solid rgb(235, 237, 240)",
+            border: '1px solid rgb(235, 237, 240)',
           }}
           className="site-page-header"
           onBack={() => null}

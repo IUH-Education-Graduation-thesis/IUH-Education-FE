@@ -1,47 +1,47 @@
-import React, { useState } from "react";
-import { Layout, Menu } from "antd";
-import { UserOutlined, LaptopOutlined } from "@ant-design/icons";
+import React, { useState } from 'react';
+import { Layout, Menu } from 'antd';
+import { UserOutlined, LaptopOutlined } from '@ant-design/icons';
 
-import SinhVienComponent from "components/SinhVien";
-import KhoaComponent from "components/Khoa";
-import ChuyenNganh from "components/ChuyenNganh";
-import MonHoc from "components/MonHoc";
-import HocKy from "components/HocKy";
-import HocPhan from "components/HocPhan";
-import LopHocPhan from "components/LopHocPhan";
-import "./HomePage.scss";
-import { isEmpty } from "lodash";
-import KhoaHocComponent from "components/KhoaHoc";
-import DayNha from "components/DayNha";
-import PhongHoc from "components/PhongHoc";
-import NamHoc from "components/NamHoc";
+import SinhVienComponent from 'components/SinhVien';
+import KhoaComponent from 'components/Khoa';
+import ChuyenNganh from 'components/ChuyenNganh';
+import MonHoc from 'components/MonHoc';
+import HocKy from 'components/HocKy';
+import HocPhan from 'components/HocPhan';
+import LopHocPhan from 'components/LopHocPhan';
+import './HomePage.scss';
+import { isEmpty } from 'lodash';
+import KhoaHocComponent from 'components/KhoaHoc';
+import DayNha from 'components/DayNha';
+import PhongHoc from 'components/PhongHoc';
+import NamHoc from 'components/NamHoc';
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
-const prefix = "home-page";
+const prefix = 'home-page';
 
 const listComponent = [
   {
-    key: "5",
+    key: '5',
     component: SinhVienComponent,
   },
   {
-    key: "6",
+    key: '6',
     component: KhoaComponent,
   },
 
   {
-    key: "12",
+    key: '12',
     component: KhoaHocComponent,
   },
   {
-    key: "13",
+    key: '13',
     component: DayNha,
   },
 ];
 
 const HomePage = () => {
-  const [currentComponent, setCurrentComponent] = useState("5");
+  const [currentComponent, setCurrentComponent] = useState('5');
 
   const handleChangeMenu = (e) => {
     const key = e?.key;
@@ -70,9 +70,9 @@ const HomePage = () => {
         <Sider width={200} className="site-layout-background">
           <Menu
             mode="inline"
-            defaultSelectedKeys={["5"]}
-            defaultOpenKeys={["sub1, sub2"]}
-            style={{ height: "100%", borderRight: 0 }}
+            defaultSelectedKeys={['5']}
+            defaultOpenKeys={['sub1, sub2']}
+            style={{ height: '100%', borderRight: 0 }}
             onClick={handleChangeMenu}
           >
             <SubMenu key="sub1" icon={<UserOutlined />} title="Tài khoản">
@@ -86,7 +86,7 @@ const HomePage = () => {
             </SubMenu>
           </Menu>
         </Sider>
-        <Layout style={{ padding: "0 24px 24px" }}>
+        <Layout style={{ padding: '0 24px 24px' }}>
           <Content
             className="site-layout-background"
             style={{

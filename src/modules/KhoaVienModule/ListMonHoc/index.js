@@ -1,28 +1,28 @@
-import { Button, Collapse, Table } from "antd";
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import { Button, Collapse, Table } from 'antd';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
-import ListGiangVien from "./ListGiangVien";
+import ListGiangVien from './ListGiangVien';
 
-const prefix = "khoa-vien-mon-hoc";
+const prefix = 'khoa-vien-mon-hoc';
 const { Panel } = Collapse;
 
 const ListMonHoc = ({ data }) => {
   const columns = [
     {
-      key: "id",
-      dataIndex: "id",
-      title: "ID",
+      key: 'id',
+      dataIndex: 'id',
+      title: 'ID',
     },
     {
-      key: "ten",
-      dataIndex: "ten",
-      title: "Tên môn học",
+      key: 'ten',
+      dataIndex: 'ten',
+      title: 'Tên môn học',
     },
     {
-      title: "Action",
-      key: "operation",
-      fixed: "right",
+      title: 'Action',
+      key: 'operation',
+      fixed: 'right',
       width: 200,
       render: (e) => (
         <div>

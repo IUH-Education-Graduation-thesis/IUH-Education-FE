@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Button, Divider, Table } from "antd";
-import { GET_DAYNHA_FRAGMENT } from "./fragment";
-import queries from "core/graphql";
-import { useMutation, useQuery } from "@apollo/client";
-import { get, isEmpty } from "lodash";
+import React, { useEffect, useState } from 'react';
+import { Button, Divider, Table } from 'antd';
+import { GET_DAYNHA_FRAGMENT } from './fragment';
+import queries from 'core/graphql';
+import { useMutation, useQuery } from '@apollo/client';
+import { get, isEmpty } from 'lodash';
 
-import TableExpand from "./TableExpand";
-import ModalAddDayNha from "./FormAddDayNha";
-import "./DayNha.scss";
-import ExpandFilter from "./FilterExpand";
+import TableExpand from './TableExpand';
+import ModalAddDayNha from './FormAddDayNha';
+import './DayNha.scss';
+import ExpandFilter from './FilterExpand';
 
 // Call API
 const getAllDayNhaQuery = queries.query.findDayNha(GET_DAYNHA_FRAGMENT);
@@ -39,26 +39,26 @@ const DayNha = () => {
 
   const columns = [
     {
-      title: "Mã dãy nhà",
-      dataIndex: "id",
-      key: "id",
+      title: 'Mã dãy nhà',
+      dataIndex: 'id',
+      key: 'id',
       width: 100,
     },
     {
-      title: "Tên dãy nhà",
-      dataIndex: "tenDayNha",
-      key: "tenDayNha",
+      title: 'Tên dãy nhà',
+      dataIndex: 'tenDayNha',
+      key: 'tenDayNha',
       width: 400,
     },
     {
-      title: "Mô tả",
-      dataIndex: "moTa",
-      key: "moTa",
+      title: 'Mô tả',
+      dataIndex: 'moTa',
+      key: 'moTa',
       width: 300,
     },
     {
-      title: "Thao tác",
-      key: "thaoTac",
+      title: 'Thao tác',
+      key: 'thaoTac',
       width: 300,
       render: (e) => (
         <div>
@@ -88,16 +88,16 @@ const DayNha = () => {
       },
     });
 
-    const dataReturn = get(_dataReutrn, "data", {});
+    const dataReturn = get(_dataReutrn, 'data', {});
 
-    const errors = get(dataReturn, "xoaDayNha.errors", []);
+    const errors = get(dataReturn, 'xoaDayNha.errors', []);
     if (!isEmpty(errors)) {
       errors?.map((item) => console.log(item.message));
       return;
     }
 
-    const status = get(dataReturn, "xoaDayNha.status", "");
-    if (status === "OK") {
+    const status = get(dataReturn, 'xoaDayNha.status', '');
+    if (status === 'OK') {
       const _index = data?.findIndex((item) => item?.id === dayNha?.id);
 
       let _listDayNha = data;
@@ -111,7 +111,7 @@ const DayNha = () => {
       return;
     }
 
-    console.log("Loi ket noi");
+    console.log('Loi ket noi');
   };
 
   const handleCreateComplete = (e) => {
@@ -164,7 +164,7 @@ const DayNha = () => {
         className="ant-table-wrapper"
         columns={columns}
         dataSource={data}
-        scroll={{ x: 1500, y: "50vh" }}
+        scroll={{ x: 1500, y: '50vh' }}
         rowSelection={{
           selectedRowKeys,
           onChange: handleSelectedRowChange,

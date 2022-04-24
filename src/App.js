@@ -1,6 +1,6 @@
-import logo from "./logo.svg";
-import { useQuery, gql } from "@apollo/client";
-import "./App.css";
+import logo from './logo.svg';
+import { useQuery, gql } from '@apollo/client';
+import './App.css';
 
 function App() {
   const { data: dataLogin, loading: loadingLogin } = useQuery(
@@ -21,13 +21,13 @@ function App() {
     `,
     {
       variables: {
-        username: "18054321",
-        password: "1234567",
+        username: '18054321',
+        password: '1234567',
       },
     }
   );
 
-  console.log("data", dataLogin);
+  console.log('data', dataLogin);
 
   return (
     <div className="App">

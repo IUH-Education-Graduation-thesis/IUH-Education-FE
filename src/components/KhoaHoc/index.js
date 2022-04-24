@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Button, Table, Modal, notification, Divider } from "antd";
-import "./KhoaHoc.scss";
-import ModalAddKhoaHoc from "./FormAddKhoaHoc";
-import queries from "core/graphql";
-import { GET_KHOAHOC_FAGMENT } from "./fragment";
-import { useMutation, useQuery } from "@apollo/client";
-import { get, isEmpty } from "lodash";
-import ExpandFilter from "./FilterExpand";
+import React, { useEffect, useState } from 'react';
+import { Button, Table, Modal, notification, Divider } from 'antd';
+import './KhoaHoc.scss';
+import ModalAddKhoaHoc from './FormAddKhoaHoc';
+import queries from 'core/graphql';
+import { GET_KHOAHOC_FAGMENT } from './fragment';
+import { useMutation, useQuery } from '@apollo/client';
+import { get, isEmpty } from 'lodash';
+import ExpandFilter from './FilterExpand';
 
 const getAllKhoaHocQuery = queries.query.findKhoaHocs(GET_KHOAHOC_FAGMENT);
 const xoaKhoaHocMutation = queries.mutation.xoaKhoaHoc(GET_KHOAHOC_FAGMENT);
@@ -44,40 +44,40 @@ const KhoaHocComponent = () => {
   }, [dataGetKhoaHoc]);
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
       width: 100,
     },
     {
-      title: "Tên khóa học",
-      dataIndex: "khoa",
-      key: "khoa",
+      title: 'Tên khóa học',
+      dataIndex: 'khoa',
+      key: 'khoa',
       width: 400,
     },
     {
-      title: "Năm bắt đầu",
-      dataIndex: "namBatDau",
-      key: "namBatDau",
+      title: 'Năm bắt đầu',
+      dataIndex: 'namBatDau',
+      key: 'namBatDau',
       width: 200,
     },
     {
-      title: "Năm kết thúc",
-      dataIndex: "namKetThuc",
-      key: "namKetThuc",
+      title: 'Năm kết thúc',
+      dataIndex: 'namKetThuc',
+      key: 'namKetThuc',
       width: 200,
     },
     {
-      title: "Mô tả",
-      dataIndex: "moTa",
-      key: "moTa",
+      title: 'Mô tả',
+      dataIndex: 'moTa',
+      key: 'moTa',
       width: 300,
     },
     {
-      title: "Thao tác",
-      key: "thaoTac",
+      title: 'Thao tác',
+      key: 'thaoTac',
       width: 300,
-      fixed: "right",
+      fixed: 'right',
       render: (e) => (
         <div>
           <Button danger onClick={() => handlerEditButton(e)}>
@@ -117,20 +117,20 @@ const KhoaHocComponent = () => {
       },
     });
 
-    const dataReturn = get(_dataReutrn, "data", {});
+    const dataReturn = get(_dataReutrn, 'data', {});
 
-    const errors = get(dataReturn, "xoaKhoaHoc.errors", []);
+    const errors = get(dataReturn, 'xoaKhoaHoc.errors', []);
     if (!isEmpty(errors)) {
       errors?.map((item) =>
-        notification["error"]({
+        notification['error']({
           message: item?.message,
         })
       );
       return;
     }
 
-    const status = get(dataReturn, "xoaKhoaHoc.status", "");
-    if (status === "OK") {
+    const status = get(dataReturn, 'xoaKhoaHoc.status', '');
+    if (status === 'OK') {
       const _index = data?.findIndex((item) => item?.id === e?.id);
 
       let _listKhoaHoc = data;
@@ -141,13 +141,13 @@ const KhoaHocComponent = () => {
 
       setData(_listKhoaHoc);
       notification.open({
-        message: "Thông báo",
+        message: 'Thông báo',
         description: status,
       });
       return;
     }
 
-    console.log("Loi ket noi");
+    console.log('Loi ket noi');
   };
 
   const handleSelectedRowChange = (payload) => {
@@ -180,7 +180,7 @@ const KhoaHocComponent = () => {
         className="ant-table-wrapper"
         columns={columns}
         dataSource={dataMockKhoaHoc}
-        scroll={{ x: 1500, y: "50vh" }}
+        scroll={{ x: 1500, y: '50vh' }}
         rowSelection={{
           selectedRowKeys,
           onChange: handleSelectedRowChange,

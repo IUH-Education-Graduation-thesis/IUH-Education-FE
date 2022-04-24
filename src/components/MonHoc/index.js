@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Button, Divider, Table } from "antd";
-import styled from "styled-components";
-import "./MonHoc.scss";
-import ModalMonHoc from "./FormAddMonHoc";
-import ExpandFilter from "./FilterExpand";
+import React, { useEffect, useState } from 'react';
+import { Button, Divider, Table } from 'antd';
+import styled from 'styled-components';
+import './MonHoc.scss';
+import ModalMonHoc from './FormAddMonHoc';
+import ExpandFilter from './FilterExpand';
 
 const WrapExpandFilter = styled.div`
   margin-bottom: 16px;
@@ -18,38 +18,38 @@ const MonHoc = () => {
 
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
       width: 200,
     },
     {
-      title: "Tên môn học",
-      dataIndex: "ten",
-      key: "ten",
+      title: 'Tên môn học',
+      dataIndex: 'ten',
+      key: 'ten',
       width: 400,
     },
     {
-      title: "Mô tả",
-      dataIndex: "moTa",
-      key: "moTa",
+      title: 'Mô tả',
+      dataIndex: 'moTa',
+      key: 'moTa',
       width: 300,
     },
     {
-      title: "Số tín chỉ LT",
-      dataIndex: "soTinChiLyThuyet",
-      key: "soTinChiLyThuyet",
+      title: 'Số tín chỉ LT',
+      dataIndex: 'soTinChiLyThuyet',
+      key: 'soTinChiLyThuyet',
       width: 300,
     },
     {
-      title: "Số tín chỉ thực hành",
-      dataIndex: "soTinChiThucHanh",
-      key: "soTinChiThucHanh",
+      title: 'Số tín chỉ thực hành',
+      dataIndex: 'soTinChiThucHanh',
+      key: 'soTinChiThucHanh',
       width: 300,
     },
     {
-      title: "Thao tác",
-      key: "thaoTac",
+      title: 'Thao tác',
+      key: 'thaoTac',
       width: 300,
       render: () => (
         <div>
@@ -60,7 +60,7 @@ const MonHoc = () => {
             }}
           >
             Chỉnh sửa
-          </Button>{" "}
+          </Button>{' '}
           <Button>Xóa</Button>
         </div>
       ),
@@ -75,7 +75,7 @@ const MonHoc = () => {
       key: item,
       id: `${item}`,
       ten: `Kinh doanh quốc tế ${item}`,
-      moTa: "New York No. 1 Lake Park",
+      moTa: 'New York No. 1 Lake Park',
       soTinChiLyThuyet: item,
       soTinChiThucHanh: item,
     }));

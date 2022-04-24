@@ -1,24 +1,25 @@
-import Login from "./login";
-import GetProfile from "./getProfile";
-import findDayNha from "./findDayNha";
-import deleteDayNha from "./xoaDayNha";
-import createDayNha from "./createDayNha";
-import suaDayNha from "./suaDayNha";
-import themPhongHoc from "./themPhongHoc";
-import findPhongHoc from "./findPhongHoc";
-import xoaPhongHoc from "./xoaPhongHoc";
-import xoaNamHoc from "./xoaNamHoc";
-import findNamHoc from "./findNamHoc";
-import themNamHoc from "./themNamHoc";
-import findKhoaHocs from "./findKhoaHocs";
-import xoaKhoaHoc from "./xoaKhoaHoc";
-import xoaDayNha from "./xoaDayNha";
-import themKhoaHoc from "./themKhoaHoc";
-import findHocPhan from "./findHocPhan";
-import findKhoaVien from "./findKhoaVien";
-import findSinhVien from "./findSinhVien";
-import xoaSinhViens from "./xoaSinhViens";
-import themSinhVien from "./themSinhVien";
+import Login from './login';
+import GetProfile from './getProfile';
+import findDayNha from './findDayNha';
+import deleteDayNha from './xoaDayNha';
+import createDayNha from './createDayNha';
+import suaDayNha from './suaDayNha';
+import themPhongHoc from './themPhongHoc';
+import findPhongHoc from './findPhongHoc';
+import xoaPhongHoc from './xoaPhongHoc';
+import xoaNamHoc from './xoaNamHoc';
+import findNamHoc from './findNamHoc';
+import themNamHoc from './themNamHoc';
+import findKhoaHocs from './findKhoaHocs';
+import xoaKhoaHoc from './xoaKhoaHoc';
+import xoaDayNha from './xoaDayNha';
+import themKhoaHoc from './themKhoaHoc';
+import findHocPhan from './findHocPhan';
+import findKhoaVien from './findKhoaVien';
+import findSinhVien from './findSinhVien';
+import xoaSinhViens from './xoaSinhViens';
+import themSinhVien from './themSinhVien';
+import suaSinhVien from './suaSinhVien';
 
 const query = {
   ...GetProfile.query,
@@ -44,6 +45,7 @@ const mutation = {
   ...xoaKhoaHoc.mutation,
   ...xoaSinhViens.mutation,
   ...themSinhVien.mutation,
+  ...suaSinhVien.mutation,
 };
 
 export default {

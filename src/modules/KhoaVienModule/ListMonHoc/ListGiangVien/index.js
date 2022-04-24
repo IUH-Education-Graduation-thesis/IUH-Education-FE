@@ -1,39 +1,39 @@
-import { Button, Table } from "antd";
-import React, { useState } from "react";
+import { Button, Table } from 'antd';
+import React, { useState } from 'react';
 
-const prefix = "list-mon-hoc-in-khoa-vien";
+const prefix = 'list-mon-hoc-in-khoa-vien';
 
 const ListMonHoc = ({ data }) => {
   const columns = [
     {
-      key: "id",
-      dataIndex: "id",
-      title: "ID",
+      key: 'id',
+      dataIndex: 'id',
+      title: 'ID',
     },
     {
-      key: "hoTenDem",
-      dataIndex: "hoTenDem",
-      title: "Họ tên đệm",
+      key: 'hoTenDem',
+      dataIndex: 'hoTenDem',
+      title: 'Họ tên đệm',
     },
     {
-      key: "ten",
-      dataIndex: "ten",
-      title: "Tên",
+      key: 'ten',
+      dataIndex: 'ten',
+      title: 'Tên',
     },
     {
-      key: "email",
-      dataIndex: "email",
-      title: "Email",
+      key: 'email',
+      dataIndex: 'email',
+      title: 'Email',
     },
     {
-      key: "soDienThoai",
-      dataIndex: "soDienThoai",
-      title: "Số điện thoại",
+      key: 'soDienThoai',
+      dataIndex: 'soDienThoai',
+      title: 'Số điện thoại',
     },
     {
-      title: "Action",
-      key: "operation",
-      fixed: "right",
+      title: 'Action',
+      key: 'operation',
+      fixed: 'right',
       width: 200,
       render: (e) => (
         <div>

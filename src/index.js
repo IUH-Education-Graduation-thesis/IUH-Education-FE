@@ -1,15 +1,15 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { ApolloProvider } from "@apollo/client";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { ApolloProvider } from '@apollo/client';
 import {
   BrowserRouter as Router,
   Route,
   Switch,
   Routes,
-} from "react-router-dom";
+} from 'react-router-dom';
 
-import client from "core/apollo";
-import reportWebVitals from "./reportWebVitals";
+import client from 'core/apollo';
+import reportWebVitals from './reportWebVitals';
 import {
   LoginPage as Login,
   HomePage,
@@ -19,11 +19,11 @@ import {
   ChuyenNganhPage,
   LopPage,
   KhoaHocPage,
-} from "pages";
+} from 'pages';
 
-import "./index.css";
-import "assets/styles/main.scss";
-import "antd/dist/antd.css";
+import './index.css';
+import 'assets/styles/main.scss';
+import 'antd/dist/antd.css';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -71,7 +71,7 @@ ReactDOM.render(
       </Router>
     </ApolloProvider>
   </React.StrictMode>,
-  document.getElementById("root")
+  document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function

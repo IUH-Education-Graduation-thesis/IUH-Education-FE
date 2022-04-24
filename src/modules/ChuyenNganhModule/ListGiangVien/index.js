@@ -1,41 +1,41 @@
-import { Button, Collapse, Table } from "antd";
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import { Button, Collapse, Table } from 'antd';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 const { Panel } = Collapse;
-const prefix = "khoa-vien-chuyen-nganh";
+const prefix = 'khoa-vien-chuyen-nganh';
 
 const ListGiangVien = ({ data }) => {
   const columns = [
     {
-      key: "id",
-      dataIndex: "id",
-      title: "ID",
+      key: 'id',
+      dataIndex: 'id',
+      title: 'ID',
     },
     {
-      key: "hoTenDem",
-      dataIndex: "hoTenDem",
-      title: "Họ tên đệm",
+      key: 'hoTenDem',
+      dataIndex: 'hoTenDem',
+      title: 'Họ tên đệm',
     },
     {
-      key: "ten",
-      dataIndex: "ten",
-      title: "Tên",
+      key: 'ten',
+      dataIndex: 'ten',
+      title: 'Tên',
     },
     {
-      key: "email",
-      dataIndex: "email",
-      title: "Email",
+      key: 'email',
+      dataIndex: 'email',
+      title: 'Email',
     },
     {
-      key: "soDienThoai",
-      dataIndex: "soDienThoai",
-      title: "Số điện thoại",
+      key: 'soDienThoai',
+      dataIndex: 'soDienThoai',
+      title: 'Số điện thoại',
     },
     {
-      title: "Action",
-      key: "operation",
-      fixed: "right",
+      title: 'Action',
+      key: 'operation',
+      fixed: 'right',
       width: 200,
       render: (e) => (
         <div>

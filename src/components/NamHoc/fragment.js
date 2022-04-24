@@ -3,4 +3,4 @@ export const GET_NAMHOC_FRAGMENT = `
     ngayBatDau
     ngayKetThuc
     moTa
-`
+`;

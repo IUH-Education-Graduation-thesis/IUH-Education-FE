@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import { LopModule } from "modules";
+import { LopModule } from 'modules';
 
 const LopPage = () => {
   return <LopModule />;

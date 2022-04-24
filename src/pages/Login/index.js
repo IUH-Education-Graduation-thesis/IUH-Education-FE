@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import { Login } from "modules";
+import { Login } from 'modules';
 
 const LoginPage = () => {
   return <Login />;

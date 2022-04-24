@@ -7,11 +7,13 @@ import PropTypes from 'prop-types';
 import { isEmpty } from 'lodash';
 import { checkTrulyObject } from 'components/helper';
 import { FIND_KHOA_VIEN, THEM_SINH_VIEN_FRAGMENT } from '../fragment';
+import moment from 'moment';
 
 const findKhoaVienQuery = queries?.query.findKhoaVien(FIND_KHOA_VIEN);
 const themSinhVienMutation = queries.mutation.themSinhVien(
   THEM_SINH_VIEN_FRAGMENT
 );
+const suaSinhVienMutation = queries.mutation.suaSinhVien('id');
 
 const ModalStudent = ({ visible, closeModal, type, data, onAddSuccess }) => {
   const layout = {
@@ -40,6 +42,11 @@ const ModalStudent = ({ visible, closeModal, type, data, onAddSuccess }) => {
       label: item?.ten,
     }));
 
+  const [
+    actSuaSinhVien,
+    { data: dataSuaSinhVien, loading: loadingSuaSinhVien },
+  ] = useMutation(suaSinhVienMutation);
+
   /**
    * useEffect
    * ======================================================================
@@ -49,30 +56,40 @@ const ModalStudent = ({ visible, closeModal, type, data, onAddSuccess }) => {
     if (isEmpty(data)) {
       return;
     }
+
+    const _ngaySinhMoment = isEmpty(data?.ngaySinh)
+      ? null
+      : moment(data?.ngaySinh);
+
+    const _ngayVaoTruongMoment = isEmpty(data?.ngayVaoTruong)
+      ? null
+      : moment(data?.ngayVaoTruong);
+
+    const _ngayVaoDoanMoment = isEmpty(data?._ngayVaoDoan)
+      ? null
+      : moment(data?.ngayVaoDoan);
+
+    const _ngayVaoDangMoment = isEmpty(data?.ngayVaoDang)
+      ? null
+      : moment(data?.ngayVaoDang);
+
     form.setFieldsValue({
-      ID: data.id,
-      MSSV: data.mssv,
-      name: data.name,
-      sdt: data.sdt,
-      cmnd: data.cmnd,
-      // khoa: data.khoa,
-      // chuyenNganh: data.chuyenNganh,
-      // bacDaoTao: data.bacDaoTao,
-      // khoaHoc: data.khoaHoc,
-      email: data.email,
-      mahs: data.mahs,
-      ngaySinh: data.ngaySinh,
-      ngayVaoTruong: data.ngayVaoTruong,
-      ngayVaoDoan: data.ngayVaoDoan,
-      ngayVaoDang: data.ngayVaoDang,
-      maKhuVuc: data.maKhuVuc,
-      diaChilh: data.diaChilh,
-      hoKhau: data.hoKhau,
-      trangThaiHocTap: data.trangThaiHocTap,
-      loaiHinhDaoTao: data.loaiHinhDaoTao,
-      danToc: data.danToc,
-      tonGiao: data.tonGiao,
-      doiTuong: data.doiTuong,
+      id: data.id,
+      maSinhVien: data.maSinhVien,
+      hoTenDem: data.hoTenDem,
+      ten: data?.ten,
+      doDienThoai: data?.soDienThoai,
+      soCMND: data?.soCMND,
+      emai: data?.email,
+      _ngaySinh: _ngaySinhMoment,
+      ngaySinh: data?.ngaySinh,
+      _ngayVaoTruong: _ngayVaoTruongMoment,
+      ngayVaoTruong: data?.ngayVaoTruong,
+      _ngayVaoDoan: _ngayVaoDoanMoment,
+      _ngayVaoDang: _ngayVaoDangMoment,
+      ngayVaoDang: data?.ngayVaoDang,
+      _lopId: data?.lop?.ten,
+      lopId: data?.lop?.id,
     });
   }, [data]);
 
@@ -129,7 +146,7 @@ const ModalStudent = ({ visible, closeModal, type, data, onAddSuccess }) => {
     return _listLop;
   }, [currentKhoaID, handleDataForKhoaHoc]);
 
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(() => {
     form
       ?.validateFields()
       .then(async () => {
@@ -158,15 +175,51 @@ const ModalStudent = ({ visible, closeModal, type, data, onAddSuccess }) => {
         };
 
         const _inputAfterFilter = checkTrulyObject(_inputsReal);
-        const _dataRes = await actThemSinhVien({
-          variables: {
-            inputs: {
-              ..._inputAfterFilter,
+
+        if (type == 'add') {
+          const _dataRes = await actThemSinhVien({
+            variables: {
+              inputs: {
+                ..._inputAfterFilter,
+              },
             },
+          });
+
+          const _errors = _dataRes?.data?.themSinhVien?.errors || [];
+
+          if (!isEmpty(_errors)) {
+            return _errors?.map((item) =>
+              notification['error']({
+                message: item?.message,
+              })
+            );
+          }
+
+          const _data = _dataRes?.data?.themSinhVien?.data || [];
+
+          if (isEmpty(_data)) {
+            return notification['error']({
+              message: 'Lỗi kết nối!',
+            });
+          }
+
+          onAddSuccess(_data?.[0]);
+
+          return notification['success']({
+            message: 'Thêm học sinh thành công.',
+          });
+        }
+
+        const _idSinhVien = _inputs?.id || '';
+
+        const _dataRes = await actSuaSinhVien({
+          variables: {
+            inputs: _inputAfterFilter,
+            sinhVienId: _idSinhVien,
           },
         });
 
-        const _errors = _dataRes?.data?.themSinhVien?.errors || [];
+        const _errors = _dataRes?.data?.suaSinhVien?.errors || [];
 
         if (!isEmpty(_errors)) {
           return _errors?.map((item) =>
@@ -176,7 +229,7 @@ const ModalStudent = ({ visible, closeModal, type, data, onAddSuccess }) => {
           );
         }
 
-        const _data = _dataRes?.data?.themSinhVien?.data || [];
+        const _data = _dataRes?.data?.suaSinhVien?.data || [];
 
         if (isEmpty(_data)) {
           return notification['error']({
@@ -187,7 +240,7 @@ const ModalStudent = ({ visible, closeModal, type, data, onAddSuccess }) => {
         onAddSuccess(_data?.[0]);
 
         return notification['success']({
-          message: 'Thêm học sinh thành công.',
+          message: 'Sửa học sinh thành công.',
         });
       })
       .catch(() => {
@@ -195,7 +248,7 @@ const ModalStudent = ({ visible, closeModal, type, data, onAddSuccess }) => {
           message: 'Nhập thiếu thông tin yêu cầu!',
         });
       });
-  };
+  }, []);
 
   const handleFieldFormChange = (payload) => {
     const _nameField = payload?.[0]?.name?.[0];
@@ -358,6 +411,7 @@ const ModalStudent = ({ visible, closeModal, type, data, onAddSuccess }) => {
       onCancel={() => closeModal(false)}
       width={1000}
       destroyOnClose
+      okText={type === 'add' ? 'Thêm' : 'Sửa'}
       onOk={handleSubmit}
     >
       {renderForm()}

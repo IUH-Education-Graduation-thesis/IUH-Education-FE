@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Table, Button, Divider } from "antd";
-import { useLazyQuery } from "@apollo/client";
-import queries from "core/graphql";
-import { isEmpty } from "lodash";
+import React, { useEffect, useState } from 'react';
+import { Table, Button, Divider } from 'antd';
+import { useLazyQuery } from '@apollo/client';
+import queries from 'core/graphql';
+import { isEmpty } from 'lodash';
 
-import "./index.scss";
-import ModalHocPhan from "./FormAddHocPhan";
-import ExpandFilter from "./FilterExpand";
-import { FIND_HOC_PHAN_FRAGMENT } from "./fragment";
+import './index.scss';
+import ModalHocPhan from './FormAddHocPhan';
+import ExpandFilter from './FilterExpand';
+import { FIND_HOC_PHAN_FRAGMENT } from './fragment';
 
 const FindHocPhanQuery = queries?.query?.findHocPhan(FIND_HOC_PHAN_FRAGMENT);
 
@@ -19,8 +19,8 @@ const HocPhan = () => {
   const [currentPageSize, setCurrentPageSize] = useState(10);
   const [seletedRowKeys, setSelectedRowKeys] = useState([]);
   const [currentFilterData, setCurrentFilterData] = useState({
-    id: "",
-    maHocPhan: "",
+    id: '',
+    maHocPhan: '',
     namHocIds: [],
     hocKyIds: [],
     khoaVienIds: [],
@@ -29,45 +29,45 @@ const HocPhan = () => {
 
   const columns = [
     {
-      title: "ID",
+      title: 'ID',
       width: 50,
-      dataIndex: "id",
-      key: "id",
+      dataIndex: 'id',
+      key: 'id',
     },
     {
-      title: "Mã học phần",
-      dataIndex: "maHocPhan",
-      key: "maHocPhan",
+      title: 'Mã học phần',
+      dataIndex: 'maHocPhan',
+      key: 'maHocPhan',
       width: 200,
     },
     {
-      title: "Môn học",
-      dataIndex: "tenMonHoc",
-      key: "tenMonHoc",
+      title: 'Môn học',
+      dataIndex: 'tenMonHoc',
+      key: 'tenMonHoc',
       width: 400,
     },
     {
-      title: "Số tín chỉ LT",
-      dataIndex: "soTinChiLyThuyet",
-      key: "soTinChiLyThuyet",
+      title: 'Số tín chỉ LT',
+      dataIndex: 'soTinChiLyThuyet',
+      key: 'soTinChiLyThuyet',
       width: 300,
     },
     {
-      title: "Số tín chỉ TH",
-      dataIndex: "soTinChiThucHanh",
-      key: "soTinChiThucHanh",
+      title: 'Số tín chỉ TH',
+      dataIndex: 'soTinChiThucHanh',
+      key: 'soTinChiThucHanh',
       width: 300,
     },
     {
-      title: "Mô tả",
-      dataIndex: "moTa",
-      key: "moTa",
+      title: 'Mô tả',
+      dataIndex: 'moTa',
+      key: 'moTa',
       width: 300,
     },
     {
-      title: "Action",
-      key: "operation",
-      fixed: "right",
+      title: 'Action',
+      key: 'operation',
+      fixed: 'right',
       width: 200,
       render: (e) => (
         <div>
@@ -87,7 +87,7 @@ const HocPhan = () => {
 
   const [actFindHocPhan, { data: dataFindHocPhan, loadingFindHocPhan }] =
     useLazyQuery(FindHocPhanQuery, {
-      fetchPolicy: "network-only",
+      fetchPolicy: 'network-only',
     });
 
   const dataForTable = dataFindHocPhan?.findHocPhans?.data?.[0]?.data?.map(

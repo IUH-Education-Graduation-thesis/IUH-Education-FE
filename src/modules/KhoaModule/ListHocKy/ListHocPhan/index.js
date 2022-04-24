@@ -1,38 +1,38 @@
-import { Button, Table } from "antd";
-import React, { useState } from "react";
+import { Button, Table } from 'antd';
+import React, { useState } from 'react';
 
-const prefix = "khoa-hoc-ky-hoc-phan";
+const prefix = 'khoa-hoc-ky-hoc-phan';
 
 const ListHocPhan = ({ data }) => {
   const columns = [
     {
-      key: "id",
-      dataIndex: "id",
-      title: "ID",
+      key: 'id',
+      dataIndex: 'id',
+      title: 'ID',
     },
     {
-      key: "maHocPhan",
-      dataIndex: "maHocPhan",
-      title: "Mã học phần",
+      key: 'maHocPhan',
+      dataIndex: 'maHocPhan',
+      title: 'Mã học phần',
     },
     {
       render: (_, record) => record?.monHoc?.ten,
-      title: "Môn học",
+      title: 'Môn học',
     },
     {
-      key: "soTinChiLyThuet",
-      dataIndex: "soTinChiLyThuet",
-      title: "Tín chỉ lý thuyết",
+      key: 'soTinChiLyThuet',
+      dataIndex: 'soTinChiLyThuet',
+      title: 'Tín chỉ lý thuyết',
     },
     {
-      key: "soTinChiThucHanh",
-      dataIndex: "soTinChiThucHanh",
-      title: "Tín chỉ thực hành",
+      key: 'soTinChiThucHanh',
+      dataIndex: 'soTinChiThucHanh',
+      title: 'Tín chỉ thực hành',
     },
     {
-      title: "Action",
-      key: "operation",
-      fixed: "right",
+      title: 'Action',
+      key: 'operation',
+      fixed: 'right',
       width: 200,
       render: (e) => (
         <div>

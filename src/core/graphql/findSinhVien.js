@@ -1,8 +1,8 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export default {
   query: {
-    findSinhVien: (fragment = "") => gql`
+    findSinhVien: (fragment = '') => gql`
     query FIND_SINH_VIEN($inputs: FindSinhVienInputs) {
       findSinhVien(inputs: $inputs) {
         status

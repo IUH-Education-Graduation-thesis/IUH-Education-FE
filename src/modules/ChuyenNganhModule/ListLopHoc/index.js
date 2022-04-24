@@ -1,35 +1,35 @@
-import { Button, Collapse, Select, Table } from "antd";
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import { Button, Collapse, Select, Table } from 'antd';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 const { Panel } = Collapse;
-const prefix = "chuyen-nganh-lop-hoc";
+const prefix = 'chuyen-nganh-lop-hoc';
 const dataMockForSelect = [
-  { label: "Khoa 11", value: 11 },
-  { label: "Khoa 12", value: 12 },
+  { label: 'Khoa 11', value: 11 },
+  { label: 'Khoa 12', value: 12 },
 ];
 
 const ListLopHoc = ({ data }) => {
   const columns = [
     {
-      key: "id",
-      dataIndex: "id",
-      title: "ID",
+      key: 'id',
+      dataIndex: 'id',
+      title: 'ID',
     },
     {
-      key: "ten",
-      dataIndex: "ten",
-      title: "Tên lớp",
+      key: 'ten',
+      dataIndex: 'ten',
+      title: 'Tên lớp',
     },
     {
-      key: "moTa",
-      dataIndex: "moTa",
-      title: "Mô tả",
+      key: 'moTa',
+      dataIndex: 'moTa',
+      title: 'Mô tả',
     },
     {
-      title: "Action",
-      key: "operation",
-      fixed: "right",
+      title: 'Action',
+      key: 'operation',
+      fixed: 'right',
       width: 200,
       render: (e) => (
         <div>

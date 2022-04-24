@@ -1,9 +1,9 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export default {
   mutation: {
-    themSinhVien: (fragment = "id") => gql`
+    themSinhVien: (fragment = 'id') => gql`
       mutation ($inputs: SinhVienInputs!) {
         themSinhVien(inputs: $inputs) {
           status

@@ -1,25 +1,25 @@
-import { Card, Col, PageHeader, Row } from "antd";
-import React from "react";
-import ListHocKy from "./ListHocKy";
-import "modules/KhoaModule/KhoaModule.scss";
+import { Card, Col, PageHeader, Row } from 'antd';
+import React from 'react';
+import ListHocKy from './ListHocKy';
+import 'modules/KhoaModule/KhoaModule.scss';
 
-const prefix = "khoa-hoc";
+const prefix = 'khoa-hoc';
 
 const mockDataForListHocKy = [...Array(10)?.keys()]?.map((item) => ({
   id: item,
   key: item,
   thuTuHocKy: item,
-  moTa: "Day la cai mo ta",
+  moTa: 'Day la cai mo ta',
   hocPhans: [
     {
       id: item,
       maHocPhan: `231241232${item}`,
-      moTa: "Day la cai mo ta",
+      moTa: 'Day la cai mo ta',
       batBuoc: true,
       soTinChiLyThuet: 3,
       soTinChiThucHanh: 0,
       monHoc: {
-        ten: "Lập trình hướng đối tượng",
+        ten: 'Lập trình hướng đối tượng',
       },
     },
   ],
@@ -32,7 +32,7 @@ const KhoaHocModule = () => {
       <Col span={16}>
         <PageHeader
           style={{
-            border: "1px solid rgb(235, 237, 240)",
+            border: '1px solid rgb(235, 237, 240)',
           }}
           onBack={() => null}
           title="Chi tiết khóa học"

@@ -1,21 +1,21 @@
-import React from "react";
+import React from 'react';
 
-import { Card, Col, Collapse, PageHeader, Row } from "antd";
-import ListLichHocPanel from "./LichHocPanel";
-import ListSinhVienPanel from "./SinhVienPanel";
+import { Card, Col, PageHeader, Row } from 'antd';
+import ListLichHocPanel from './LichHocPanel';
+import ListSinhVienPanel from './SinhVienPanel';
 
-import "modules/LopHocPhanComp/LopHocPhanComp.scss";
+import 'modules/LopHocPhanComp/LopHocPhanComp.scss';
 
-const prefix = "chi-tiet-lop-hoc-phan";
+const prefix = 'chi-tiet-lop-hoc-phan';
 
 const LopHocPhanModule = () => {
   return (
     <Row className={prefix}>
-      <Col span={4}></Col>
+      <Col span={4} />
       <Col span={16}>
         <PageHeader
           style={{
-            border: "1px solid rgb(235, 237, 240)",
+            border: '1px solid rgb(235, 237, 240)',
           }}
           className="site-page-header"
           onBack={() => null}
@@ -57,7 +57,7 @@ const LopHocPhanModule = () => {
         <ListLichHocPanel />
         <ListSinhVienPanel />
       </Col>
-      <Col span={4}></Col>
+      <Col span={4} />
     </Row>
   );
 };

@@ -1,18 +1,18 @@
-import React, { useEffect } from "react";
-import { isEmpty } from "lodash";
-import { useQuery } from "@apollo/client";
+import React, { useEffect } from 'react';
+import { isEmpty } from 'lodash';
+import { useQuery } from '@apollo/client';
 
-import { clientCache } from "helpers";
-import queries from "core/graphql";
-import { GET_PROFILE_FRAGMENT } from "./fragment";
-import HomeModule from "modules/HomePage";
+import { clientCache } from 'helpers';
+import queries from 'core/graphql';
+import HomeModule from 'modules/HomePage';
+
+import { GET_PROFILE_FRAGMENT } from './fragment';
 
 const getProfileQuery = queries?.query?.getProfile(GET_PROFILE_FRAGMENT);
 
 const HomePage = () => {
-
   const { error } = useQuery(getProfileQuery, {
-    fetchPolicy: "network-only",
+    fetchPolicy: 'network-only',
   });
 
   /**

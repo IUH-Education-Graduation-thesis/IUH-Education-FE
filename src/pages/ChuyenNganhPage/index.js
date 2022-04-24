@@ -1,5 +1,5 @@
-import { ChuyenNganhModule } from "modules";
-import React from "react";
+import { ChuyenNganhModule } from 'modules';
+import React from 'react';
 
 const ChuyenNganhPage = () => {
   return <ChuyenNganhModule />;

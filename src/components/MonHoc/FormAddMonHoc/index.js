@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Modal, Form, Input, Select} from "antd";
+import React, { useEffect, useState } from 'react';
+import { Modal, Form, Input, Select } from 'antd';
 
-import { isEmpty } from "lodash";
-
+import { isEmpty } from 'lodash';
 
 const ModalMonHoc = ({ visible, closeModal, type, data }) => {
   const layout = {
@@ -19,9 +18,8 @@ const ModalMonHoc = ({ visible, closeModal, type, data }) => {
       tenMonHoc: data.tenMonHoc,
       moTa: data.moTa,
       khoa: data.khoa,
-    })
-  }, [data])
-
+    });
+  }, [data]);
 
   function handleChange(value) {
     console.log(`selected ${value}`);
@@ -29,33 +27,26 @@ const ModalMonHoc = ({ visible, closeModal, type, data }) => {
   const khoa = [
     { value: 'cnnt', label: 'CNTT' },
     { value: 'taiNgan', label: 'Tài ngân' },
-
-  ]
+  ];
   const renderForm = () => {
     return (
       <Form {...layout} form={form} name="nest-messages">
-        <Form.Item
-          name={"maMonHoc"}
-          label="Mã năm học"
-        >
+        <Form.Item name={'maMonHoc'} label="Mã năm học">
           <Input disabled />
         </Form.Item>
-        <Form.Item
-          name={"tenMonHoc"}
-          label="Tên môn học"
-        >
+        <Form.Item name={'tenMonHoc'} label="Tên môn học">
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Khoa"
-        >
-           <Select options={khoa} style={{ width: 290 }} placeholder='Khoa' onChange={handleChange} />
+        <Form.Item label="Khoa">
+          <Select
+            options={khoa}
+            style={{ width: 290 }}
+            placeholder="Khoa"
+            onChange={handleChange}
+          />
         </Form.Item>
-        
-        <Form.Item
-          name={"moTa"}
-          label="Mô tả"
-        >
+
+        <Form.Item name={'moTa'} label="Mô tả">
           <Input />
         </Form.Item>
       </Form>

@@ -1,36 +1,36 @@
-import { Button, Collapse, Table } from "antd";
-import React from "react";
+import { Button, Collapse, Table } from 'antd';
+import React from 'react';
 
-const prefix = "hoc-phan-mon-hoc";
+const prefix = 'hoc-phan-mon-hoc';
 const { Panel } = Collapse;
 
 const MonHocCollapse = () => {
   const columns = [
     {
-      key: "id",
-      dataIndex: "id",
-      title: "ID",
+      key: 'id',
+      dataIndex: 'id',
+      title: 'ID',
     },
     {
-      key: "ten",
-      dataIndex: "ten",
-      title: "Tên môn học",
+      key: 'ten',
+      dataIndex: 'ten',
+      title: 'Tên môn học',
     },
     {
-      key: "khoaVien",
-      dataIndex: "khoaVien",
-      title: "Khoa viện",
+      key: 'khoaVien',
+      dataIndex: 'khoaVien',
+      title: 'Khoa viện',
     },
     {
-      key: "chuyenNganh",
-      dataIndex: "chuyenNganh",
-      title: "Chuyên Ngành",
+      key: 'chuyenNganh',
+      dataIndex: 'chuyenNganh',
+      title: 'Chuyên Ngành',
     },
     {
-      key: "",
-      dataIndex: "",
-      title: "Hành động",
-      fixed: "right",
+      key: '',
+      dataIndex: '',
+      title: 'Hành động',
+      fixed: 'right',
       render: (_, record) => {
         return (
           <div className={`${prefix}__table__action`}>
@@ -62,21 +62,21 @@ const MonHocCollapse = () => {
     <Collapse className={`${prefix}`}>
       <Panel
         showArrow={false}
-        header={renderHeadOfCollapse("Môn học tiên quyết")}
+        header={renderHeadOfCollapse('Môn học tiên quyết')}
         key="1"
       >
         <Table columns={columns} bordered />
       </Panel>
       <Panel
         showArrow={false}
-        header={renderHeadOfCollapse("Môn học song hành")}
+        header={renderHeadOfCollapse('Môn học song hành')}
         key="2"
       >
         <Table columns={columns} bordered />
       </Panel>
       <Panel
         showArrow={false}
-        header={renderHeadOfCollapse("Môn học trước")}
+        header={renderHeadOfCollapse('Môn học trước')}
         key="3"
       >
         <Table columns={columns} bordered />

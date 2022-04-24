@@ -1,11 +1,11 @@
-import { ApolloClient, InMemoryCache, ApolloLink, split } from "@apollo/client";
-import { setContext } from "@apollo/client/link/context";
-import { from } from "@apollo/client/core";
-import { onError } from "@apollo/client/link/error";
+import { ApolloClient, InMemoryCache, ApolloLink, split } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+import { from } from '@apollo/client/core';
+import { onError } from '@apollo/client/link/error';
 
-import { clientCache } from "helpers";
-import config from "config";
-import { createHttpLink } from "@apollo/client/core";
+import { clientCache } from 'helpers';
+import config from 'config';
+import { createHttpLink } from '@apollo/client/core';
 
 const getAccessToken = () => {
   // get the authentication token from local storage if it exists
@@ -25,7 +25,7 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : "",
+      authorization: token ? `Bearer ${token}` : '',
     },
   };
 });

@@ -27,12 +27,29 @@ maSinhVien
 maHoSo
 hoTenDem
 ten
+avatar
 gioiTinh
+ngayVaoDang
+ngayVaoTruong
+ngayVaoDoan
 ngaySinh
-bacDaoTaoString
 soDienThoai
+diaChi
+noiSinh
 email
+soCMND
+bacDaoTao
+bacDaoTaoString
+trangThai
+trangThaiString
+danToc
+danTocString
+loaiHinhDaoTao
 loaiHinhDaoTaoString
+lop {
+  id
+  ten
+}
 `;
 
 export const THEM_SINH_VIEN_FRAGMENT = `

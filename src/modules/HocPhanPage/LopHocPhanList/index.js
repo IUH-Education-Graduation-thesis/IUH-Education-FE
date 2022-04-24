@@ -1,8 +1,8 @@
-import { Button, Card, Table } from "antd";
-import useSelection from "antd/lib/table/hooks/useSelection";
-import React, { useEffect, useState } from "react";
+import { Button, Card, Table } from 'antd';
+import useSelection from 'antd/lib/table/hooks/useSelection';
+import React, { useEffect, useState } from 'react';
 
-const prefix = "danh-sach-lop-hoc-phan";
+const prefix = 'danh-sach-lop-hoc-phan';
 
 const LopHocPhanList = () => {
   const [dataListLopHocPhan, setDataListLopHocPhan] = useState([]);
@@ -20,9 +20,9 @@ const LopHocPhanList = () => {
     const _data = [...Array(30).keys()]?.map((item) => ({
       key: item,
       id: item,
-      maLopHocPhan: "1231231231231",
+      maLopHocPhan: '1231231231231',
       tenLopHocPhan: `Ten lop hoc phan ${item}`,
-      trangThai: "Đã mở lớp",
+      trangThai: 'Đã mở lớp',
       soLuongToiDa: 80,
     }));
 
@@ -50,34 +50,34 @@ const LopHocPhanList = () => {
    */
   const columns = [
     {
-      key: "id",
-      dataIndex: "id",
-      title: "ID",
+      key: 'id',
+      dataIndex: 'id',
+      title: 'ID',
     },
     {
-      key: "maLopHocPhan",
-      dataIndex: "maLopHocPhan",
-      title: "Mã lớp học phần",
+      key: 'maLopHocPhan',
+      dataIndex: 'maLopHocPhan',
+      title: 'Mã lớp học phần',
     },
     {
-      key: "tenLopHocPhan",
-      dataIndex: "tenLopHocPhan",
-      title: "Tên lớp học phần",
+      key: 'tenLopHocPhan',
+      dataIndex: 'tenLopHocPhan',
+      title: 'Tên lớp học phần',
     },
     {
-      key: "trangThai",
-      dataIndex: "trangThai",
-      title: "Trạng thái",
+      key: 'trangThai',
+      dataIndex: 'trangThai',
+      title: 'Trạng thái',
     },
     {
-      key: "soLuongToiDa",
-      dataIndex: "soLuongToiDa",
-      title: "Số lượng tối đa",
+      key: 'soLuongToiDa',
+      dataIndex: 'soLuongToiDa',
+      title: 'Số lượng tối đa',
     },
     {
-      title: "Action",
-      key: "operation",
-      fixed: "right",
+      title: 'Action',
+      key: 'operation',
+      fixed: 'right',
       width: 200,
       render: (e) => (
         <div>

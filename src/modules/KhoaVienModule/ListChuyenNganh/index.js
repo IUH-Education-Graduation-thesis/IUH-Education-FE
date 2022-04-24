@@ -1,34 +1,34 @@
-import { Button, Collapse, Table } from "antd";
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
-import PropTypes from "prop-types";
+import { Button, Collapse, Table } from 'antd';
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 const { Panel } = Collapse;
-const prefix = "khoa-vien-chuyen-nganh";
+const prefix = 'khoa-vien-chuyen-nganh';
 
 const ChuyenNganhList = ({ data }) => {
   const { id: khoaVienId } = useParams();
 
   const columns = [
     {
-      key: "id",
-      dataIndex: "id",
-      title: "ID",
+      key: 'id',
+      dataIndex: 'id',
+      title: 'ID',
     },
     {
-      key: "ten",
-      dataIndex: "ten",
-      title: "Tên chuyên ngành",
+      key: 'ten',
+      dataIndex: 'ten',
+      title: 'Tên chuyên ngành',
     },
     {
-      key: "moTa",
-      dataIndex: "moTa",
-      title: "Mô tả",
+      key: 'moTa',
+      dataIndex: 'moTa',
+      title: 'Mô tả',
     },
     {
-      title: "Action",
-      key: "operation",
-      fixed: "right",
+      title: 'Action',
+      key: 'operation',
+      fixed: 'right',
       width: 200,
       render: (e) => (
         <div>

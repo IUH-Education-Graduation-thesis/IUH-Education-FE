@@ -1,5 +1,5 @@
-import { props } from "bluebird";
-import React, { createContext, useState } from "react";
+import { props } from 'bluebird';
+import React, { createContext, useState } from 'react';
 
 const GlobalContext = createContext();
 const GlobalConsumer = GlobalContext.Consumer;

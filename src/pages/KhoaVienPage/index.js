@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import { KhoaVienModue } from "modules";
+import { KhoaVienModue } from 'modules';
 
 const KhoaVienPage = () => {
   return <KhoaVienModue />;

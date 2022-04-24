@@ -1,8 +1,8 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-    mutation: {
-        suaDayNha: (fragment) => gql`
+  mutation: {
+    suaDayNha: (fragment) => gql`
         mutation SUA_DAYNHA($inputs: SuaDayNhaInput!){
             suaDayNha(inputs:$inputs){
                status
@@ -16,6 +16,6 @@ export default {
                }
              }
         }
-        `
-    }
-}
+        `,
+  },
+};
