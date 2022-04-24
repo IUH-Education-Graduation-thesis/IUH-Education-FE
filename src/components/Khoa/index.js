@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Button, Table, Modal, Divider } from "antd";
+import { Button, Table, Modal, Divider, notification } from "antd";
 import queries from "core/graphql";
-import { useLazyQuery } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { checkTrulyObject } from "components/helper";
+import { isEmpty } from "lodash";
 
 import { FIND_KHOA_VIEN } from "./fragment";
 import "./Khoa.scss";
@@ -11,6 +12,7 @@ import FilterExpand from "./FilterExpand";
 import ModalAddChuyenNganh from "../ChuyenNganh/FormAddChuyenNganh";
 
 const findKhoaVienQuery = queries.query.findKhoaVien(FIND_KHOA_VIEN);
+const xoaKhoaViensQuery = queries.mutation.xoaKhoaViens("id");
 
 const KhoaComponent = () => {
   const [visibleModal1, setVisibleModal1] = useState(false);
@@ -59,7 +61,12 @@ const KhoaComponent = () => {
           <Button danger onClick={(e) => handlerEditButton(e, record)}>
             Chỉnh sửa
           </Button>
-          <Button style={{ marginLeft: 10 }}>Xóa</Button>
+          <Button
+            onClick={(e) => handleDeleteRow(e, record)}
+            style={{ marginLeft: 10 }}
+          >
+            Xóa
+          </Button>
         </div>
       ),
     },
@@ -69,6 +76,36 @@ const KhoaComponent = () => {
    * API
    * ===============================================================
    */
+  const [actXoaKhoaViens, { loading: loadingXoaKhoaVien }] = useMutation(
+    xoaKhoaViensQuery,
+    {
+      onCompleted: (dataRes) => {
+        const _errors = dataRes?.xoaKhoaViens?.errors || [];
+        const _data = dataRes?.xoaKhoaViens?.data || [];
+
+        if (!isEmpty(_errors))
+          return _errors?.map((item) =>
+            notification["error"]({
+              message: item?.message,
+            })
+          );
+
+        if (isEmpty(_data)) {
+          notification["error"]({
+            message: "Lỗi hệ thống!",
+          });
+          return;
+        }
+
+        callAPIFindKhoaVien();
+
+        notification["success"]({
+          message: `Xóa thành công ${_data?.length} khoa viện.`,
+        });
+      },
+    }
+  );
+
   const [
     actFindKhoaVien,
     { data: dataFindKhoaVien, loading: loadingFindKhoaVien },
@@ -86,6 +123,16 @@ const KhoaComponent = () => {
    * Function
    * =============================================================
    */
+  const handleDeleteRow = (e, record) => {
+    e.stopPropagation();
+
+    actXoaKhoaViens({
+      variables: {
+        ids: [record?.id],
+      },
+    });
+  };
+
   const callAPIFindKhoaVien = useCallback(() => {
     const _inputs = checkTrulyObject(currentConfig);
 
@@ -132,6 +179,16 @@ const KhoaComponent = () => {
     });
   };
 
+  const handleDeleteMultiKhoaVien = () => {
+    const _ids = selectedRowKeys || [];
+
+    actXoaKhoaViens({
+      variables: {
+        ids: _ids,
+      },
+    });
+  };
+
   /**
    * useEffect
    * ==============================================================
@@ -170,7 +227,14 @@ const KhoaComponent = () => {
       <Divider />
 
       <div className="khoa__action">
-        <Button danger>Xóa học phần đã chọn</Button>
+        <Button
+          loading={loadingXoaKhoaVien}
+          onClick={handleDeleteMultiKhoaVien}
+          disabled={isEmpty(selectedRowKeys)}
+          danger
+        >
+          Xóa học phần đã chọn
+        </Button>
       </div>
 
       <Table
