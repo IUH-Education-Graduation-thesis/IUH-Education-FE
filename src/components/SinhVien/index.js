@@ -91,14 +91,20 @@ const SinhVienComponent = () => {
       fixed: 'right',
       width: 250,
 
-      render: (e) => (
+      render: (_, e) => (
         <div
           style={{ display: 'flex', alignItems: 'center', columnGap: '10px' }}
         >
           <Button danger onClick={() => handlerEditButton(e)}>
             Chỉnh sửa
           </Button>
-          <Button style={{ marginLeft: 10 }}>Xóa</Button>
+          <Button
+            loading={loadingXoaSinhViens}
+            onClick={() => handleButtonXoa(e)}
+            style={{ marginLeft: 10 }}
+          >
+            Xóa
+          </Button>
         </div>
       ),
     },
@@ -110,7 +116,33 @@ const SinhVienComponent = () => {
    */
 
   const [actXoaSinhViens, { data: dataXoaSinhViens, loadingXoaSinhViens }] =
-    useMutation(xoaSinhViensQuery);
+    useMutation(xoaSinhViensQuery, {
+      onCompleted: (dataRes) => {
+        const _errors = dataRes?.xoaSinhViens?.errors || [];
+        const _data = dataRes?.xoaSinhViens?.data || [];
+
+        if (!isEmpty(_errors)) {
+          return _errors?.map((item) =>
+            notification['error']({
+              message: item?.message,
+            })
+          );
+        }
+
+        if (isEmpty(_data)) {
+          notification['error']({
+            message: 'Lỗi kết nối!',
+          });
+          return;
+        }
+
+        callAPIFindSinhVien();
+        setSelectedRowKeys([]);
+        notification['success']({
+          message: `Xóa thành công ${_data?.length}`,
+        });
+      },
+    });
 
   const [
     actFindSinhVien,
@@ -166,6 +198,16 @@ const SinhVienComponent = () => {
    * Function
    * ==========================================================================
    */
+  const handleButtonXoa = (e) => {
+    const _inputs = [e?.id];
+
+    actXoaSinhViens({
+      variables: {
+        ids: _inputs,
+      },
+    });
+  };
+
   const callAPIFindSinhVien = useCallback(() => {
     const _inputs = {
       id: !isEmpty(currentFilter?.id) ? currentFilter?.id : undefined,
@@ -207,39 +249,15 @@ const SinhVienComponent = () => {
     currentFilter?.tenSinhVien,
   ]);
 
-  const handleXoaSinhViens = useCallback(async () => {
+  const handleXoaSinhViens = useCallback(() => {
     if (isEmpty(selectedRowKeys)) return;
 
-    const _dataRes = await actXoaSinhViens({
+    actXoaSinhViens({
       variables: {
         ids: [...selectedRowKeys],
       },
     });
-
-    const _errors = _dataRes?.data?.xoaSinhViens?.errors || [];
-    const _data = _dataRes?.data?.xoaSinhViens?.data || [];
-
-    if (!isEmpty(_errors)) {
-      return _errors?.map((item) =>
-        notification['error']({
-          message: item?.message,
-        })
-      );
-    }
-
-    if (isEmpty(_data)) {
-      notification['error']({
-        message: 'Lỗi kết nối!',
-      });
-      return;
-    }
-
-    callAPIFindSinhVien();
-    setSelectedRowKeys([]);
-    notification['success']({
-      message: `Xóa thành công ${_data?.length}`,
-    });
-  }, [selectedRowKeys, actXoaSinhViens, callAPIFindSinhVien]);
+  }, [selectedRowKeys, actXoaSinhViens]);
 
   const handleClearFilter = () => {
     setCurrentFilter({
