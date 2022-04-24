@@ -8,6 +8,7 @@ import { useMutation } from "@apollo/client";
 import { checkTrulyObject } from "components/helper";
 
 const themKhoaVienQuery = queries.mutation.themKhoaVien("id");
+const suaKhoaVienQuery = queries.mutation.suaKhoaVien("id");
 
 const ModalKhoa = ({ visible, closeModal, type, data, onCallAPISuccess }) => {
   const layout = {
@@ -21,6 +22,33 @@ const ModalKhoa = ({ visible, closeModal, type, data, onCallAPISuccess }) => {
    * API
    * ===========================================================
    */
+
+  const [actSuaKhoaVien] = useMutation(suaKhoaVienQuery, {
+    onCompleted: (dataRes) => {
+      const _errors = dataRes?.suaKhoaVien?.errors || [];
+      const _data = dataRes?.suaKhoaVien?.data || [];
+
+      if (!isEmpty(_errors))
+        return _errors?.map((item) =>
+          notification["error"]({
+            message: item?.message,
+          })
+        );
+
+      if (isEmpty(_data)) {
+        notification["error"]({
+          message: "Lỗi hệ thống!",
+        });
+        return;
+      }
+
+      onCallAPISuccess(_data?.[0]);
+
+      notification["success"]({
+        message: "Sửa khoa viên thành công.",
+      });
+    },
+  });
 
   const [actThemKhoaVien] = useMutation(themKhoaVienQuery, {
     onCompleted: (dataRes) => {
@@ -63,6 +91,17 @@ const ModalKhoa = ({ visible, closeModal, type, data, onCallAPISuccess }) => {
     });
   };
 
+  const handleCallAPIEdit = (inputs, id) => {
+    actSuaKhoaVien({
+      variables: {
+        inputs: {
+          ...inputs,
+        },
+        id,
+      },
+    });
+  };
+
   const handleButtonOkClick = () => {
     form
       ?.validateFields()
@@ -79,9 +118,18 @@ const ModalKhoa = ({ visible, closeModal, type, data, onCallAPISuccess }) => {
 
         if (type === "add") {
           handleCallAPIAdd(_inputsFormat);
+          return;
         }
+
+        const _id = form?.getFieldValue("id");
+
+        handleCallAPIEdit(_inputsFormat, _id);
       })
-      ?.catch(() => {});
+      ?.catch(() => {
+        notification["error"]({
+          message: "Nhập thiếu thông tin!",
+        });
+      });
   };
 
   /**

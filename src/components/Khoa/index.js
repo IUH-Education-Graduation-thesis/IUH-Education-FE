@@ -101,6 +101,7 @@ const KhoaComponent = () => {
   const handleWhenAddKhoaVienSuccess = (payload) => {
     callAPIFindKhoaVien();
     setVisibleModal(false);
+    setVisibleModal1(false);
   };
 
   const handlerEditButton = (e, khoa) => {
@@ -121,6 +122,13 @@ const KhoaComponent = () => {
   const handleFilterChange = (currentFieldChange, allFiledCurrent) => {
     setCurrentConfig({
       ...allFiledCurrent,
+    });
+  };
+
+  const handleFilterClear = () => {
+    setCurrentConfig({
+      id: "",
+      ten: "",
     });
   };
 
@@ -153,6 +161,7 @@ const KhoaComponent = () => {
     <div className="khoa">
       <h3>DANH SÁCH KHOA</h3>
       <FilterExpand
+        onClear={handleFilterClear}
         currentFilterData={currentConfig}
         onFilterChange={handleFilterChange}
         onAddAStudentClick={() => setVisibleModal(true)}
@@ -188,6 +197,7 @@ const KhoaComponent = () => {
       <ModalAddKhoa
         type="sua"
         visible={visibleModal1}
+        onCallAPISuccess={handleWhenAddKhoaVienSuccess}
         closeModal={setVisibleModal1}
         data={khoa}
       />
