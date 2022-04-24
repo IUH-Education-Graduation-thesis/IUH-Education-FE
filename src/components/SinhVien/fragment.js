@@ -35,6 +35,17 @@ email
 loaiHinhDaoTaoString
 `;
 
+export const THEM_SINH_VIEN_FRAGMENT = `
+id
+maSinhVien
+hoTenDem
+ten
+gioiTinh
+bacDaoTaoString
+soDienThoai
+email
+`;
+
 export const FIND_KHOA_VIEN = `
 id
 ten
