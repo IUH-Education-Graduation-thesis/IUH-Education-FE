@@ -1,47 +1,58 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Table, Modal, Divider } from 'antd';
-import './Khoa.scss';
-import ModalAddKhoa from './FormAddKhoa';
-import FilterExpand from './FilterExpand';
-import ModalAddChuyenNganh from '../ChuyenNganh/FormAddChuyenNganh';
+import React, { useEffect, useState } from "react";
+import { Button, Table, Modal, Divider } from "antd";
+import queries from "core/graphql";
+import { useLazyQuery } from "@apollo/client";
+import { checkTrulyObject } from "components/helper";
+
+import { FIND_KHOA_VIEN } from "./fragment";
+import "./Khoa.scss";
+import ModalAddKhoa from "./FormAddKhoa";
+import FilterExpand from "./FilterExpand";
+import ModalAddChuyenNganh from "../ChuyenNganh/FormAddChuyenNganh";
+
+const findKhoaVienQuery = queries.query.findKhoaVien(FIND_KHOA_VIEN);
 
 const KhoaComponent = () => {
   const [visibleModal1, setVisibleModal1] = useState(false);
   const [visibleModal, setVisibleModal] = useState(false);
   const [visibelModalThemChuyenNganh, setvisibelModalThemChuyenNganh] =
     useState(false);
-  const [listKhoa, setListKhoa] = useState([]);
   const [khoa, setKhoa] = useState({});
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
+  const [currentConfig, setCurrentConfig] = useState({
+    id: "",
+    ten: "",
+  });
+
   const columns = [
     {
-      title: 'Mã khoa',
-      dataIndex: 'id',
-      key: 'id',
+      title: "Mã khoa",
+      dataIndex: "id",
+      key: "id",
       width: 100,
     },
     {
-      title: 'Tên khoa',
-      dataIndex: 'ten',
-      key: 'ten',
+      title: "Tên khoa",
+      dataIndex: "ten",
+      key: "ten",
       width: 400,
     },
     {
-      title: 'Mô tả',
-      dataIndex: 'moTa',
-      key: 'moTa',
+      title: "Mô tả",
+      dataIndex: "moTa",
+      key: "moTa",
       width: 300,
     },
     {
-      title: 'Link',
-      dataIndex: 'link',
-      key: 'link',
+      title: "Link",
+      dataIndex: "link",
+      key: "link",
       width: 300,
     },
     {
-      title: 'Thao tác',
-      key: 'thaoTac',
+      title: "Thao tác",
+      key: "thaoTac",
       width: 300,
       render: (e) => (
         <div>
@@ -53,6 +64,23 @@ const KhoaComponent = () => {
       ),
     },
   ];
+
+  /**
+   * API
+   * ===============================================================
+   */
+  const [
+    actFindKhoaVien,
+    { data: dataFindKhoaVien, loading: loadingFindKhoaVien },
+  ] = useLazyQuery(findKhoaVienQuery, {
+    fetchPolicy: "network-only",
+  });
+
+  const listKhoaVien =
+    dataFindKhoaVien?.findKhoaVien?.data?.[0]?.data?.map((item) => ({
+      ...item,
+      key: item?.id,
+    })) || [];
 
   /**
    * Function
@@ -73,33 +101,31 @@ const KhoaComponent = () => {
     window.location.href = `${_origin}/khoa-vien/${record?.id}`;
   };
 
+  const handleFilterChange = (currentFieldChange, allFiledCurrent) => {
+    setCurrentConfig({
+      ...allFiledCurrent,
+    });
+  };
+
   /**
    * useEffect
    * ==============================================================
    */
 
   /**
-   * handle mock data for table when init page
+   * find khoa vien when init page
    */
   useEffect(() => {
-    const data = [];
-    for (let i = 0; i < 30; i++) {
-      data.push({
-        key: i,
-        id: `${i}`,
-        ten: `Kinh doanh quốc tế`,
-        moTa: 'New York No. 1 Lake Park',
-        link: 'helloworld.com',
-        chuyenNganhs: [...Array(10).keys()]?.map((item) => ({
-          id: item,
-          ten: `Kỹ thuật phần mềm ${item}`,
-          moTa: 'Đây là dòng mô tả',
-        })),
-      });
-    }
+    const _inputs = checkTrulyObject(currentConfig);
 
-    setListKhoa(data);
-  }, []);
+    actFindKhoaVien({
+      variables: {
+        inputs: {
+          ..._inputs,
+        },
+      },
+    });
+  }, [actFindKhoaVien, currentConfig]);
 
   /**
    * Render view
@@ -109,7 +135,11 @@ const KhoaComponent = () => {
   return (
     <div className="khoa">
       <h3>DANH SÁCH KHOA</h3>
-      <FilterExpand onAddAStudentClick={() => setVisibleModal(true)} />
+      <FilterExpand
+        currentFilterData={currentConfig}
+        onFilterChange={handleFilterChange}
+        onAddAStudentClick={() => setVisibleModal(true)}
+      />
 
       <Divider />
 
@@ -120,7 +150,8 @@ const KhoaComponent = () => {
       <Table
         className="ant-table-wrapper"
         columns={columns}
-        dataSource={listKhoa}
+        loading={loadingFindKhoaVien}
+        dataSource={listKhoaVien}
         onRow={(record, index) => {
           return {
             onClick: (e) => handleClickRowTable(e, record),
