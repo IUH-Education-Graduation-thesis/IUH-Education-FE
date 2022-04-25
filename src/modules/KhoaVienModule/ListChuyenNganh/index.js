@@ -1,11 +1,16 @@
-import { Button, Collapse, Table } from "antd";
+import { Button, Collapse, notification, Table } from "antd";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
+import queries from "core/graphql";
 import ModalChuyenNganh from "./ModalChuyenNganh";
+import { useMutation } from "@apollo/client";
+import { isEmpty } from "lodash";
 
 const { Panel } = Collapse;
 const prefix = "khoa-vien-chuyen-nganh";
+
+const xoaChuyenNganhMutation = queries.mutation.xoaChuyenNganhs("id");
 
 const ChuyenNganhList = ({ data, refetchKhoaVien }) => {
   const { id: khoaVienId } = useParams();
@@ -31,10 +36,12 @@ const ChuyenNganhList = ({ data, refetchKhoaVien }) => {
       key: "operation",
       fixed: "right",
       width: 200,
-      render: (e) => (
+      render: (_, record) => (
         <div>
-          <Button danger>Chỉnh sửa</Button>
-          <Button>Xóa</Button>
+          <Button onClick={(e) => handleClickChinhSua(e, record)} danger>
+            Chỉnh sửa
+          </Button>
+          <Button onClick={(e) => handleClickDeleteRow(e, record)}>Xóa</Button>
         </div>
       ),
     },
@@ -42,11 +49,62 @@ const ChuyenNganhList = ({ data, refetchKhoaVien }) => {
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [showModalAdd, setShowModalAdd] = useState(false);
+  const [showModalSua, setShowModalSua] = useState(false);
+  const [currentChuyenNganh, setCurrentChuyenNganh] = useState(null);
+
+  /**
+   * API
+   * ==================================================
+   */
+
+  const [actXoaChuyenNganhs] = useMutation(xoaChuyenNganhMutation, {
+    onCompleted: (dataRes) => {
+      const _errors = dataRes?.xoaChuyenNganhs?.errors || [];
+      const _data = dataRes?.xoaChuyenNganhs?.data || [];
+
+      if (!isEmpty(_errors))
+        return _errors?.map((item) =>
+          notification["error"]({
+            message: item?.message,
+          })
+        );
+
+      if (isEmpty(_data)) {
+        notification["error"]({
+          message: "Lỗi hệ thống!",
+        });
+        return;
+      }
+
+      setSelectedRowKeys([]);
+      refetchKhoaVien();
+
+      notification["success"]({
+        message: `Xóa ${_data?.length} chuyên ngành thành công.`,
+      });
+    },
+  });
 
   /**
    * Function
    * ==================================================
    */
+  const handleClickDeleteRow = (e, record) => {
+    e?.stopPropagation();
+
+    actXoaChuyenNganhs({
+      variables: {
+        ids: [record?.id],
+      },
+    });
+  };
+
+  const handleClickChinhSua = (e, record) => {
+    e?.stopPropagation();
+    setCurrentChuyenNganh(record);
+    setShowModalSua(true);
+  };
+
   const handleThemChuyenNganhClick = (e) => {
     e?.stopPropagation();
     setShowModalAdd(true);
@@ -58,7 +116,19 @@ const ChuyenNganhList = ({ data, refetchKhoaVien }) => {
 
   const handleCallAPIAddSuccess = (payload) => {
     setShowModalAdd(false);
+    setShowModalSua(false);
     refetchKhoaVien();
+  };
+
+  const handleDeleteMultiChuyenNganh = (e) => {
+    e?.stopPropagation();
+    const _ids = selectedRowKeys || [];
+
+    actXoaChuyenNganhs({
+      variables: {
+        ids: _ids,
+      },
+    });
   };
 
   /**
@@ -70,7 +140,9 @@ const ChuyenNganhList = ({ data, refetchKhoaVien }) => {
       <div className={`${prefix}__header`}>
         <div className={`${prefix}__header__left`}>Danh sách chuyên ngành</div>
         <div className={`${prefix}__header__right`}>
-          <Button danger>Xóa chuyên ngành đã chọn</Button>
+          <Button onClick={(e) => handleDeleteMultiChuyenNganh(e)} danger>
+            Xóa chuyên ngành đã chọn
+          </Button>
           <Button onClick={handleThemChuyenNganhClick} type="primary">
             Thêm chuyên ngành
           </Button>
@@ -107,11 +179,19 @@ const ChuyenNganhList = ({ data, refetchKhoaVien }) => {
           />
         </Panel>
       </Collapse>
+
       <ModalChuyenNganh
         onCallAPISuccess={handleCallAPIAddSuccess}
         khoaVienID={khoaVienId}
         type="add"
         visible={showModalAdd}
+      />
+      <ModalChuyenNganh
+        data={currentChuyenNganh}
+        onCallAPISuccess={handleCallAPIAddSuccess}
+        khoaVienID={khoaVienId}
+        type="edit"
+        visible={showModalSua}
       />
     </>
   );

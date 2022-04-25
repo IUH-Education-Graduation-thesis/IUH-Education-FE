@@ -8,6 +8,7 @@ import { useMutation } from "@apollo/client";
 import { checkTrulyObject } from "components/helper";
 
 const themChuyenNganhMutation = queries.mutation.themChuyenNganh("id");
+const suaChuyenNganhMutation = queries.mutation.suaChuyenNganh("id");
 
 const ModalChuyenNganh = ({
   visible,
@@ -58,6 +59,35 @@ const ModalChuyenNganh = ({
       },
     }
   );
+  const [actSuaChuyenNganh, { loading: loadingSuaChuyenNganh }] = useMutation(
+    suaChuyenNganhMutation,
+    {
+      onCompleted: (dataRes) => {
+        const _errors = dataRes?.suaChuyenNganh?.errors || [];
+        const _data = dataRes?.suaChuyenNganh?.data || [];
+
+        if (!isEmpty(_errors))
+          return _errors?.map((item) =>
+            notification["error"]({
+              message: item?.message,
+            })
+          );
+
+        if (isEmpty(_data)) {
+          notification["error"]({
+            message: "Lỗi hệ thống!",
+          });
+          return;
+        }
+
+        onCallAPISuccess(_data?.[0]);
+
+        notification["success"]({
+          message: "Sửa chuyên ngành thành công.",
+        });
+      },
+    }
+  );
 
   /**
    * function
@@ -71,7 +101,14 @@ const ModalChuyenNganh = ({
     });
   };
 
-  const handleCallAPIEdit = (inputs, id) => {};
+  const handleCallAPIEdit = (inputs, id) => {
+    actSuaChuyenNganh({
+      variables: {
+        inputs,
+        id,
+      },
+    });
+  };
 
   const handleButtonOkClick = () => {
     form
@@ -116,7 +153,6 @@ const ModalChuyenNganh = ({
       id: data.id,
       ten: data.ten,
       moTa: data.moTa,
-      link: data?.link,
     });
   }, [data, form]);
 
@@ -157,7 +193,7 @@ const ModalChuyenNganh = ({
       visible={visible}
       onCancel={() => closeModal(false)}
       width={1000}
-      confirmLoading={loadingThemChuyenNganh}
+      confirmLoading={loadingThemChuyenNganh || loadingSuaChuyenNganh}
       onOk={handleButtonOkClick}
       okText={type === "add" ? "Thêm" : "Sửa"}
     >
