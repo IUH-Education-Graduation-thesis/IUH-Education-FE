@@ -21,17 +21,19 @@ const KhoaVienModule = () => {
    * ======================================================
    */
 
-  const { data: dataFindKhoaVien, loading: loadingDataFindKhoaVien } = useQuery(
-    findKhoaVienQuery,
-    {
-      skip: !id,
-      variables: {
-        inputs: {
-          id,
-        },
+  const {
+    data: dataFindKhoaVien,
+    loading: loadingDataFindKhoaVien,
+    refetch: refetchFindKhoaVien,
+  } = useQuery(findKhoaVienQuery, {
+    fetchPolicy: "network-only",
+    skip: !id,
+    variables: {
+      inputs: {
+        id,
       },
-    }
-  );
+    },
+  });
 
   const currentKhoaVien =
     dataFindKhoaVien?.findKhoaVien?.data?.[0]?.data?.[0] || {};
@@ -81,7 +83,10 @@ const KhoaVienModule = () => {
           </Row>
         </Card>
         <ListMonHoc data={dataForMonHoc} />
-        <ListChuyenNganh data={dataForChuyenNganh} />
+        <ListChuyenNganh
+          refetchKhoaVien={refetchFindKhoaVien}
+          data={dataForChuyenNganh}
+        />
       </Col>
       <Col span={4}></Col>
     </Row>
