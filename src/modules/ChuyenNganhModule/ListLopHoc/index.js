@@ -1,13 +1,10 @@
 import { Button, Collapse, Select, Table } from "antd";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import TableExpand from "./LopHocTableExpand";
 
 const { Panel } = Collapse;
 const prefix = "chuyen-nganh-lop-hoc";
-const dataMockForSelect = [
-  { label: "Khoa 11", value: 11 },
-  { label: "Khoa 12", value: 12 },
-];
 
 const ListLopHoc = ({ data }) => {
   const columns = [
@@ -80,11 +77,13 @@ const ListLopHoc = ({ data }) => {
         header={renderHeadOfPanel()}
         key="1"
       >
-        <Select options={dataMockForSelect} />
         <Table
           rowSelection={{
             selectedRowKeys,
             onChange: handleSelectedRowChange,
+          }}
+          expandable={{
+            expandedRowRender: (record) => <TableExpand data={record?.lops} />,
           }}
           columns={columns}
           dataSource={data}
