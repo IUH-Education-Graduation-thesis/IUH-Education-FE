@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Table, Modal, notification, Divider } from 'antd';
-import './KhoaHoc.scss';
-import ModalAddKhoaHoc from './FormAddKhoaHoc';
-import queries from 'core/graphql';
-import { GET_KHOAHOC_FAGMENT } from './fragment';
-import { useMutation, useQuery } from '@apollo/client';
-import { get, isEmpty } from 'lodash';
-import ExpandFilter from './FilterExpand';
+import React, { useEffect, useState } from "react";
+import { Button, Table, Modal, notification, Divider } from "antd";
+import "./KhoaHoc.scss";
+import ModalAddKhoaHoc from "./FormAddKhoaHoc";
+import queries from "core/graphql";
+import { GET_KHOAHOC_FAGMENT, FIND_KHOA_HOC } from "./fragment";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { get, isEmpty } from "lodash";
+import ExpandFilter from "./FilterExpand";
+import { checkTrulyObject } from "components/helper";
 
-const getAllKhoaHocQuery = queries.query.findKhoaHocs(GET_KHOAHOC_FAGMENT);
-const xoaKhoaHocMutation = queries.mutation.xoaKhoaHocs(GET_KHOAHOC_FAGMENT);
+const findKhoaHocQuery = queries.query.findKhoaHocs(FIND_KHOA_HOC);
 
 const KhoaHocComponent = () => {
   const [visibleModalEdit, setVisibleModalEdit] = useState(false);
@@ -17,82 +17,88 @@ const KhoaHocComponent = () => {
   const [khoaHoc, setKhoa] = useState({});
   const [data, setData] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [currentFilter, setCurrentFilter] = useState({
+    id: "",
+    tenKhoaHoc: "",
+  });
 
-  const dataMockKhoaHoc = [...Array(10)?.keys()]?.map((i) => ({
-    id: i,
-    key: i,
-    khoa: i,
-    namBatDau: 2014,
-    namKetThuc: 2015,
-    moTa: `Day la mo ta`,
-    chuyenNganh: {
-      id: i,
-      khoaVien: {
-        id: i,
-      },
-    },
-  }));
+  const [
+    actFindKhoaHoc,
+    { data: dataFindKhoaHoc, loading: loadingFindKhoaHoc },
+  ] = useLazyQuery(findKhoaHocQuery, {
+    fetchPolicy: "network-only",
+  });
 
-  const { data: dataGetKhoaHoc, loading: loadingGetKhoaHoc } =
-    useQuery(getAllKhoaHocQuery);
-  const [actDelete, { data: dataDeleteDayNha, loading: loadingDeleteDayNha }] =
-    useMutation(xoaKhoaHocMutation);
+  const listKhoa =
+    dataFindKhoaHoc?.findKhoaHocs?.data?.[0]?.data?.map((item) => ({
+      ...item,
+      key: item?.id,
+    })) || [];
 
-  useEffect(() => {
-    const _listDayNha = dataGetKhoaHoc?.findKhoaHocs?.data || [];
-    setData(_listDayNha);
-  }, [dataGetKhoaHoc]);
   const columns = [
     {
-      title: 'ID',
-      dataIndex: 'id',
-      key: 'id',
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
       width: 100,
     },
     {
-      title: 'Tên khóa học',
-      dataIndex: 'khoa',
-      key: 'khoa',
+      title: "Tên khóa học",
+      dataIndex: "khoa",
+      key: "khoa",
       width: 400,
     },
     {
-      title: 'Năm bắt đầu',
-      dataIndex: 'namBatDau',
-      key: 'namBatDau',
+      title: "Năm bắt đầu",
+      dataIndex: "thoiGianBatDau",
+      key: "thoiGianBatDau",
       width: 200,
     },
     {
-      title: 'Năm kết thúc',
-      dataIndex: 'namKetThuc',
-      key: 'namKetThuc',
+      title: "Năm kết thúc",
+      dataIndex: "thoiGianKetThuc",
+      key: "thoiGianKetThuc",
       width: 200,
     },
     {
-      title: 'Mô tả',
-      dataIndex: 'moTa',
-      key: 'moTa',
+      title: "Mô tả",
+      dataIndex: "moTa",
+      key: "moTa",
       width: 300,
     },
     {
-      title: 'Thao tác',
-      key: 'thaoTac',
+      title: "Thao tác",
+      key: "thaoTac",
       width: 300,
-      fixed: 'right',
+      fixed: "right",
       render: (e) => (
         <div>
           <Button danger onClick={() => handlerEditButton(e)}>
             Chỉnh sửa
           </Button>
-          <Button
-            style={{ marginLeft: 10 }}
-            onClick={() => handleButtonDelete(e)}
-          >
-            Xóa
-          </Button>
+          <Button style={{ marginLeft: 10 }}>Xóa</Button>
         </div>
       ),
     },
   ];
+
+  /**
+   * useEffect
+   * =======================================================
+   */
+
+  /**
+   * handle call api
+   */
+  useEffect(() => {
+    const _inputs = checkTrulyObject(currentFilter);
+
+    actFindKhoaHoc({
+      variables: {
+        inputs: _inputs,
+      },
+    });
+  }, [actFindKhoaHoc, currentFilter]);
 
   /**
    * Function
@@ -110,46 +116,6 @@ const KhoaHocComponent = () => {
     setData(_data);
   };
 
-  const handleButtonDelete = async (e) => {
-    const _dataReutrn = await actDelete({
-      variables: {
-        id: e?.id,
-      },
-    });
-
-    const dataReturn = get(_dataReutrn, 'data', {});
-
-    const errors = get(dataReturn, 'xoaKhoaHoc.errors', []);
-    if (!isEmpty(errors)) {
-      errors?.map((item) =>
-        notification['error']({
-          message: item?.message,
-        })
-      );
-      return;
-    }
-
-    const status = get(dataReturn, 'xoaKhoaHoc.status', '');
-    if (status === 'OK') {
-      const _index = data?.findIndex((item) => item?.id === e?.id);
-
-      let _listKhoaHoc = data;
-      _listKhoaHoc = [
-        ..._listKhoaHoc.slice(0, _index),
-        ..._listKhoaHoc.slice(_index + 1),
-      ];
-
-      setData(_listKhoaHoc);
-      notification.open({
-        message: 'Thông báo',
-        description: status,
-      });
-      return;
-    }
-
-    console.log('Loi ket noi');
-  };
-
   const handleSelectedRowChange = (payload) => {
     setSelectedRowKeys(payload);
   };
@@ -163,6 +129,10 @@ const KhoaHocComponent = () => {
     window.location.href = `${_origin}/khoa-vien/${_khoaVienId}/chuyen-nganh/${_chuyenNganhId}/khoa/${record?.id}`;
   };
 
+  const handleFilterChange = (currentChange, allData) => {
+    setCurrentFilter({ ...allData });
+  };
+
   /**
    * Render view
    * ===========================================================
@@ -171,16 +141,20 @@ const KhoaHocComponent = () => {
   return (
     <div className="khoaHoc">
       <h3>DANH SÁCH KHÓA HỌC</h3>
-      <ExpandFilter />
+      <ExpandFilter
+        onFilterChange={handleFilterChange}
+        currentFilterData={currentFilter}
+      />
       <Divider />
       <div className="khoaHoc__action">
         <Button danger>Xóa khóa học đã chọn</Button>
       </div>
       <Table
+        loading={loadingFindKhoaHoc}
         className="ant-table-wrapper"
         columns={columns}
-        dataSource={dataMockKhoaHoc}
-        scroll={{ x: 1500, y: '50vh' }}
+        dataSource={listKhoa}
+        scroll={{ x: 1500, y: "50vh" }}
         rowSelection={{
           selectedRowKeys,
           onChange: handleSelectedRowChange,
