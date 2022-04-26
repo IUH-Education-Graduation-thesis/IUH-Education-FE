@@ -1,10 +1,14 @@
-import { Button, Collapse, Table } from "antd";
+import { Button, Collapse, notification, Table } from "antd";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import ModalGiangVien from "./ModalGiangVien";
+import queries from "core/graphql";
+import { useMutation } from "@apollo/client";
+import { isEmpty } from "lodash";
 
 const { Panel } = Collapse;
 const prefix = "khoa-vien-chuyen-nganh";
+const xoaGiangViensMutation = queries.mutation.xoaGiangViens("id");
 
 const ListGiangVien = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
   const columns = [
@@ -43,7 +47,7 @@ const ListGiangVien = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
           <Button onClick={(e) => handleEditRow(e, record)} danger>
             Chỉnh sửa
           </Button>
-          <Button>Xóa</Button>
+          <Button onClick={() => handleXoaRow(record)}>Xóa</Button>
         </div>
       ),
     },
@@ -55,9 +59,53 @@ const ListGiangVien = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
   const [currentGiangVien, setCurrentGiangVien] = useState({});
 
   /**
+   * API
+   * ====================================================
+   */
+
+  const [actXoaGiangVien, { loading: loadingXoaGiangViens }] = useMutation(
+    xoaGiangViensMutation,
+    {
+      onCompleted: (dataRes) => {
+        const _errors = dataRes?.xoaGiangViens?.errors || [];
+        const _data = dataRes?.xoaGiangViens?.data || [];
+
+        if (!isEmpty(_errors))
+          return _errors?.map((item) =>
+            notification["error"]({
+              message: item?.message,
+            })
+          );
+
+        if (isEmpty(_data)) {
+          notification["error"]({
+            message: "Lỗi hệ thống!",
+          });
+          return;
+        }
+
+        setSelectedRowKeys([]);
+        refetchFindChuyenNganh();
+
+        notification["success"]({
+          message: `Xóa ${_data?.length} giảng viên thành công.`,
+        });
+      },
+    }
+  );
+
+  /**
    * Function
    * ==================================================
    */
+
+  const handleXoaRow = (record) => {
+    actXoaGiangVien({
+      variables: {
+        ids: [record?.id],
+      },
+    });
+  };
 
   const handleEditRow = (e, record) => {
     e?.stopPropagation();
@@ -80,6 +128,16 @@ const ListGiangVien = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
     refetchFindChuyenNganh();
   };
 
+  const handleDeleteMultipleGiangVien = (e) => {
+    e?.stopPropagation();
+    const _ids = selectedRowKeys || [];
+    actXoaGiangVien({
+      variables: {
+        ids: [..._ids],
+      },
+    });
+  };
+
   /**
    * Render view
    * ===================================================
@@ -89,7 +147,9 @@ const ListGiangVien = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
       <div className={`${prefix}__header`}>
         <div className={`${prefix}__header__left`}>Danh sách giảng viên</div>
         <div className={`${prefix}__header__right`}>
-          <Button danger>Xóa giảng viên đã chọn</Button>
+          <Button onClick={handleDeleteMultipleGiangVien} danger>
+            Xóa giảng viên đã chọn
+          </Button>
           <Button onClick={themGiangVienClickButton} type="primary">
             Thêm giảng viên
           </Button>

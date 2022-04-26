@@ -32,6 +32,7 @@ import xoaMonHocs from "./xoaMonHoc";
 import findChuyenNganh from "./findChuyenNganh";
 import themGiangVIen from "./themGiangVIen";
 import suaGiangVien from "./suaGiangVien";
+import xoaGiangViens from "./xoaGiangViens";
 
 const query = {
   ...GetProfile.query,
@@ -70,6 +71,7 @@ const mutation = {
   ...xoaMonHocs.mutation,
   ...themGiangVIen.mutation,
   ...suaGiangVien.mutation,
+  ...xoaGiangViens.mutation,
 };
 
 export default {
