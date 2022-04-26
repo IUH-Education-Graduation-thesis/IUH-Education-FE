@@ -1,12 +1,17 @@
-import { Button, Collapse, Table } from "antd";
+import { Button, Collapse, notification, Table } from "antd";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import queries from "core/graphql";
 
 import ListGiangVien from "./ListGiangVien";
 import ModalMonHoc from "./ModalMonHoc";
+import { useMutation } from "@apollo/client";
+import { isEmpty } from "lodash";
 
 const prefix = "khoa-vien-mon-hoc";
 const { Panel } = Collapse;
+
+const xoaMonHocsMutation = queries.mutation.xoaMonHocs("id");
 
 const ListMonHoc = ({ data, khoaVienID, refetchFindKhoaVien }) => {
   const columns = [
@@ -30,7 +35,7 @@ const ListMonHoc = ({ data, khoaVienID, refetchFindKhoaVien }) => {
           <Button onClick={(e) => handleClickEditRow(e, record)} danger>
             Chỉnh sửa
           </Button>
-          <Button>Xóa</Button>
+          <Button onClick={(e) => handleClickDeleteRow(e, record)}>Xóa</Button>
         </div>
       ),
     },
@@ -40,10 +45,56 @@ const ListMonHoc = ({ data, khoaVienID, refetchFindKhoaVien }) => {
   const [showAddMonHocModal, setShowAddMonHocModal] = useState(false);
   const [showEditMonHocModal, setShowEditMonHocModal] = useState(false);
   const [currentMonHoc, setCurrentMonHoc] = useState({});
+
+  /**
+   * API
+   * ==========================================================
+   */
+
+  const [actXoaMonHocs, { loading: loadingXoaMonHoc }] = useMutation(
+    xoaMonHocsMutation,
+    {
+      onCompleted: (dataRes) => {
+        const _errors = dataRes?.xoaMonHocs?.errors || [];
+        const _data = dataRes?.xoaMonHocs?.data || [];
+
+        if (!isEmpty(_errors))
+          return _errors?.map((item) =>
+            notification["error"]({
+              message: item?.message,
+            })
+          );
+
+        if (isEmpty(_data)) {
+          notification["error"]({
+            message: "Lỗi hệ thống!",
+          });
+          return;
+        }
+
+        setSelectedRowsKey([]);
+        refetchFindKhoaVien();
+
+        notification["success"]({
+          message: `Xóa ${_data?.length} môn học thành công.`,
+        });
+      },
+    }
+  );
+
   /**
    * Function
    * ====================================================
    */
+
+  const handleClickDeleteRow = (e, record) => {
+    e?.stopPropagation();
+    actXoaMonHocs({
+      variables: {
+        ids: [record?.id],
+      },
+    });
+  };
 
   const handleClickEditRow = (e, record) => {
     e?.stopPropagation();
@@ -66,6 +117,17 @@ const ListMonHoc = ({ data, khoaVienID, refetchFindKhoaVien }) => {
     setShowAddMonHocModal(true);
   };
 
+  const handleDeleteMultiMonHoc = (e) => {
+    e?.stopPropagation();
+    const _ids = selectedRowKeys || [];
+
+    actXoaMonHocs({
+      variables: {
+        ids: _ids,
+      },
+    });
+  };
+
   /**
    * Render view
    * ===================================================
@@ -75,7 +137,9 @@ const ListMonHoc = ({ data, khoaVienID, refetchFindKhoaVien }) => {
       <div className={`${prefix}__header`}>
         <div className={`${prefix}__header__left`}>Danh sách môn học</div>
         <div className={`${prefix}__header__right`}>
-          <Button danger>Xóa môn học đã chọn</Button>
+          <Button onClick={handleDeleteMultiMonHoc} danger>
+            Xóa môn học đã chọn
+          </Button>
           <Button onClick={handleThemMonHoc} type="primary">
             Thêm môn học
           </Button>
