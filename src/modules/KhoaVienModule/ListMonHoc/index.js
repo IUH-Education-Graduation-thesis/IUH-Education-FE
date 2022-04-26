@@ -56,6 +56,7 @@ const ListMonHoc = ({ data, khoaVienID, refetchFindKhoaVien }) => {
   };
 
   const handleCallAPISuccess = () => () => {
+    setShowEditMonHocModal(false);
     setShowAddMonHocModal(false);
     refetchFindKhoaVien();
   };

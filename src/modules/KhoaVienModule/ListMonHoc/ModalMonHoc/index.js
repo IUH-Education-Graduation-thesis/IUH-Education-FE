@@ -7,10 +7,8 @@ import { isEmpty } from "lodash";
 import { useMutation } from "@apollo/client";
 import { checkTrulyObject } from "components/helper";
 
-const themChuyenNganhMutation = queries.mutation.themChuyenNganh("id");
-const suaChuyenNganhMutation = queries.mutation.suaChuyenNganh("id");
-
 const themMonHocMutation = queries.mutation.themMonHoc("id");
+const suaMonHocMutation = queries.mutation.suaMonHoc("id");
 
 const ModalMonHoc = ({
   visible,
@@ -61,12 +59,13 @@ const ModalMonHoc = ({
       },
     }
   );
-  const [actSuaChuyenNganh, { loading: loadingSuaChuyenNganh }] = useMutation(
-    suaChuyenNganhMutation,
+
+  const [actSuaMonHoc, { loading: loadingSuaMonHoc }] = useMutation(
+    suaMonHocMutation,
     {
       onCompleted: (dataRes) => {
-        const _errors = dataRes?.suaChuyenNganh?.errors || [];
-        const _data = dataRes?.suaChuyenNganh?.data || [];
+        const _errors = dataRes?.suaMonHoc?.errors || [];
+        const _data = dataRes?.suaMonHoc?.data || [];
 
         if (!isEmpty(_errors))
           return _errors?.map((item) =>
@@ -85,7 +84,7 @@ const ModalMonHoc = ({
         onCallAPISuccess(_data?.[0]);
 
         notification["success"]({
-          message: "Thêm môn học thành công.",
+          message: "Sửa môn học thành công.",
         });
       },
     }
@@ -104,7 +103,7 @@ const ModalMonHoc = ({
   };
 
   const handleCallAPIEdit = (inputs, id) => {
-    actSuaChuyenNganh({
+    actSuaMonHoc({
       variables: {
         inputs,
         id,
@@ -192,7 +191,7 @@ const ModalMonHoc = ({
       visible={visible}
       onCancel={() => closeModal(false)}
       width={1000}
-      confirmLoading={loadingThemMonHoc || loadingSuaChuyenNganh}
+      confirmLoading={loadingThemMonHoc || loadingSuaMonHoc}
       onOk={handleButtonOkClick}
       okText={type === "add" ? "Thêm" : "Sửa"}
     >
