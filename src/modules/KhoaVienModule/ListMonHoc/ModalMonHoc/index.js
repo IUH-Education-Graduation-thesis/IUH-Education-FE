@@ -10,7 +10,9 @@ import { checkTrulyObject } from "components/helper";
 const themChuyenNganhMutation = queries.mutation.themChuyenNganh("id");
 const suaChuyenNganhMutation = queries.mutation.suaChuyenNganh("id");
 
-const ModalChuyenNganh = ({
+const themMonHocMutation = queries.mutation.themMonHoc("id");
+
+const ModalMonHoc = ({
   visible,
   closeModal,
   type,
@@ -30,12 +32,12 @@ const ModalChuyenNganh = ({
    * ===========================================================
    */
 
-  const [actThemChuyenNganh, { loading: loadingThemChuyenNganh }] = useMutation(
-    themChuyenNganhMutation,
+  const [actThemMonHoc, { loading: loadingThemMonHoc }] = useMutation(
+    themMonHocMutation,
     {
       onCompleted: (dataRes) => {
-        const _errors = dataRes?.themChuyenNganh?.errors || [];
-        const _data = dataRes?.themChuyenNganh?.data || [];
+        const _errors = dataRes?.themMonHoc?.errors || [];
+        const _data = dataRes?.themMonHoc?.data || [];
 
         if (!isEmpty(_errors))
           return _errors?.map((item) =>
@@ -54,7 +56,7 @@ const ModalChuyenNganh = ({
         onCallAPISuccess(_data?.[0]);
 
         notification["success"]({
-          message: "Thêm chuyên ngành thành công.",
+          message: "Thêm môn học thành công.",
         });
       },
     }
@@ -83,7 +85,7 @@ const ModalChuyenNganh = ({
         onCallAPISuccess(_data?.[0]);
 
         notification["success"]({
-          message: "Sửa chuyên ngành thành công.",
+          message: "Thêm môn học thành công.",
         });
       },
     }
@@ -94,7 +96,7 @@ const ModalChuyenNganh = ({
    * ============================================================
    */
   const handleCallAPIAdd = (inputs) => {
-    actThemChuyenNganh({
+    actThemMonHoc({
       variables: {
         inputs,
       },
@@ -152,7 +154,6 @@ const ModalChuyenNganh = ({
     form.setFieldsValue({
       id: data.id,
       ten: data.ten,
-      moTa: data.moTa,
     });
   }, [data, form]);
 
@@ -164,7 +165,7 @@ const ModalChuyenNganh = ({
   const renderForm = () => {
     return (
       <Form {...layout} form={form} name="nest-messages">
-        <Form.Item name={"id"} label="Mã chuyên ngành">
+        <Form.Item name={"id"} label="Mã môn học">
           <Input disabled />
         </Form.Item>
         <Form.Item
@@ -175,11 +176,8 @@ const ModalChuyenNganh = ({
             },
           ]}
           name={"ten"}
-          label="Tên chuyên ngành"
+          label="Tên Môn học"
         >
-          <Input />
-        </Form.Item>
-        <Form.Item name={"moTa"} label="Mô tả">
           <Input />
         </Form.Item>
       </Form>
@@ -188,12 +186,13 @@ const ModalChuyenNganh = ({
 
   return (
     <Modal
-      title={type === "add" ? "Thêm Chuyên ngành" : "Sửa chuyên ngành"}
+      destroyOnClose
+      title={type === "add" ? "Thêm môn học" : "Sửa môn học"}
       centered
       visible={visible}
       onCancel={() => closeModal(false)}
       width={1000}
-      confirmLoading={loadingThemChuyenNganh || loadingSuaChuyenNganh}
+      confirmLoading={loadingThemMonHoc || loadingSuaChuyenNganh}
       onOk={handleButtonOkClick}
       okText={type === "add" ? "Thêm" : "Sửa"}
     >
@@ -202,9 +201,9 @@ const ModalChuyenNganh = ({
   );
 };
 
-export default ModalChuyenNganh;
+export default ModalMonHoc;
 
-ModalChuyenNganh.propTypes = {
+ModalMonHoc.propTypes = {
   visible: PropTypes.bool,
   closeModal: PropTypes.func,
   type: PropTypes.oneOf(["edit", "add"]),
@@ -213,7 +212,7 @@ ModalChuyenNganh.propTypes = {
   khoaVienID: PropTypes.string.isRequired,
 };
 
-ModalChuyenNganh.defaultProps = {
+ModalMonHoc.defaultProps = {
   visible: false,
   closeModal: () => {},
   type: "add",

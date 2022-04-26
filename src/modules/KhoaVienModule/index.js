@@ -82,7 +82,7 @@ const KhoaVienModule = () => {
             </Col>
           </Row>
         </Card>
-        <ListMonHoc data={dataForMonHoc} />
+        <ListMonHoc refetchFindKhoaVien={refetchFindKhoaVien} khoaVienID={id} data={dataForMonHoc} />
         <ListChuyenNganh
           refetchKhoaVien={refetchFindKhoaVien}
           data={dataForChuyenNganh}
