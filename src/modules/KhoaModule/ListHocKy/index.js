@@ -1,32 +1,32 @@
-import { Button, Collapse, Table } from 'antd';
-import React, { useState } from 'react';
-import ListHocPhan from './ListHocPhan';
+import { Button, Collapse, Table } from "antd";
+import React, { useState } from "react";
+import ListHocPhan from "./ListHocPhan";
 
-const prefix = 'khoa-hoc-ky';
+const prefix = "khoa-hoc-ky";
 
 const { Panel } = Collapse;
 
 const ListHocKy = ({ data }) => {
   const columns = [
     {
-      key: 'id',
-      dataIndex: 'id',
-      title: 'ID',
+      key: "id",
+      dataIndex: "id",
+      title: "ID",
     },
     {
-      key: 'thuTuHocKy',
-      dataIndex: 'thuTuHocKy',
-      title: 'Tên học kỳ',
+      key: "thuTu",
+      dataIndex: "thuTu",
+      title: "Tên học kỳ",
     },
     {
-      key: 'moTa',
-      dataIndex: 'moTa',
-      title: 'Mô tả',
+      key: "moTa",
+      dataIndex: "moTa",
+      title: "Mô tả",
     },
     {
-      title: 'Action',
-      key: 'operation',
-      fixed: 'right',
+      title: "Action",
+      key: "operation",
+      fixed: "right",
       width: 200,
       render: (e) => (
         <div>

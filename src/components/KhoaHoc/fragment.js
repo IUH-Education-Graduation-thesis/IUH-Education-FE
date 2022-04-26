@@ -10,4 +10,10 @@ khoa
 moTa
 thoiGianBatDau
 thoiGianKetThuc
-`
+chuyenNganh {
+    id
+    khoaVien {
+        id
+    }
+}
+`;

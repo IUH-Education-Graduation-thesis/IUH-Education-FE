@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table, Modal, notification, Divider } from "antd";
+import { Button, Table, Divider } from "antd";
 import "./KhoaHoc.scss";
 import ModalAddKhoaHoc from "./FormAddKhoaHoc";
 import queries from "core/graphql";
-import { GET_KHOAHOC_FAGMENT, FIND_KHOA_HOC } from "./fragment";
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
-import { get, isEmpty } from "lodash";
+import { FIND_KHOA_HOC } from "./fragment";
+import { useLazyQuery } from "@apollo/client";
 import ExpandFilter from "./FilterExpand";
 import { checkTrulyObject } from "components/helper";
 
