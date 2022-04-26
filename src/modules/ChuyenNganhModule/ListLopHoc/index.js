@@ -2,11 +2,12 @@ import { Button, Collapse, Select, Table } from "antd";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import TableExpand from "./LopHocTableExpand";
+import ModalKhoaHoc from "./ModalKhoaHoc";
 
 const { Panel } = Collapse;
 const prefix = "chuyen-nganh-lop-hoc";
 
-const ListLopHoc = ({ data }) => {
+const ListLopHoc = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
   const columns = [
     {
       key: "id",
@@ -43,6 +44,7 @@ const ListLopHoc = ({ data }) => {
   ];
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [showModalAdd, setShowModalAdd] = useState(false);
 
   /**
    * Function
@@ -53,6 +55,16 @@ const ListLopHoc = ({ data }) => {
     setSelectedRowKeys(payload);
   };
 
+  const handleClickThemKhoaHoc = (e) => {
+    e?.stopPropagation();
+
+    setShowModalAdd(true);
+  };
+
+  const handleCallAPIAddSuccess = (payload) => {
+    setShowModalAdd(false);
+    refetchFindChuyenNganh();
+  };
   /**
    * Render view
    * ===================================================
@@ -63,33 +75,45 @@ const ListLopHoc = ({ data }) => {
         <div className={`${prefix}__header__left`}>Danh sách khóa học</div>
         <div className={`${prefix}__header__right`}>
           <Button danger>Xóa khóa học đã chọn</Button>
-          <Button type="primary">Thêm khóa học</Button>
+          <Button onClick={handleClickThemKhoaHoc} type="primary">
+            Thêm khóa học
+          </Button>
         </div>
       </div>
     );
   };
 
   return (
-    <Collapse className={prefix}>
-      <Panel
-        className={prefix}
-        showArrow={false}
-        header={renderHeadOfPanel()}
-        key="1"
-      >
-        <Table
-          rowSelection={{
-            selectedRowKeys,
-            onChange: handleSelectedRowChange,
-          }}
-          expandable={{
-            expandedRowRender: (record) => <TableExpand data={record?.lops} />,
-          }}
-          columns={columns}
-          dataSource={data}
-        />
-      </Panel>
-    </Collapse>
+    <>
+      <Collapse className={prefix}>
+        <Panel
+          className={prefix}
+          showArrow={false}
+          header={renderHeadOfPanel()}
+          key="1"
+        >
+          <Table
+            rowSelection={{
+              selectedRowKeys,
+              onChange: handleSelectedRowChange,
+            }}
+            expandable={{
+              expandedRowRender: (record) => (
+                <TableExpand data={record?.lops} />
+              ),
+            }}
+            columns={columns}
+            dataSource={data}
+          />
+        </Panel>
+      </Collapse>
+      <ModalKhoaHoc
+        onCallAPISuccess={handleCallAPIAddSuccess}
+        chuyenNganhId={chuyenNganhId}
+        type="add"
+        visible={showModalAdd}
+      />
+    </>
   );
 };
 
@@ -103,4 +127,10 @@ ListLopHoc.propTypes = {
     thoiGianBatDau: PropTypes.string,
     thoiGianKetThuc: PropTypes.string,
   }).isRequired,
+  chuyenNganhId: PropTypes.string.isRequired,
+  refetchFindChuyenNganh: PropTypes.func,
+};
+
+ListLopHoc.propTypes = {
+  refetchFindChuyenNganh: () => {},
 };

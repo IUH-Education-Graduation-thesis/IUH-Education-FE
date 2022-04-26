@@ -88,7 +88,11 @@ const ChuyenNganhModule = () => {
           chuyenNganhId={chuyen_nganh_id}
           data={giangVienList}
         />
-        <ListLopHoc data={khoaHocList} />
+        <ListLopHoc
+          refetchFindChuyenNganh={refetchFindChuyenNganh}
+          chuyenNganhId={chuyen_nganh_id}
+          data={khoaHocList}
+        />
       </Col>
       <Col span={4}></Col>
     </Row>
