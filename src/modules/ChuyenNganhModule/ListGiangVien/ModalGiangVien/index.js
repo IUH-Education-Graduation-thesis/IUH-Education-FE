@@ -7,9 +7,7 @@ import { isEmpty } from "lodash";
 import { useMutation } from "@apollo/client";
 import { checkTrulyObject } from "components/helper";
 
-const themChuyenNganhMutation = queries.mutation.themChuyenNganh("id");
-const suaChuyenNganhMutation = queries.mutation.suaChuyenNganh("id");
-
+const suaGiangVienMutation = queries.mutation.suaGiangVien("id");
 const themGiangVienMutation = queries.mutation.themGiangVien("id");
 
 const ModalGiangVien = ({
@@ -61,12 +59,12 @@ const ModalGiangVien = ({
       },
     }
   );
-  const [actSuaChuyenNganh, { loading: loadingSuaChuyenNganh }] = useMutation(
-    suaChuyenNganhMutation,
+  const [actSuaGiangVien, { loading: loadingSuaGiangVien }] = useMutation(
+    suaGiangVienMutation,
     {
       onCompleted: (dataRes) => {
-        const _errors = dataRes?.suaChuyenNganh?.errors || [];
-        const _data = dataRes?.suaChuyenNganh?.data || [];
+        const _errors = dataRes?.suaGiangVien?.errors || [];
+        const _data = dataRes?.suaGiangVien?.data || [];
 
         if (!isEmpty(_errors))
           return _errors?.map((item) =>
@@ -85,7 +83,7 @@ const ModalGiangVien = ({
         onCallAPISuccess(_data?.[0]);
 
         notification["success"]({
-          message: "Sửa chuyên ngành thành công.",
+          message: "Sửa giảng viên thành công.",
         });
       },
     }
@@ -104,7 +102,7 @@ const ModalGiangVien = ({
   };
 
   const handleCallAPIEdit = (inputs, id) => {
-    actSuaChuyenNganh({
+    actSuaGiangVien({
       variables: {
         inputs,
         id,
@@ -158,7 +156,9 @@ const ModalGiangVien = ({
     form.setFieldsValue({
       id: data.id,
       ten: data.ten,
-      moTa: data.moTa,
+      hoTenDem: data?.hoTenDem,
+      email: data?.email,
+      soDienThoai: data?.soDienThoai,
     });
   }, [data, form]);
 
@@ -214,7 +214,7 @@ const ModalGiangVien = ({
       visible={visible}
       onCancel={() => closeModal(false)}
       width={1000}
-      confirmLoading={loadingThemGiangVien || loadingSuaChuyenNganh}
+      confirmLoading={loadingThemGiangVien || loadingSuaGiangVien}
       onOk={handleButtonOkClick}
       okText={type === "add" ? "Thêm" : "Sửa"}
     >

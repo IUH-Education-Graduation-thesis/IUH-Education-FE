@@ -38,9 +38,11 @@ const ListGiangVien = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
       key: "operation",
       fixed: "right",
       width: 200,
-      render: (e) => (
+      render: (_, record) => (
         <div>
-          <Button danger>Chỉnh sửa</Button>
+          <Button onClick={(e) => handleEditRow(e, record)} danger>
+            Chỉnh sửa
+          </Button>
           <Button>Xóa</Button>
         </div>
       ),
@@ -49,11 +51,19 @@ const ListGiangVien = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [showModalAdd, setShowModalAdd] = useState(false);
+  const [showModalEdit, setShowModalEdit] = useState(false);
+  const [currentGiangVien, setCurrentGiangVien] = useState({});
 
   /**
    * Function
    * ==================================================
    */
+
+  const handleEditRow = (e, record) => {
+    e?.stopPropagation();
+    setShowModalEdit(true);
+    setCurrentGiangVien(record);
+  };
 
   const handleSelectedRowChange = (payload) => {
     setSelectedRowKeys(payload);
@@ -66,6 +76,7 @@ const ListGiangVien = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
 
   const handleCallAPIAddSuccess = (payload) => {
     setShowModalAdd(false);
+    setShowModalEdit(false);
     refetchFindChuyenNganh();
   };
 
@@ -109,8 +120,17 @@ const ListGiangVien = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
       <ModalGiangVien
         onCallAPISuccess={handleCallAPIAddSuccess}
         chuyenNganhId={chuyenNganhId}
+        closeModal={() => setShowModalEdit(false)}
         type="add"
         visible={showModalAdd}
+      />
+      <ModalGiangVien
+        onCallAPISuccess={handleCallAPIAddSuccess}
+        chuyenNganhId={chuyenNganhId}
+        type="edit"
+        data={currentGiangVien}
+        closeModal={() => setShowModalEdit(false)}
+        visible={showModalEdit}
       />
     </>
   );
