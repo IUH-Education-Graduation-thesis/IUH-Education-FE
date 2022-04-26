@@ -1,35 +1,40 @@
-import { Button, Collapse, Select, Table } from 'antd';
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { Button, Collapse, Select, Table } from "antd";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 
 const { Panel } = Collapse;
-const prefix = 'chuyen-nganh-lop-hoc';
+const prefix = "chuyen-nganh-lop-hoc";
 const dataMockForSelect = [
-  { label: 'Khoa 11', value: 11 },
-  { label: 'Khoa 12', value: 12 },
+  { label: "Khoa 11", value: 11 },
+  { label: "Khoa 12", value: 12 },
 ];
 
 const ListLopHoc = ({ data }) => {
   const columns = [
     {
-      key: 'id',
-      dataIndex: 'id',
-      title: 'ID',
+      key: "id",
+      dataIndex: "id",
+      title: "ID",
     },
     {
-      key: 'ten',
-      dataIndex: 'ten',
-      title: 'Tên lớp',
+      key: "khoa",
+      dataIndex: "khoa",
+      title: "Tên khóa",
     },
     {
-      key: 'moTa',
-      dataIndex: 'moTa',
-      title: 'Mô tả',
+      key: "thoiGianBatDau",
+      dataIndex: "thoiGianBatDau",
+      title: "Thời gian bắt đầu",
     },
     {
-      title: 'Action',
-      key: 'operation',
-      fixed: 'right',
+      key: "thoiGianKetThuc",
+      dataIndex: "thoiGianKetThuc",
+      title: "Thời gian kết thúc",
+    },
+    {
+      title: "Action",
+      key: "operation",
+      fixed: "right",
       width: 200,
       render: (e) => (
         <div>
@@ -58,10 +63,10 @@ const ListLopHoc = ({ data }) => {
   const renderHeadOfPanel = () => {
     return (
       <div className={`${prefix}__header`}>
-        <div className={`${prefix}__header__left`}>Danh sách Lớp học</div>
+        <div className={`${prefix}__header__left`}>Danh sách khóa học</div>
         <div className={`${prefix}__header__right`}>
-          <Button danger>Xóa lớp học đã chọn</Button>
-          <Button type="primary">Thêm lớp học</Button>
+          <Button danger>Xóa khóa học đã chọn</Button>
+          <Button type="primary">Thêm khóa học</Button>
         </div>
       </div>
     );
@@ -95,7 +100,8 @@ ListLopHoc.propTypes = {
   data: PropTypes.arrayOf({
     id: PropTypes.number,
     key: PropTypes.number,
-    ten: PropTypes.string,
-    moTa: PropTypes.string,
+    khoa: PropTypes.string,
+    thoiGianBatDau: PropTypes.string,
+    thoiGianKetThuc: PropTypes.string,
   }).isRequired,
 };

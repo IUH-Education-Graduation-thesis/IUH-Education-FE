@@ -1,34 +1,62 @@
-import { Card, Col, PageHeader, Row } from 'antd';
-import React from 'react';
+import { Card, Col, PageHeader, Row } from "antd";
+import React from "react";
+import queries from "core/graphql";
+import { useParams } from "react-router-dom";
 
-import ListMonHoc from './ListMonHoc';
-import ListChuyenNganh from './ListChuyenNganh';
-import 'modules/KhoaVienModule/KhoaVienModule.scss';
+import ListMonHoc from "./ListMonHoc";
+import ListChuyenNganh from "./ListChuyenNganh";
+import "modules/KhoaVienModule/KhoaVienModule.scss";
+import { FIND_KHOA_KHOA_VIEN } from "./fragment";
+import { useQuery } from "@apollo/client";
 
-const prefix = 'khoa-vien-module';
+const prefix = "khoa-vien-module";
+
+const findKhoaVienQuery = queries?.query.findKhoaVien(FIND_KHOA_KHOA_VIEN);
 
 const KhoaVienModule = () => {
-  const dataForListMonHoc = [...Array(10)?.keys()]?.map((item) => ({
-    id: item,
-    key: item,
-    ten: `ten mon hoc ${item}`,
-    giangViens: [...Array(10)?.keys()]?.map((_item) => ({
-      id: _item,
-      key: _item,
-      hoTenDem: `Ho ten dem ${_item}`,
-      ten: `ten ${_item}`,
-      email: `hoantruong681${_item}@gmail.com`,
-      soDienThoai: `034938077${_item}`,
-      hocHamString: `Thac si`,
-    })),
+  const { id } = useParams();
+
+  /**
+   * api
+   * ======================================================
+   */
+
+  const {
+    data: dataFindKhoaVien,
+    loading: loadingDataFindKhoaVien,
+    refetch: refetchFindKhoaVien,
+  } = useQuery(findKhoaVienQuery, {
+    fetchPolicy: "network-only",
+    skip: !id,
+    variables: {
+      inputs: {
+        id,
+      },
+    },
+  });
+
+  const currentKhoaVien =
+    dataFindKhoaVien?.findKhoaVien?.data?.[0]?.data?.[0] || {};
+
+  const dataForChuyenNganh = currentKhoaVien?.chuyenNganhs?.map((item) => ({
+    key: item?.id,
+    ...item,
   }));
 
-  const dataForListChuyenNganh = [...Array(10)?.keys()]?.map((item) => ({
-    id: item,
-    key: item,
-    ten: `Ten chuyen nganh ${item}`,
-    moTa: `Mo ta ${item}`,
+  const dataForMonHoc = currentKhoaVien?.monHocs?.map((item) => ({
+    ...item,
+    key: item?.id,
   }));
+
+  /**
+   * function
+   * =====================================================
+   */
+
+  /**
+   * render view
+   * ======================================================
+   */
 
   return (
     <Row className={prefix}>
@@ -36,7 +64,7 @@ const KhoaVienModule = () => {
       <Col span={16}>
         <PageHeader
           style={{
-            border: '1px solid rgb(235, 237, 240)',
+            border: "1px solid rgb(235, 237, 240)",
           }}
           onBack={() => null}
           title="Chi tiết khoa viện"
@@ -44,18 +72,21 @@ const KhoaVienModule = () => {
         <Card title="Thôn tin khoa/viện">
           <Row gutter={[24, 16]}>
             <Col span={8}>
-              <b>Khoa/Viện:</b> Công nghệ thông tin
+              <b>Khoa/Viện:</b> {currentKhoaVien?.ten}
             </Col>
             <Col span={8}>
-              <b>Liên kết:</b> fit.iuh.edu.vn
+              <b>Liên kết:</b> {currentKhoaVien?.link}
             </Col>
             <Col span={8}>
-              <b>Mô tả:</b> Đây là mô tả của khoa viện
+              <b>Mô tả:</b> {currentKhoaVien?.moTa}
             </Col>
           </Row>
         </Card>
-        <ListMonHoc data={dataForListMonHoc} />
-        <ListChuyenNganh data={dataForListChuyenNganh} />
+        <ListMonHoc refetchFindKhoaVien={refetchFindKhoaVien} khoaVienID={id} data={dataForMonHoc} />
+        <ListChuyenNganh
+          refetchKhoaVien={refetchFindKhoaVien}
+          data={dataForChuyenNganh}
+        />
       </Col>
       <Col span={4}></Col>
     </Row>
