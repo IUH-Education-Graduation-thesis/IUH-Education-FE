@@ -36,6 +36,9 @@ import suaKhoaHoc from "./suaKhoaHoc";
 import themLop from "./themLop";
 import suaLop from "./suaLop";
 import xoaLops from "./xoaLops";
+import themHocKy from "./themHocKy";
+import suaHocKy from "./suaHocKy";
+import xoaHocKys from "./xoaHocKys";
 
 const query = {
   ...GetProfile.query,
@@ -79,6 +82,9 @@ const mutation = {
   ...themLop.mutation,
   ...suaLop.mutation,
   ...xoaLops.mutation,
+  ...themHocKy.mutation,
+  ...suaHocKy.mutation,
+  ...xoaHocKys.mutation,
 };
 
 export default {

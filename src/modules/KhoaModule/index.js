@@ -19,18 +19,19 @@ const KhoaHocModule = () => {
    * =======================================================
    */
 
-  const { data: dataFindKhoaHoc, loadingFindKhoaHoc } = useQuery(
-    findKhoaHocQuery,
-    {
-      skip: !khoa_id,
-      fetchPolicy: "network-only",
-      variables: {
-        inputs: {
-          id: khoa_id,
-        },
+  const {
+    data: dataFindKhoaHoc,
+    loadingFindKhoaHoc,
+    refetch: refetchFindKhoaHoc,
+  } = useQuery(findKhoaHocQuery, {
+    skip: !khoa_id,
+    fetchPolicy: "network-only",
+    variables: {
+      inputs: {
+        id: khoa_id,
       },
-    }
-  );
+    },
+  });
 
   const khoaHoc = dataFindKhoaHoc?.findKhoaHocs?.data?.[0]?.data?.[0] || {};
 
@@ -74,7 +75,11 @@ const KhoaHocModule = () => {
             </Col>
           </Row>
         </Card>
-        <ListHocKy data={listHocKy} />
+        <ListHocKy
+          refetchFindKhoaHoc={refetchFindKhoaHoc}
+          khoaId={khoa_id}
+          data={listHocKy}
+        />
       </Col>
       <Col span={4}></Col>
     </Row>
