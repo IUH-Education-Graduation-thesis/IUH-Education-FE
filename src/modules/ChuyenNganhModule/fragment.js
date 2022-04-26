@@ -13,6 +13,11 @@ khoas {
   khoa
   thoiGianBatDau
   thoiGianKetThuc
+  lops {
+    id
+    ten
+    moTa
+  }
 }
 giangViens {
   id

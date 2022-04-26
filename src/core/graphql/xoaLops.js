@@ -1,11 +1,11 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export default {
   mutation: {
-    xoaKhoaHocs: (fragment) => gql`
+    xoaLops: (fragment) => gql`
         mutation ($ids: [ID!]) {
-            xoaKhoaHocs(ids: $ids) {
+            xoaLops(ids: $ids) {
                 status
                 message
                 errors {

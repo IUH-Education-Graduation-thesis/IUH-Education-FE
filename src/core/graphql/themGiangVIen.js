@@ -2,9 +2,9 @@ import { gql } from "@apollo/client";
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   mutation: {
-    themKhoaHoc: (fragment) => gql`
-        mutation ($inputs: ThemKhoaHocInputs!){
-            themKhoaHoc(inputs:$inputs){
+    themGiangVien: (fragment) => gql`
+        mutation ($inputs: ThemGiaoVienInputs!){
+            themGiangVien(inputs:$inputs){
                status
                message
                errors{

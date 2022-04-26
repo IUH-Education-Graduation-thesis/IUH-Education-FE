@@ -137,7 +137,11 @@ const ListMonHoc = ({ data, khoaVienID, refetchFindKhoaVien }) => {
       <div className={`${prefix}__header`}>
         <div className={`${prefix}__header__left`}>Danh sách môn học</div>
         <div className={`${prefix}__header__right`}>
-          <Button onClick={handleDeleteMultiMonHoc} danger>
+          <Button
+            loading={loadingXoaMonHoc}
+            onClick={handleDeleteMultiMonHoc}
+            danger
+          >
             Xóa môn học đã chọn
           </Button>
           <Button onClick={handleThemMonHoc} type="primary">

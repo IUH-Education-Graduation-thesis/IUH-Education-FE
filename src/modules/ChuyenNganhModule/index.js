@@ -13,22 +13,6 @@ import "modules/ChuyenNganhModule/ChuyenNganhModule.scss";
 const prefix = "chuyen-nganh";
 const findChuyenNganhQuery = queries.query.findChuyenNganh(FIND_CHUYEN_NGANH);
 
-const mockDataForListGiangVien = [...Array(10)?.keys()]?.map((item) => ({
-  id: item,
-  key: item,
-  hoTenDem: `Ho va ten ${item}`,
-  ten: `Ten ${item}`,
-  email: `hoantruong681${item}@gmail.com`,
-  soDienThoai: `034938077${item}`,
-}));
-
-const mockDataForListLopHoc = [...Array(10)?.keys()]?.map((item) => ({
-  id: item,
-  key: item,
-  ten: `Ten Lop Hoc ${item}`,
-  moTa: `Mo ta ${item}`,
-}));
-
 const ChuyenNganhModule = () => {
   const { chuyen_nganh_id, id } = useParams();
 
@@ -38,14 +22,16 @@ const ChuyenNganhModule = () => {
    *
    */
 
-  const { data: dataFindChuyenNganh } = useQuery(findChuyenNganhQuery, {
-    skip: !chuyen_nganh_id,
-    variables: {
-      inputs: {
-        id: chuyen_nganh_id,
+  const { data: dataFindChuyenNganh, refetch: refetchFindChuyenNganh } =
+    useQuery(findChuyenNganhQuery, {
+      fetchPolicy: "network-only",
+      skip: !chuyen_nganh_id,
+      variables: {
+        inputs: {
+          id: chuyen_nganh_id,
+        },
       },
-    },
-  });
+    });
 
   const chuyenNganh = dataFindChuyenNganh?.findChuyenNganh?.data?.[0] || {};
   const giangVienList =
@@ -82,8 +68,16 @@ const ChuyenNganhModule = () => {
             </Col>
           </Row>
         </Card>
-        <ListGiangVien data={giangVienList} />
-        <ListLopHoc data={khoaHocList} />
+        <ListGiangVien
+          refetchFindChuyenNganh={refetchFindChuyenNganh}
+          chuyenNganhId={chuyen_nganh_id}
+          data={giangVienList}
+        />
+        <ListLopHoc
+          refetchFindChuyenNganh={refetchFindChuyenNganh}
+          chuyenNganhId={chuyen_nganh_id}
+          data={khoaHocList}
+        />
       </Col>
       <Col span={4}></Col>
     </Row>
