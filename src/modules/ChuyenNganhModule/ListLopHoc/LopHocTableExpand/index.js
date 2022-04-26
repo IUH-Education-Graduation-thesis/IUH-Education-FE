@@ -1,9 +1,13 @@
-import { Button, Divider, Table } from "antd";
+import { Button, Divider, notification, Table } from "antd";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import ModalLopHoc from "./ModalLopHoc";
+import queries from "core/graphql";
+import { useMutation } from "@apollo/client";
+import { isEmpty } from "lodash";
 
 const prefix = "lop-hoc-expand";
+const xoaLopsMutation = queries.mutation.xoaLops("id");
 
 const TableExpand = ({
   data,
@@ -45,16 +49,65 @@ const TableExpand = ({
           <Button onClick={(e) => handleEditRow(e, record)} danger>
             Chỉnh sửa
           </Button>
-          <Button style={{ marginLeft: 10 }}>Xóa</Button>
+          <Button
+            onClick={() => handleDeleteRow(record)}
+            loading={loadingXoaLops}
+            style={{ marginLeft: 10 }}
+          >
+            Xóa
+          </Button>
         </div>
       ),
     },
   ];
 
   /**
+   * API
+   * =====================================================
+   */
+  const [actXoaLops, { loading: loadingXoaLops }] = useMutation(
+    xoaLopsMutation,
+    {
+      onCompleted: (dataRes) => {
+        const _errors = dataRes?.xoaLops?.errors || [];
+        const _data = dataRes?.xoaLops?.data || [];
+
+        if (!isEmpty(_errors))
+          return _errors?.map((item) =>
+            notification["error"]({
+              message: item?.message,
+            })
+          );
+
+        if (isEmpty(_data)) {
+          notification["error"]({
+            message: "Lỗi hệ thống!",
+          });
+          return;
+        }
+
+        setSelectedRowKeys([]);
+        refetchFindChuyenNganh();
+
+        notification["success"]({
+          message: `Xóa ${_data?.length} lớp thành công.`,
+        });
+      },
+    }
+  );
+
+  /**
    * function
    * =======================================================
    */
+
+  const handleDeleteRow = (record) => {
+    actXoaLops({
+      variables: {
+        ids: [record?.id],
+      },
+    });
+  };
 
   const handleEditRow = (e, record) => {
     e?.stopPropagation();
@@ -78,6 +131,16 @@ const TableExpand = ({
     setShowModalAdd(true);
   };
 
+  const handleDeleteMultiLop = () => {
+    const _ids = selectedRowKeys || [];
+
+    actXoaLops({
+      variables: {
+        ids: _ids,
+      },
+    });
+  };
+
   /**
    * render view
    * ==========================================================
@@ -89,7 +152,9 @@ const TableExpand = ({
         <Button onClick={handleClickButtonAdd} type="primary">
           + Thêm lớp
         </Button>
-        <Button danger>Xóa lớp học đã chọn</Button>
+        <Button onClick={handleDeleteMultiLop} loading={loadingXoaLops} danger>
+          Xóa lớp học đã chọn
+        </Button>
       </div>
       <Divider />
       <Table

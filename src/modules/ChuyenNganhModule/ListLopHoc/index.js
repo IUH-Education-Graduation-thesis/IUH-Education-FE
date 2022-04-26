@@ -186,7 +186,10 @@ const ListLopHoc = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
                 <TableExpand
                   refetchFindChuyenNganh={refetchFindChuyenNganh}
                   khoaId={record?.id}
-                  data={record?.lops}
+                  data={record?.lops?.map((item) => ({
+                    ...item,
+                    key: item?.id,
+                  }))}
                 />
               ),
             }}
