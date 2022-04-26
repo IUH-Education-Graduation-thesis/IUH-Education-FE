@@ -1,11 +1,21 @@
 import { Button, Divider, Table } from "antd";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import ModalLopHoc from "./ModalLopHoc";
 
 const prefix = "lop-hoc-expand";
 
-const TableExpand = ({ data, onAddClassRoom, onDeleteMultipleClassroom }) => {
+const TableExpand = ({
+  data,
+  khoaId,
+  refetchFindChuyenNganh,
+  onAddClassRoom,
+  onDeleteMultipleClassroom,
+}) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [showModalAdd, setShowModalAdd] = useState(false);
+  const [showModalEdit, setShowModalEdit] = useState(false);
+  const [currentLopHoc, setCurrentLopHoc] = useState({});
 
   const columns = [
     {
@@ -30,9 +40,11 @@ const TableExpand = ({ data, onAddClassRoom, onDeleteMultipleClassroom }) => {
       title: "Thao tác",
       key: "thaoTac",
       width: 300,
-      render: (e) => (
+      render: (_, record) => (
         <div>
-          <Button danger>Chỉnh sửa</Button>
+          <Button onClick={(e) => handleEditRow(e, record)} danger>
+            Chỉnh sửa
+          </Button>
           <Button style={{ marginLeft: 10 }}>Xóa</Button>
         </div>
       ),
@@ -44,8 +56,26 @@ const TableExpand = ({ data, onAddClassRoom, onDeleteMultipleClassroom }) => {
    * =======================================================
    */
 
+  const handleEditRow = (e, record) => {
+    e?.stopPropagation();
+    setCurrentLopHoc(record);
+    setShowModalEdit(true);
+  };
+
   const handleSelectedRowChange = (payload) => {
     setSelectedRowKeys(payload);
+  };
+
+  const handleCallAPIAddSuccess = (payload) => {
+    setShowModalAdd(false);
+    setShowModalEdit(false);
+    refetchFindChuyenNganh();
+  };
+
+  const handleClickButtonAdd = (e) => {
+    e?.stopPropagation();
+
+    setShowModalAdd(true);
   };
 
   /**
@@ -56,7 +86,9 @@ const TableExpand = ({ data, onAddClassRoom, onDeleteMultipleClassroom }) => {
   return (
     <div className={prefix}>
       <div className={`${prefix}__head`}>
-        <Button type="primary">+ Thêm lớp</Button>
+        <Button onClick={handleClickButtonAdd} type="primary">
+          + Thêm lớp
+        </Button>
         <Button danger>Xóa lớp học đã chọn</Button>
       </div>
       <Divider />
@@ -67,6 +99,22 @@ const TableExpand = ({ data, onAddClassRoom, onDeleteMultipleClassroom }) => {
           selectedRowKeys,
           onChange: handleSelectedRowChange,
         }}
+      />
+
+      <ModalLopHoc
+        onCallAPISuccess={handleCallAPIAddSuccess}
+        khoaId={khoaId}
+        type="add"
+        closeModal={() => setShowModalAdd(false)}
+        visible={showModalAdd}
+      />
+      <ModalLopHoc
+        onCallAPISuccess={handleCallAPIAddSuccess}
+        khoaId={khoaId}
+        data={currentLopHoc}
+        type="edit"
+        closeModal={() => setShowModalEdit(false)}
+        visible={showModalEdit}
       />
     </div>
   );
@@ -85,10 +133,13 @@ TableExpand.propTypes = {
   ),
   onAddClassRoom: PropTypes.func,
   onDeleteMultipleClassroom: PropTypes.func,
+  khoaId: PropTypes.string.isRequired,
+  refetchFindChuyenNganh: PropTypes.func,
 };
 
 TableExpand.defaultProps = {
   data: [],
   onAddClassRoom: () => {},
   onDeleteMultipleClassroom: () => {},
+  refetchFindChuyenNganh: () => {},
 };

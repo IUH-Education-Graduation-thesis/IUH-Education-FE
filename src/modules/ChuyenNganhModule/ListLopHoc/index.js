@@ -183,7 +183,11 @@ const ListLopHoc = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
             }}
             expandable={{
               expandedRowRender: (record) => (
-                <TableExpand data={record?.lops} />
+                <TableExpand
+                  refetchFindChuyenNganh={refetchFindChuyenNganh}
+                  khoaId={record?.id}
+                  data={record?.lops}
+                />
               ),
             }}
             columns={columns}

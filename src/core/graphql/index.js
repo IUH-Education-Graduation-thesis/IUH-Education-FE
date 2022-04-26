@@ -12,7 +12,6 @@ import findNamHoc from "./findNamHoc";
 import themNamHoc from "./themNamHoc";
 import findKhoaHocs from "./findKhoaHocs";
 import xoaKhoaHoc from "./xoaKhoaHoc";
-import xoaDayNha from "./xoaDayNha";
 import themKhoaHoc from "./themKhoaHoc";
 import findHocPhan from "./findHocPhan";
 import findKhoaVien from "./findKhoaVien";
@@ -34,6 +33,9 @@ import themGiangVIen from "./themGiangVIen";
 import suaGiangVien from "./suaGiangVien";
 import xoaGiangViens from "./xoaGiangViens";
 import suaKhoaHoc from "./suaKhoaHoc";
+import themLop from "./themLop";
+import suaLop from "./suaLop";
+import xoaLops from "./xoaLops";
 
 const query = {
   ...GetProfile.query,
@@ -74,6 +76,9 @@ const mutation = {
   ...suaGiangVien.mutation,
   ...xoaGiangViens.mutation,
   ...suaKhoaHoc.mutation,
+  ...themLop.mutation,
+  ...suaLop.mutation,
+  ...xoaLops.mutation,
 };
 
 export default {

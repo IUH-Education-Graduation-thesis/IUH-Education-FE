@@ -24,6 +24,7 @@ const ChuyenNganhModule = () => {
 
   const { data: dataFindChuyenNganh, refetch: refetchFindChuyenNganh } =
     useQuery(findChuyenNganhQuery, {
+      fetchPolicy: "network-only",
       skip: !chuyen_nganh_id,
       variables: {
         inputs: {
