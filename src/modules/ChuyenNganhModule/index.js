@@ -38,14 +38,15 @@ const ChuyenNganhModule = () => {
    *
    */
 
-  const { data: dataFindChuyenNganh } = useQuery(findChuyenNganhQuery, {
-    skip: !chuyen_nganh_id,
-    variables: {
-      inputs: {
-        id: chuyen_nganh_id,
+  const { data: dataFindChuyenNganh, refetch: refetchFindChuyenNganh } =
+    useQuery(findChuyenNganhQuery, {
+      skip: !chuyen_nganh_id,
+      variables: {
+        inputs: {
+          id: chuyen_nganh_id,
+        },
       },
-    },
-  });
+    });
 
   const chuyenNganh = dataFindChuyenNganh?.findChuyenNganh?.data?.[0] || {};
   const giangVienList =
@@ -82,7 +83,11 @@ const ChuyenNganhModule = () => {
             </Col>
           </Row>
         </Card>
-        <ListGiangVien data={giangVienList} />
+        <ListGiangVien
+          refetchFindChuyenNganh={refetchFindChuyenNganh}
+          chuyenNganhId={chuyen_nganh_id}
+          data={giangVienList}
+        />
         <ListLopHoc data={khoaHocList} />
       </Col>
       <Col span={4}></Col>

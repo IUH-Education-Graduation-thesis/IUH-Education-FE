@@ -1,41 +1,42 @@
-import { Button, Collapse, Table } from 'antd';
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { Button, Collapse, Table } from "antd";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import ModalGiangVien from "./ModalGiangVien";
 
 const { Panel } = Collapse;
-const prefix = 'khoa-vien-chuyen-nganh';
+const prefix = "khoa-vien-chuyen-nganh";
 
-const ListGiangVien = ({ data }) => {
+const ListGiangVien = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
   const columns = [
     {
-      key: 'id',
-      dataIndex: 'id',
-      title: 'ID',
+      key: "id",
+      dataIndex: "id",
+      title: "ID",
     },
     {
-      key: 'hoTenDem',
-      dataIndex: 'hoTenDem',
-      title: 'Họ tên đệm',
+      key: "hoTenDem",
+      dataIndex: "hoTenDem",
+      title: "Họ tên đệm",
     },
     {
-      key: 'ten',
-      dataIndex: 'ten',
-      title: 'Tên',
+      key: "ten",
+      dataIndex: "ten",
+      title: "Tên",
     },
     {
-      key: 'email',
-      dataIndex: 'email',
-      title: 'Email',
+      key: "email",
+      dataIndex: "email",
+      title: "Email",
     },
     {
-      key: 'soDienThoai',
-      dataIndex: 'soDienThoai',
-      title: 'Số điện thoại',
+      key: "soDienThoai",
+      dataIndex: "soDienThoai",
+      title: "Số điện thoại",
     },
     {
-      title: 'Action',
-      key: 'operation',
-      fixed: 'right',
+      title: "Action",
+      key: "operation",
+      fixed: "right",
       width: 200,
       render: (e) => (
         <div>
@@ -47,6 +48,7 @@ const ListGiangVien = ({ data }) => {
   ];
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [showModalAdd, setShowModalAdd] = useState(false);
 
   /**
    * Function
@@ -55,6 +57,16 @@ const ListGiangVien = ({ data }) => {
 
   const handleSelectedRowChange = (payload) => {
     setSelectedRowKeys(payload);
+  };
+
+  const themGiangVienClickButton = (e) => {
+    e?.stopPropagation();
+    setShowModalAdd(true);
+  };
+
+  const handleCallAPIAddSuccess = (payload) => {
+    setShowModalAdd(false);
+    refetchFindChuyenNganh();
   };
 
   /**
@@ -67,30 +79,40 @@ const ListGiangVien = ({ data }) => {
         <div className={`${prefix}__header__left`}>Danh sách giảng viên</div>
         <div className={`${prefix}__header__right`}>
           <Button danger>Xóa giảng viên đã chọn</Button>
-          <Button type="primary">Thêm giảng viên</Button>
+          <Button onClick={themGiangVienClickButton} type="primary">
+            Thêm giảng viên
+          </Button>
         </div>
       </div>
     );
   };
 
   return (
-    <Collapse className={prefix}>
-      <Panel
-        className={prefix}
-        showArrow={false}
-        header={renderHeadOfPanel()}
-        key="1"
-      >
-        <Table
-          rowSelection={{
-            selectedRowKeys,
-            onChange: handleSelectedRowChange,
-          }}
-          columns={columns}
-          dataSource={data}
-        />
-      </Panel>
-    </Collapse>
+    <>
+      <Collapse className={prefix}>
+        <Panel
+          className={prefix}
+          showArrow={false}
+          header={renderHeadOfPanel()}
+          key="1"
+        >
+          <Table
+            rowSelection={{
+              selectedRowKeys,
+              onChange: handleSelectedRowChange,
+            }}
+            columns={columns}
+            dataSource={data}
+          />
+        </Panel>
+      </Collapse>
+      <ModalGiangVien
+        onCallAPISuccess={handleCallAPIAddSuccess}
+        chuyenNganhId={chuyenNganhId}
+        type="add"
+        visible={showModalAdd}
+      />
+    </>
   );
 };
 
@@ -105,4 +127,10 @@ ListGiangVien.propTypes = {
     email: PropTypes.string,
     soDienThoai: PropTypes.string,
   }).isRequired,
+  chuyenNganhId: PropTypes.string.isRequired,
+  refetchFindChuyenNganh: PropTypes.func,
+};
+
+ListGiangVien.defaultProps = {
+  refetchFindChuyenNganh: () => {},
 };
