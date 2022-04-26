@@ -3,9 +3,9 @@ import { gql } from '@apollo/client';
 
 export default {
   mutation: {
-    xoaKhoaHoc: (fragment) => gql`
-        mutation DELETE_KHOAHOC($id: ID!) {
-            xoaKhoaHoc(id: $id) {
+    xoaKhoaHocs: (fragment) => gql`
+        mutation ($ids: [ID!]) {
+            xoaKhoaHocs(ids: $ids) {
                 status
                 message
                 errors {

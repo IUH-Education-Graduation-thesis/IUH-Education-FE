@@ -9,7 +9,7 @@ import { get, isEmpty } from 'lodash';
 import ExpandFilter from './FilterExpand';
 
 const getAllKhoaHocQuery = queries.query.findKhoaHocs(GET_KHOAHOC_FAGMENT);
-const xoaKhoaHocMutation = queries.mutation.xoaKhoaHoc(GET_KHOAHOC_FAGMENT);
+const xoaKhoaHocMutation = queries.mutation.xoaKhoaHocs(GET_KHOAHOC_FAGMENT);
 
 const KhoaHocComponent = () => {
   const [visibleModalEdit, setVisibleModalEdit] = useState(false);

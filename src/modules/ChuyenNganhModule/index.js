@@ -13,22 +13,6 @@ import "modules/ChuyenNganhModule/ChuyenNganhModule.scss";
 const prefix = "chuyen-nganh";
 const findChuyenNganhQuery = queries.query.findChuyenNganh(FIND_CHUYEN_NGANH);
 
-const mockDataForListGiangVien = [...Array(10)?.keys()]?.map((item) => ({
-  id: item,
-  key: item,
-  hoTenDem: `Ho va ten ${item}`,
-  ten: `Ten ${item}`,
-  email: `hoantruong681${item}@gmail.com`,
-  soDienThoai: `034938077${item}`,
-}));
-
-const mockDataForListLopHoc = [...Array(10)?.keys()]?.map((item) => ({
-  id: item,
-  key: item,
-  ten: `Ten Lop Hoc ${item}`,
-  moTa: `Mo ta ${item}`,
-}));
-
 const ChuyenNganhModule = () => {
   const { chuyen_nganh_id, id } = useParams();
 

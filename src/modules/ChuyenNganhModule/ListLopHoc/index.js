@@ -1,8 +1,13 @@
-import { Button, Collapse, Select, Table } from "antd";
+import { Button, Collapse, notification, Select, Table } from "antd";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import TableExpand from "./LopHocTableExpand";
 import ModalKhoaHoc from "./ModalKhoaHoc";
+import queries from "core/graphql";
+import { useMutation } from "@apollo/client";
+import { isEmpty } from "lodash";
+
+const xoaKhoaHocsMutation = queries.mutation.xoaKhoaHocs("id");
 
 const { Panel } = Collapse;
 const prefix = "chuyen-nganh-lop-hoc";
@@ -39,7 +44,12 @@ const ListLopHoc = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
           <Button onClick={(e) => handleEditRow(e, record)} danger>
             Chỉnh sửa
           </Button>
-          <Button>Xóa</Button>
+          <Button
+            loading={loadingXoaKhoaHocs}
+            onClick={(e) => handleDeleteRow(e, record)}
+          >
+            Xóa
+          </Button>
         </div>
       ),
     },
@@ -51,9 +61,55 @@ const ListLopHoc = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
   const [currentKhoa, setCurrentKhoa] = useState({});
 
   /**
+   * API
+   * ====================================================
+   */
+
+  const [actXoaKhoaHocs, { loading: loadingXoaKhoaHocs }] = useMutation(
+    xoaKhoaHocsMutation,
+    {
+      onCompleted: (dataRes) => {
+        const _errors = dataRes?.xoaKhoaHocs?.errors || [];
+        const _data = dataRes?.xoaKhoaHocs?.data || [];
+
+        if (!isEmpty(_errors))
+          return _errors?.map((item) =>
+            notification["error"]({
+              message: item?.message,
+            })
+          );
+
+        if (isEmpty(_data)) {
+          notification["error"]({
+            message: "Lỗi hệ thống!",
+          });
+          return;
+        }
+
+        setSelectedRowKeys([]);
+        refetchFindChuyenNganh();
+
+        notification["success"]({
+          message: `Xóa ${_data?.length} khóa học thành công.`,
+        });
+      },
+    }
+  );
+
+  /**
    * Function
    * ==================================================
    */
+  const handleDeleteRow = (e, record) => {
+    e?.stopPropagation();
+
+    actXoaKhoaHocs({
+      variables: {
+        ids: [record?.id],
+      },
+    });
+  };
+
   const handleEditRow = (e, record) => {
     e?.stopPropagation();
     setCurrentKhoa(record);
@@ -75,6 +131,18 @@ const ListLopHoc = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
     setShowModalAdd(false);
     refetchFindChuyenNganh();
   };
+
+  const handleXoaKhaoHocs = (e) => {
+    e?.stopPropagation();
+
+    const _ids = selectedRowKeys || [];
+
+    actXoaKhoaHocs({
+      variables: {
+        ids: _ids,
+      },
+    });
+  };
   /**
    * Render view
    * ===================================================
@@ -84,7 +152,13 @@ const ListLopHoc = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
       <div className={`${prefix}__header`}>
         <div className={`${prefix}__header__left`}>Danh sách khóa học</div>
         <div className={`${prefix}__header__right`}>
-          <Button danger>Xóa khóa học đã chọn</Button>
+          <Button
+            loading={loadingXoaKhoaHocs}
+            onClick={handleXoaKhaoHocs}
+            danger
+          >
+            Xóa khóa học đã chọn
+          </Button>
           <Button onClick={handleClickThemKhoaHoc} type="primary">
             Thêm khóa học
           </Button>
