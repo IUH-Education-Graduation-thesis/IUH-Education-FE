@@ -1,15 +1,17 @@
 import React, { useEffect } from "react";
-import { Modal, Form, Input, notification } from "antd";
+import { Modal, Form, Input, notification, DatePicker } from "antd";
 import queries from "core/graphql";
 import PropTypes from "prop-types";
 
 import { isEmpty } from "lodash";
 import { useMutation } from "@apollo/client";
 import { checkTrulyObject } from "components/helper";
+import moment from "moment";
 
 const suaChuyenNganhMutation = queries.mutation.suaChuyenNganh("id");
 
 const themKhoaHocMutation = queries.mutation.themKhoaHoc("id");
+const suaKhoaHocMutation = queries.mutation.suaKhoaHoc("id");
 
 const ModalKhoaHoc = ({
   visible,
@@ -60,12 +62,13 @@ const ModalKhoaHoc = ({
       },
     }
   );
-  const [actSuaChuyenNganh, { loading: loadingSuaChuyenNganh }] = useMutation(
-    suaChuyenNganhMutation,
+
+  const [actSuaKhoaHoc, { loading: loadingSuaKhoaHoc }] = useMutation(
+    suaKhoaHocMutation,
     {
       onCompleted: (dataRes) => {
-        const _errors = dataRes?.suaChuyenNganh?.errors || [];
-        const _data = dataRes?.suaChuyenNganh?.data || [];
+        const _errors = dataRes?.suaKhoaHoc?.errors || [];
+        const _data = dataRes?.suaKhoaHoc?.data || [];
 
         if (!isEmpty(_errors))
           return _errors?.map((item) =>
@@ -84,7 +87,7 @@ const ModalKhoaHoc = ({
         onCallAPISuccess(_data?.[0]);
 
         notification["success"]({
-          message: "Sửa chuyên ngành thành công.",
+          message: `Sửa khóa học thành công.`,
         });
       },
     }
@@ -103,7 +106,7 @@ const ModalKhoaHoc = ({
   };
 
   const handleCallAPIEdit = (inputs, id) => {
-    actSuaChuyenNganh({
+    actSuaKhoaHoc({
       variables: {
         inputs,
         id,
@@ -120,6 +123,8 @@ const ModalKhoaHoc = ({
         const _inputs = {
           khoa: _dataForm?.khoa,
           moTa: _dataForm?.moTa,
+          thoiGianBatDau: _dataForm?.thoiGianBatDau,
+          thoiGianKetThuc: _dataForm?.thoiGianKetThuc,
           chuyenNganhId,
         };
 
@@ -141,6 +146,29 @@ const ModalKhoaHoc = ({
       });
   };
 
+  const handleOnFileChange = (payload) => {
+    console.log(payload);
+
+    const _name = payload?.[0]?.name?.[0];
+    const _value = payload?.[0]?.value;
+
+    if (_name === "_thoiGianBatDau") {
+      const _thoiGianBatDauFormat = _value?.format("YYYY-MM-DD");
+
+      form?.setFieldsValue({
+        thoiGianBatDau: _thoiGianBatDauFormat,
+      });
+    }
+
+    if (_name === "_thoiGianKetThuc") {
+      const _thoiGianKetThucFormat = _value?.format("YYYY-MM-DD");
+
+      form?.setFieldsValue({
+        thoiGianKetThuc: _thoiGianKetThucFormat,
+      });
+    }
+  };
+
   /**
    * useEffect
    * =============================================================
@@ -150,9 +178,18 @@ const ModalKhoaHoc = ({
     if (isEmpty(data)) {
       return;
     }
+    const _thoiGianBatDauMoment = !isEmpty(data?.thoiGianBatDau)
+      ? moment(data?.thoiGianBatDau)
+      : undefined;
+    const _thoiGianKetThucMoment = !isEmpty(data?.thoiGianKetThuc)
+      ? moment(data?.thoiGianKetThuc)
+      : undefined;
+
     form.setFieldsValue({
       id: data.id,
       khoa: data.khoa,
+      _thoiGianBatDau: _thoiGianBatDauMoment,
+      _thoiGianKetThuc: _thoiGianKetThucMoment,
       moTa: data.moTa,
     });
   }, [data, form]);
@@ -164,7 +201,12 @@ const ModalKhoaHoc = ({
 
   const renderForm = () => {
     return (
-      <Form {...layout} form={form} name="nest-messages">
+      <Form
+        onFieldsChange={handleOnFileChange}
+        {...layout}
+        form={form}
+        name="nest-messages"
+      >
         <Form.Item name={"id"} label="Mã khóa">
           <Input disabled />
         </Form.Item>
@@ -180,6 +222,12 @@ const ModalKhoaHoc = ({
         >
           <Input type="number" />
         </Form.Item>
+        <Form.Item label="Thời gian bắt đầu" name="_thoiGianBatDau">
+          <DatePicker />
+        </Form.Item>
+        <Form.Item label="Thời gian kết thúc" name="_thoiGianKetThuc">
+          <DatePicker />
+        </Form.Item>
         <Form.Item name={"moTa"} label="Mô tả">
           <Input />
         </Form.Item>
@@ -194,7 +242,7 @@ const ModalKhoaHoc = ({
       visible={visible}
       onCancel={() => closeModal(false)}
       width={1000}
-      confirmLoading={loadingThemKhoaHoc || loadingSuaChuyenNganh}
+      confirmLoading={loadingThemKhoaHoc || loadingSuaKhoaHoc}
       onOk={handleButtonOkClick}
       okText={type === "add" ? "Thêm" : "Sửa"}
     >

@@ -34,9 +34,11 @@ const ListLopHoc = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
       key: "operation",
       fixed: "right",
       width: 200,
-      render: (e) => (
+      render: (_, record) => (
         <div>
-          <Button danger>Chỉnh sửa</Button>
+          <Button onClick={(e) => handleEditRow(e, record)} danger>
+            Chỉnh sửa
+          </Button>
           <Button>Xóa</Button>
         </div>
       ),
@@ -45,11 +47,18 @@ const ListLopHoc = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [showModalAdd, setShowModalAdd] = useState(false);
+  const [showModalEdit, setShowModalEdit] = useState(false);
+  const [currentKhoa, setCurrentKhoa] = useState({});
 
   /**
    * Function
    * ==================================================
    */
+  const handleEditRow = (e, record) => {
+    e?.stopPropagation();
+    setCurrentKhoa(record);
+    setShowModalEdit(true);
+  };
 
   const handleSelectedRowChange = (payload) => {
     setSelectedRowKeys(payload);
@@ -62,6 +71,7 @@ const ListLopHoc = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
   };
 
   const handleCallAPIAddSuccess = (payload) => {
+    setShowModalEdit(false);
     setShowModalAdd(false);
     refetchFindChuyenNganh();
   };
@@ -111,7 +121,16 @@ const ListLopHoc = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
         onCallAPISuccess={handleCallAPIAddSuccess}
         chuyenNganhId={chuyenNganhId}
         type="add"
+        closeModal={() => setShowModalAdd(false)}
         visible={showModalAdd}
+      />
+      <ModalKhoaHoc
+        onCallAPISuccess={handleCallAPIAddSuccess}
+        data={currentKhoa}
+        chuyenNganhId={chuyenNganhId}
+        type="edit"
+        closeModal={() => setShowModalEdit(false)}
+        visible={showModalEdit}
       />
     </>
   );
