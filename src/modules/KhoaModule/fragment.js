@@ -8,6 +8,18 @@ hocKies {
   id
   thuTu
   moTa
+  hocPhans {
+    id
+    maHocPhan
+    moTa
+    batBuoc
+    monHoc {
+      id
+      ten
+    }
+    soTinChiLyThuyet
+    soTinChiThucHanh
+  }
 }
 chuyenNganh {
   id
@@ -17,4 +29,13 @@ chuyenNganh {
     ten
   }
 }
-`
+`;
+
+export const FIND_KHOA_VIEN_FRAGMENT = `
+id
+ten
+monHocs {
+  id
+  ten
+}
+`;

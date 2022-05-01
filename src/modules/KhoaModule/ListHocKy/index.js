@@ -173,7 +173,13 @@ const ListHocKy = ({ data, khoaId, refetchFindKhoaHoc }) => {
               onChange: handleSelectedKeyChange,
             }}
             expandable={{
-              expandedRowRender: (record) => <ListHocPhan data={record} />,
+              expandedRowRender: (record) => (
+                <ListHocPhan
+                  refetchFindKhoaHoc={refetchFindKhoaHoc}
+                  hocKyId={record?.id}
+                  data={record}
+                />
+              ),
             }}
             columns={columns}
             dataSource={data}

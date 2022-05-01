@@ -1,38 +1,45 @@
-import { Button, Table } from 'antd';
-import React, { useState } from 'react';
+import { Button, Checkbox, Table } from "antd";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 
-const prefix = 'khoa-hoc-ky-hoc-phan';
+import ModalHocPhan from "./ModalHocPhan";
 
-const ListHocPhan = ({ data }) => {
+const prefix = "khoa-hoc-ky-hoc-phan";
+
+const ListHocPhan = ({ data, hocKyId, refetchFindKhoaHoc }) => {
   const columns = [
     {
-      key: 'id',
-      dataIndex: 'id',
-      title: 'ID',
+      key: "id",
+      dataIndex: "id",
+      title: "ID",
     },
     {
-      key: 'maHocPhan',
-      dataIndex: 'maHocPhan',
-      title: 'Mã học phần',
+      key: "maHocPhan",
+      dataIndex: "maHocPhan",
+      title: "Mã học phần",
     },
     {
       render: (_, record) => record?.monHoc?.ten,
-      title: 'Môn học',
+      title: "Môn học",
     },
     {
-      key: 'soTinChiLyThuet',
-      dataIndex: 'soTinChiLyThuet',
-      title: 'Tín chỉ lý thuyết',
+      title: "Bắt buộc",
+      render: (_, record) => <Checkbox checked={record?.batBuoc} />,
     },
     {
-      key: 'soTinChiThucHanh',
-      dataIndex: 'soTinChiThucHanh',
-      title: 'Tín chỉ thực hành',
+      key: "soTinChiLyThuet",
+      dataIndex: "soTinChiLyThuyet",
+      title: "Tín chỉ lý thuyết",
     },
     {
-      title: 'Action',
-      key: 'operation',
-      fixed: 'right',
+      key: "soTinChiThucHanh",
+      dataIndex: "soTinChiThucHanh",
+      title: "Tín chỉ thực hành",
+    },
+    {
+      title: "Action",
+      key: "operation",
+      fixed: "right",
       width: 200,
       render: (e) => (
         <div>
@@ -44,7 +51,7 @@ const ListHocPhan = ({ data }) => {
   ];
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-
+  const [showModalAdd, setShowModalAdd] = useState(false);
   /**
    * Function
    * =========================================================
@@ -52,6 +59,15 @@ const ListHocPhan = ({ data }) => {
 
   const handleSelectedRowChange = (payload) => {
     setSelectedRowKeys(payload);
+  };
+
+  const handleADDHocPhan = () => {
+    setShowModalAdd(true);
+  };
+
+  const handleWhenModalHocPhanSuccess = (payload) => {
+    setShowModalAdd(false);
+    refetchFindKhoaHoc();
   };
 
   /**
@@ -67,7 +83,9 @@ const ListHocPhan = ({ data }) => {
         </div>
         <div className={`${prefix}__head__right`}>
           <Button danger>Xóa học phần đã chọn</Button>
-          <Button type="primary">Thêm học phần</Button>
+          <Button onClick={handleADDHocPhan} type="primary">
+            Thêm học phần
+          </Button>
         </div>
       </div>
       <Table
@@ -79,8 +97,25 @@ const ListHocPhan = ({ data }) => {
         columns={columns}
         dataSource={data?.hocPhans}
       />
+
+      <ModalHocPhan
+        visible={showModalAdd}
+        closeModal={() => setShowModalAdd(false)}
+        hocKyId={hocKyId}
+        onCallAPISuccess={handleWhenModalHocPhanSuccess}
+      />
     </div>
   );
 };
 
 export default ListHocPhan;
+
+ListHocPhan.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  hocKyId: PropTypes.number.isRequired,
+  refetchFindKhoaHoc: PropTypes.func,
+};
+
+ListHocPhan.defaultProps = {
+  refetchFindKhoaHoc: () => {},
+};
