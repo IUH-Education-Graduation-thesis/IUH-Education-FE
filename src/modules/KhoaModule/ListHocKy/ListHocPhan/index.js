@@ -1,10 +1,15 @@
-import { Button, Checkbox, Table } from "antd";
+import { Button, Checkbox, notification, Table } from "antd";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { isEmpty } from "lodash";
 
+import queries from "core/graphql";
 import ModalHocPhan from "./ModalHocPhan";
+import { useMutation } from "@apollo/client";
 
 const prefix = "khoa-hoc-ky-hoc-phan";
+
+const xoaHocPhansMutation = queries.mutation.xoaHocPhans("id");
 
 const ListHocPhan = ({ data, hocKyId, refetchFindKhoaHoc }) => {
   const columns = [
@@ -46,11 +51,13 @@ const ListHocPhan = ({ data, hocKyId, refetchFindKhoaHoc }) => {
           <Button onClick={(e) => handleEditRow(e, record)} danger>
             Chỉnh sửa
           </Button>
-          <Button>Xóa</Button>
+          <Button onClick={(e) => handleDeleteRow(e, record)}>Xóa</Button>
         </div>
       ),
     },
   ];
+
+  const dataTabel = data?.hocPhans?.map((item) => ({ ...item, key: item?.id }));
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [showModalAdd, setShowModalAdd] = useState(false);
@@ -58,9 +65,55 @@ const ListHocPhan = ({ data, hocKyId, refetchFindKhoaHoc }) => {
   const [currentHocPhan, setCurrentHocPhan] = useState(null);
 
   /**
+   * API
+   * =====================================================
+   */
+
+  const [actXoaHocPhans, { loading: loadinbXoaHocPhans }] = useMutation(
+    xoaHocPhansMutation,
+    {
+      onCompleted: (dataRes) => {
+        const _errors = dataRes?.xoaHocPhans?.errors || [];
+        const _data = dataRes?.xoaHocPhans?.data || [];
+
+        if (!isEmpty(_errors))
+          return _errors?.map((item) =>
+            notification["error"]({
+              message: item?.message,
+            })
+          );
+
+        if (isEmpty(_data)) {
+          notification["error"]({
+            message: "Lỗi hệ thống!",
+          });
+          return;
+        }
+
+        setSelectedRowKeys([]);
+        refetchFindKhoaHoc();
+
+        notification["success"]({
+          message: `Xóa ${_data?.length} học phần thành công.`,
+        });
+      },
+    }
+  );
+
+  /**
    * Function
    * =========================================================
    */
+
+  const handleDeleteRow = (e, record) => {
+    e?.stopPropagation();
+
+    actXoaHocPhans({
+      variables: {
+        ids: [record?.id],
+      },
+    });
+  };
 
   const handleEditRow = (e, record) => {
     e?.stopPropagation();
@@ -83,6 +136,16 @@ const ListHocPhan = ({ data, hocKyId, refetchFindKhoaHoc }) => {
     refetchFindKhoaHoc();
   };
 
+  const handleDeleteMutipleRow = () => {
+    const _ids = selectedRowKeys || [];
+
+    actXoaHocPhans({
+      variables: {
+        ids: _ids,
+      },
+    });
+  };
+
   /**
    * render view
    * =========================================================
@@ -95,7 +158,14 @@ const ListHocPhan = ({ data, hocKyId, refetchFindKhoaHoc }) => {
           Môn học của học kỳ {data?.thuTuHocKy}
         </div>
         <div className={`${prefix}__head__right`}>
-          <Button danger>Xóa học phần đã chọn</Button>
+          <Button
+            onClick={handleDeleteMutipleRow}
+            disabled={selectedRowKeys?.length <= 0}
+            loading={loadinbXoaHocPhans}
+            danger
+          >
+            Xóa học phần đã chọn
+          </Button>
           <Button onClick={handleADDHocPhan} type="primary">
             Thêm học phần
           </Button>
@@ -108,7 +178,7 @@ const ListHocPhan = ({ data, hocKyId, refetchFindKhoaHoc }) => {
         }}
         bordered
         columns={columns}
-        dataSource={data?.hocPhans}
+        dataSource={dataTabel}
       />
 
       <ModalHocPhan

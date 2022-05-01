@@ -139,12 +139,12 @@ const ModalHocPhan = ({
           moTa: _dataForm?.moTa,
           soTinChiLyThuyet: _dataForm?.soTinChiLyThuyet,
           soTinChiThucHanh: _dataForm?.soTinChiThucHanh,
-          batBuoc: _dataForm?.batBuoc,
+          batBuoc: _dataForm?.batBuoc || false,
           monHocId: _dataForm?.monHocId,
           hocKyId,
         };
 
-        const _inputsFormat = checkTrulyObject(_inputs);
+        const _inputsFormat = checkTrulyObject(_inputs, ["batBuoc"]);
 
         if (type === "add") {
           handleCallAPIAdd(_inputsFormat);
