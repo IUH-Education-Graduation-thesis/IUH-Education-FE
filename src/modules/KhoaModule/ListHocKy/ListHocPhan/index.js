@@ -41,9 +41,11 @@ const ListHocPhan = ({ data, hocKyId, refetchFindKhoaHoc }) => {
       key: "operation",
       fixed: "right",
       width: 200,
-      render: (e) => (
+      render: (_, record) => (
         <div>
-          <Button danger>Chỉnh sửa</Button>
+          <Button onClick={(e) => handleEditRow(e, record)} danger>
+            Chỉnh sửa
+          </Button>
           <Button>Xóa</Button>
         </div>
       ),
@@ -52,10 +54,20 @@ const ListHocPhan = ({ data, hocKyId, refetchFindKhoaHoc }) => {
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [showModalAdd, setShowModalAdd] = useState(false);
+  const [showModaEdit, setShowModaEdit] = useState(false);
+  const [currentHocPhan, setCurrentHocPhan] = useState(null);
+
   /**
    * Function
    * =========================================================
    */
+
+  const handleEditRow = (e, record) => {
+    e?.stopPropagation();
+
+    setCurrentHocPhan(record);
+    setShowModaEdit(true);
+  };
 
   const handleSelectedRowChange = (payload) => {
     setSelectedRowKeys(payload);
@@ -66,6 +78,7 @@ const ListHocPhan = ({ data, hocKyId, refetchFindKhoaHoc }) => {
   };
 
   const handleWhenModalHocPhanSuccess = (payload) => {
+    setShowModaEdit(false);
     setShowModalAdd(false);
     refetchFindKhoaHoc();
   };
@@ -102,6 +115,14 @@ const ListHocPhan = ({ data, hocKyId, refetchFindKhoaHoc }) => {
         visible={showModalAdd}
         closeModal={() => setShowModalAdd(false)}
         hocKyId={hocKyId}
+        onCallAPISuccess={handleWhenModalHocPhanSuccess}
+      />
+      <ModalHocPhan
+        visible={showModaEdit}
+        type="edit"
+        closeModal={() => setShowModaEdit(false)}
+        hocKyId={hocKyId}
+        data={currentHocPhan}
         onCallAPISuccess={handleWhenModalHocPhanSuccess}
       />
     </div>

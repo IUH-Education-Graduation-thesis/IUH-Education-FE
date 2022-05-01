@@ -40,6 +40,7 @@ import themHocKy from "./themHocKy";
 import suaHocKy from "./suaHocKy";
 import xoaHocKys from "./xoaHocKys";
 import themHocPhan from "./themHocPhan";
+import suaHocPhan from "./suaHocPhan";
 
 const query = {
   ...GetProfile.query,
@@ -87,6 +88,7 @@ const mutation = {
   ...suaHocKy.mutation,
   ...xoaHocKys.mutation,
   ...themHocPhan.mutation,
+  ...suaHocPhan.mutation,
 };
 
 export default {

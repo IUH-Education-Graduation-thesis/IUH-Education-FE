@@ -9,7 +9,7 @@ import { checkTrulyObject } from "components/helper";
 import { FIND_KHOA_VIEN_FRAGMENT } from "modules/KhoaModule/fragment";
 
 const themHocPhanMutation = queries.mutation.themHocPhan("id");
-const suaHocKyMutation = queries.mutation.suaHocKy("id");
+const suaHocPhanMutation = queries.mutation.suaHocPhan("id");
 const findKhoaVien = queries.query.findKhoaVien(FIND_KHOA_VIEN_FRAGMENT);
 
 const ModalHocPhan = ({
@@ -65,12 +65,12 @@ const ModalHocPhan = ({
       },
     }
   );
-  const [actSuaHocKy, { loading: loadingSuaHocKy }] = useMutation(
-    suaHocKyMutation,
+  const [actSuaHocPhan, { loading: loadingSuaHocPhan }] = useMutation(
+    suaHocPhanMutation,
     {
       onCompleted: (dataRes) => {
-        const _errors = dataRes?.suaHocKy?.errors || [];
-        const _data = dataRes?.suaHocKy?.data || [];
+        const _errors = dataRes?.suaHocPhan?.errors || [];
+        const _data = dataRes?.suaHocPhan?.data || [];
 
         if (!isEmpty(_errors))
           return _errors?.map((item) =>
@@ -89,7 +89,7 @@ const ModalHocPhan = ({
         onCallAPISuccess(_data?.[0]);
 
         notification["success"]({
-          message: "Sửa học kỳ thành công.",
+          message: "Sửa học phần thành công.",
         });
       },
     }
@@ -120,7 +120,7 @@ const ModalHocPhan = ({
   };
 
   const handleCallAPIEdit = (inputs, id) => {
-    actSuaHocKy({
+    actSuaHocPhan({
       variables: {
         inputs,
         id,
@@ -175,10 +175,15 @@ const ModalHocPhan = ({
     if (isEmpty(data)) {
       return;
     }
+
     form.setFieldsValue({
-      id: data.id,
-      thuTu: data.thuTu,
-      moTa: data.moTa,
+      id: data?.id,
+      batBuoc: data?.batBuoc,
+      soTinChiLyThuyet: data?.soTinChiLyThuyet,
+      soTinChiThucHanh: data?.soTinChiThucHanh,
+      maHocPhan: data?.maHocPhan,
+      moTa: data?.moTa,
+      monHocId: data?.monHoc?.id,
     });
   }, [data, form]);
 
@@ -263,7 +268,7 @@ const ModalHocPhan = ({
       visible={visible}
       onCancel={() => closeModal(false)}
       width={1000}
-      confirmLoading={loadingThemHocPhan || loadingSuaHocKy}
+      confirmLoading={loadingThemHocPhan || loadingSuaHocPhan}
       onOk={handleButtonOkClick}
       okText={type === "add" ? "Thêm" : "Sửa"}
     >
