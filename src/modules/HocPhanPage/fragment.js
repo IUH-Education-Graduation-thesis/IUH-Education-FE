@@ -24,4 +24,17 @@ monHocTruocs {
 }
 soTinChiLyThuyet
 soTinChiThucHanh
-`
+`;
+
+export const GET_NAM_HOC_FRAGMENT = `
+id
+namBatDau
+namKetThuc
+ghiChu
+hocKyNormals {
+  id
+  thuTuHocKy
+  ghiChu
+
+}
+`;
