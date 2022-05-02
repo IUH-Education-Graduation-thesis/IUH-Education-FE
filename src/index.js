@@ -54,7 +54,7 @@ ReactDOM.render(
           </Route>
           <Route
             exact
-            path="/khoa-vien/:id/chuyen-nganh/:chuyen_nganh_id/khoa/:khoa_id/hoc-ky/:hoc_ky_id/hoc-phan/:hoc_phan_id"
+            path="/hoc-phan/:hoc_phan_id"
           >
             <HocPhanPage />
           </Route>

@@ -1,38 +1,57 @@
-import { Card, Col, PageHeader, Row } from 'antd';
-import React from 'react';
-import ListHocKy from './ListHocKy';
-import 'modules/KhoaModule/KhoaModule.scss';
+import { Card, Col, PageHeader, Row } from "antd";
+import React from "react";
+import ListHocKy from "./ListHocKy";
+import queries from "core/graphql";
+import { useParams } from "react-router-dom";
+import { FIND_KHOA_HOC_FRAGMENT } from "./fragment";
 
-const prefix = 'khoa-hoc';
+import "modules/KhoaModule/KhoaModule.scss";
+import { useQuery } from "@apollo/client";
 
-const mockDataForListHocKy = [...Array(10)?.keys()]?.map((item) => ({
-  id: item,
-  key: item,
-  thuTuHocKy: item,
-  moTa: 'Day la cai mo ta',
-  hocPhans: [
-    {
-      id: item,
-      maHocPhan: `231241232${item}`,
-      moTa: 'Day la cai mo ta',
-      batBuoc: true,
-      soTinChiLyThuet: 3,
-      soTinChiThucHanh: 0,
-      monHoc: {
-        ten: 'Lập trình hướng đối tượng',
-      },
-    },
-  ],
-}));
+const prefix = "khoa-hoc";
+const findKhoaHocQuery = queries.query.findKhoaHocs(FIND_KHOA_HOC_FRAGMENT);
 
 const KhoaHocModule = () => {
+  const { khoa_id } = useParams();
+
+  /**
+   * API
+   * =======================================================
+   */
+
+  const {
+    data: dataFindKhoaHoc,
+    loadingFindKhoaHoc,
+    refetch: refetchFindKhoaHoc,
+  } = useQuery(findKhoaHocQuery, {
+    skip: !khoa_id,
+    fetchPolicy: "network-only",
+    variables: {
+      inputs: {
+        id: khoa_id,
+      },
+    },
+  });
+
+  const khoaHoc = dataFindKhoaHoc?.findKhoaHocs?.data?.[0]?.data?.[0] || {};
+
+  const listHocKy = khoaHoc?.hocKies?.map((item) => ({
+    ...item,
+    key: item?.id,
+  }));
+
+  /**
+   * Render view
+   * ==========================================================
+   */
+
   return (
     <Row className={prefix}>
       <Col span={4}></Col>
       <Col span={16}>
         <PageHeader
           style={{
-            border: '1px solid rgb(235, 237, 240)',
+            border: "1px solid rgb(235, 237, 240)",
           }}
           onBack={() => null}
           title="Chi tiết khóa học"
@@ -40,23 +59,27 @@ const KhoaHocModule = () => {
         <Card title="Thôn tin khóa học">
           <Row gutter={[24, 16]}>
             <Col span={8}>
-              <b>Khoa/Viện:</b> Công nghệ thông tin
+              <b>Khoa/Viện:</b> {khoaHoc?.chuyenNganh?.khoaVien?.ten}
             </Col>
             <Col span={8}>
-              <b>Chuyên ngành:</b> Công nghệ thông tin
+              <b>Chuyên ngành:</b> {khoaHoc?.chuyenNganh?.ten}
             </Col>
             <Col span={8}>
-              <b>Tên khóa:</b> 14
+              <b>Tên khóa:</b> {khoaHoc?.khoa}
             </Col>
             <Col span={8}>
               <b>Thời gian dự kiến:</b> 2018 - 2022
             </Col>
             <Col span={8}>
-              <b>Mô tả:</b> Đây là dòng mô tả
+              <b>Mô tả:</b> {khoaHoc?.moTa}
             </Col>
           </Row>
         </Card>
-        <ListHocKy data={mockDataForListHocKy} />
+        <ListHocKy
+          refetchFindKhoaHoc={refetchFindKhoaHoc}
+          khoaId={khoa_id}
+          data={listHocKy}
+        />
       </Col>
       <Col span={4}></Col>
     </Row>

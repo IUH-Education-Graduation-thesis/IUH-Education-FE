@@ -1,21 +1,25 @@
-import { gql } from '@apollo/client';
+/* eslint-disable import/no-anonymous-default-export */
+import { gql } from "@apollo/client";
 
 export default {
   query: {
     findKhoaHocs: (fragment) => gql`
-      query FIND_KHOAHOC {
-        findKhoaHocs {
-          status
+    query ($inputs: FindKhoaHocInputs ) {
+      findKhoaHocs (inputs: $inputs) {
+        status
+        errors {
           message
-          errors {
-            message
-            error_fields
-          }
+          error_fields
+        }
+        message
+        data {
+          count
           data {
             ${fragment}
           }
         }
       }
+    }
     `,
   },
 };
