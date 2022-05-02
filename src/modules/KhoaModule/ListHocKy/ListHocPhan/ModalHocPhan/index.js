@@ -263,6 +263,7 @@ const ModalHocPhan = ({
 
   return (
     <Modal
+      destroyOnClose
       title={type === "add" ? "Thêm học phần" : "Sửa học phần"}
       centered
       visible={visible}

@@ -1,12 +1,37 @@
-import React from 'react';
-import { Row, Col, PageHeader, Card } from 'antd';
-import 'modules/HocPhanPage/HocPhanPage.scss';
-import MonHocCollapse from './MonHocCollapse';
-import LopHocPhanList from './LopHocPhanList';
+import React from "react";
+import { Row, Col, PageHeader, Card } from "antd";
+import "modules/HocPhanPage/HocPhanPage.scss";
+import MonHocCollapse from "./MonHocCollapse";
+import LopHocPhanList from "./LopHocPhanList";
+import { useParams } from "react-router-dom";
 
-const prefix = 'hoc-phan-module';
+import queries from "core/graphql";
+import { FIND_HOC_PHAN } from "./fragment";
+import { useQuery } from "@apollo/client";
+
+const prefix = "hoc-phan-module";
+
+const findHocPhanQuery = queries.query.findHocPhan(FIND_HOC_PHAN);
 
 const HocPhanModule = () => {
+  const { hoc_phan_id } = useParams();
+
+  /**
+   * API
+   * =================================================
+   */
+
+  const { data: dataFindHocPhan } = useQuery(findHocPhanQuery, {
+    skip: !hoc_phan_id,
+    variables: {
+      inputs: {
+        id: hoc_phan_id,
+      },
+    },
+  });
+
+  const hocPhan = dataFindHocPhan?.findHocPhans?.data?.[0]?.data?.[0] || {};
+
   /**
    * render view
    * =====================================
@@ -18,7 +43,7 @@ const HocPhanModule = () => {
       <Col span={16}>
         <PageHeader
           style={{
-            border: '1px solid rgb(235, 237, 240)',
+            border: "1px solid rgb(235, 237, 240)",
           }}
           className="site-page-header"
           onBack={() => null}
@@ -27,31 +52,25 @@ const HocPhanModule = () => {
         <Card title="Thôn tin học phần">
           <Row gutter={[24, 16]}>
             <Col span={8}>
-              <b>Khoa/Viện:</b> Công nghệ thông tin
+              <b>Môn học:</b> {hocPhan?.monHoc?.ten}
             </Col>
             <Col span={8}>
-              <b>Chuyên ngành:</b> Kỹ thuật phần mềm
+              <b>ID:</b> {hocPhan?.id}
             </Col>
             <Col span={8}>
-              <b>Môn học:</b> Lập trình hướng đối tượng
+              <b>Mã học phần:</b> {hocPhan?.maHocPhan}
             </Col>
             <Col span={8}>
-              <b>Năm học:</b> 2018-2019
+              <b>Mô tả:</b> {hocPhan?.moTa}
             </Col>
             <Col span={8}>
-              <b>Học kỳ:</b> 2
+              <b>Bắt buộc:</b> {hocPhan?.batBuoc ? "có" : "không"}
             </Col>
             <Col span={8}>
-              <b>ID:</b> 2
+              <b>Tín chỉ lý thuyết:</b> {hocPhan?.soTinChiLyThuyet}
             </Col>
             <Col span={8}>
-              <b>Mã học phần:</b> 24123124512
-            </Col>
-            <Col span={8}>
-              <b>Mô tả:</b> Đây là mô tả
-            </Col>
-            <Col span={8}>
-              <b>Bắt buộc:</b> có
+              <b>Tín chỉ thực hành:</b> {hocPhan?.soTinChiThucHanh}
             </Col>
           </Row>
         </Card>

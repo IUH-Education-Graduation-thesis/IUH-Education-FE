@@ -146,6 +146,12 @@ const ListHocPhan = ({ data, hocKyId, refetchFindKhoaHoc }) => {
     });
   };
 
+  const handleOnRowClick = (event, record) => {
+    const _origin = window?.location?.origin;
+
+    window.location.href = `${_origin}/hoc-phan/${record?.id}`;
+  };
+
   /**
    * render view
    * =========================================================
@@ -176,6 +182,9 @@ const ListHocPhan = ({ data, hocKyId, refetchFindKhoaHoc }) => {
           selectedRowKeys,
           onChange: handleSelectedRowChange,
         }}
+        onRow={(record, index) => ({
+          onClick: (e) => handleOnRowClick(e, record),
+        })}
         bordered
         columns={columns}
         dataSource={dataTabel}
