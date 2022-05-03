@@ -1,21 +1,50 @@
-import React from 'react';
+import React from "react";
 
-import { Card, Col, PageHeader, Row } from 'antd';
-import ListLichHocPanel from './LichHocPanel';
-import ListSinhVienPanel from './SinhVienPanel';
+import { Card, Col, PageHeader, Row } from "antd";
+import ListLichHocPanel from "./LichHocPanel";
+import ListSinhVienPanel from "./SinhVienPanel";
+import queries from "core/graphql";
 
-import 'modules/LopHocPhanComp/LopHocPhanComp.scss';
+import "modules/LopHocPhanComp/LopHocPhanComp.scss";
+import { GET_LOP_HOC_PHAN } from "./fragment";
+import { useQuery } from "@apollo/client";
+import { useParams } from "react-router-dom";
 
-const prefix = 'chi-tiet-lop-hoc-phan';
+const prefix = "chi-tiet-lop-hoc-phan";
+const getLopHocPhanQuery = queries.query.getLopHocPhan(GET_LOP_HOC_PHAN);
 
 const LopHocPhanModule = () => {
+  const { lop_hoc_phan_id } = useParams();
+
+  /**
+   * API
+   * =======================================================
+   */
+
+  const { data: dataGetLopHocPhan, refetch: refetchGetLopHocPhan } = useQuery(
+    getLopHocPhanQuery,
+    {
+      skip: !lop_hoc_phan_id,
+      variables: {
+        id: lop_hoc_phan_id,
+      },
+    }
+  );
+
+  const lopHocPhan = dataGetLopHocPhan?.getLopHocPhan?.data?.[0] || {};
+
+  /**
+   * Render view
+   * =================================================
+   */
+
   return (
     <Row className={prefix}>
       <Col span={4} />
       <Col span={16}>
         <PageHeader
           style={{
-            border: '1px solid rgb(235, 237, 240)',
+            border: "1px solid rgb(235, 237, 240)",
           }}
           className="site-page-header"
           onBack={() => null}
@@ -25,36 +54,43 @@ const LopHocPhanModule = () => {
         <Card title="Thôn lớp tin học phần">
           <Row gutter={[24, 16]}>
             <Col span={8}>
-              <b>Khoa/Viện:</b> Công nghệ thông tin
+              <b>Môn học:</b> {lopHocPhan?.hocPhan?.monHoc?.ten}
             </Col>
             <Col span={8}>
-              <b>Chuyên ngành:</b> Kỹ thuật phần mềm
+              <b>Số tín chỉ lý thuyết:</b>{" "}
+              {lopHocPhan?.hocPhan?.soTinChiLyThuyet}
             </Col>
             <Col span={8}>
-              <b>Môn học:</b> Lập trình hướng đối tượng
+              <b>Số tín chỉ thực hành:</b>{" "}
+              {lopHocPhan?.hocPhan?.soTinChiThucHanh}
             </Col>
             <Col span={8}>
-              <b>Năm học:</b> 2018-2019
+              <b>Năm học:</b>{" "}
+              {`${lopHocPhan?.hocKyNormal?.namHoc?.namBatDau} - ${lopHocPhan?.hocKyNormal?.namHoc?.namKetThuc}`}
             </Col>
             <Col span={8}>
-              <b>Học kỳ:</b> 2
+              <b>Học kỳ:</b> {lopHocPhan?.hocKyNormal?.thuTuHocKy}
             </Col>
             <Col span={8}>
-              <b>ID:</b> 2
+              <b>ID:</b> {lopHocPhan?.id}
             </Col>
             <Col span={8}>
-              <b>Mã lớp học phần:</b> 24123124512
+              <b>Mã lớp học phần:</b> {lopHocPhan?.maLopHocPhan}
             </Col>
             <Col span={8}>
-              <b>Tên lớp:</b> DHKTPM14BTT
+              <b>Tên lớp:</b> {lopHocPhan?.lopDuKien}
             </Col>
             <Col span={8}>
-              <b>Mô tả:</b> Đây là mô tả
+              <b>Mô tả:</b> {lopHocPhan?.moTa}
             </Col>
           </Row>
         </Card>
 
-        <ListLichHocPanel />
+        <ListLichHocPanel
+          lopHocPhan={lopHocPhan}
+          lopHocPhanId={lop_hoc_phan_id}
+          refetchGetLopHocPhan={refetchGetLopHocPhan}
+        />
         <ListSinhVienPanel />
       </Col>
       <Col span={4} />
