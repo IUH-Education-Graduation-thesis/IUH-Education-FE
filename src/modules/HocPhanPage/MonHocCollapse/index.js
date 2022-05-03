@@ -17,14 +17,9 @@ const MonHocCollapse = () => {
       title: 'Tên môn học',
     },
     {
-      key: 'khoaVien',
-      dataIndex: 'khoaVien',
-      title: 'Khoa viện',
-    },
-    {
-      key: 'chuyenNganh',
-      dataIndex: 'chuyenNganh',
-      title: 'Chuyên Ngành',
+      key: 'moTa',
+      dataIndex: 'moTa',
+      title: 'Mô tả',
     },
     {
       key: '',

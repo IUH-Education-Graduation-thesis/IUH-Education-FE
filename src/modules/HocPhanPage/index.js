@@ -21,16 +21,24 @@ const HocPhanModule = () => {
    * =================================================
    */
 
-  const { data: dataFindHocPhan } = useQuery(findHocPhanQuery, {
-    skip: !hoc_phan_id,
-    variables: {
-      inputs: {
-        id: hoc_phan_id,
+  const { data: dataFindHocPhan, refetch: refetchFindHocPhan } = useQuery(
+    findHocPhanQuery,
+    {
+      skip: !hoc_phan_id,
+      variables: {
+        inputs: {
+          id: hoc_phan_id,
+        },
       },
-    },
-  });
+    }
+  );
 
   const hocPhan = dataFindHocPhan?.findHocPhans?.data?.[0]?.data?.[0] || {};
+
+  const dataForListLopHocPhan = hocPhan?.lopHocPhans?.map((item) => ({
+    ...item,
+    key: item?.id,
+  }));
 
   /**
    * render view
@@ -75,7 +83,10 @@ const HocPhanModule = () => {
           </Row>
         </Card>
         <MonHocCollapse />
-        <LopHocPhanList />
+        <LopHocPhanList
+          data={dataForListLopHocPhan}
+          refetchFindHocPhan={refetchFindHocPhan}
+        />
       </Col>
       <Col span={4}></Col>
     </Row>

@@ -42,6 +42,8 @@ import xoaHocKys from "./xoaHocKys";
 import themHocPhan from "./themHocPhan";
 import suaHocPhan from "./suaHocPhan";
 import xoaHocPhans from "./xoaHocPhans";
+import getNamHocs from "./getNamHocs";
+import themLopHocPhan from "./themLopHocPhan";
 
 const query = {
   ...GetProfile.query,
@@ -53,6 +55,7 @@ const query = {
   ...findKhoaVien.query,
   ...findSinhVien.query,
   ...findChuyenNganh.query,
+  ...getNamHocs.query,
 };
 
 const mutation = {
@@ -91,6 +94,7 @@ const mutation = {
   ...themHocPhan.mutation,
   ...suaHocPhan.mutation,
   ...xoaHocPhans.mutation,
+  ...themLopHocPhan.mutation,
 };
 
 export default {
