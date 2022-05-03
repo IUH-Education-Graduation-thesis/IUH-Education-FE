@@ -82,6 +82,7 @@ const LopHocPhanList = ({ data, refetchFindHocPhan }) => {
 
   const handleWhenModalSuccess = (payload) => {
     setShowModalAdd(false);
+    refetchFindHocPhan();
   };
 
   /**
