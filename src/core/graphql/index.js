@@ -43,6 +43,7 @@ import themHocPhan from "./themHocPhan";
 import suaHocPhan from "./suaHocPhan";
 import xoaHocPhans from "./xoaHocPhans";
 import getNamHocs from "./getNamHocs";
+import themLopHocPhan from "./themLopHocPhan";
 
 const query = {
   ...GetProfile.query,
@@ -93,6 +94,7 @@ const mutation = {
   ...themHocPhan.mutation,
   ...suaHocPhan.mutation,
   ...xoaHocPhans.mutation,
+  ...themLopHocPhan.mutation,
 };
 
 export default {

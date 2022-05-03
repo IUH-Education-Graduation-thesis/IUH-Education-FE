@@ -4,15 +4,20 @@ import queries from "core/graphql";
 import { GET_NAM_HOC_FRAGMENT } from "../fragment";
 import { useQuery } from "@apollo/client";
 import { isEmpty } from "lodash";
+import ModalLopHocPhan from "./ModalLopHocPhan";
+import { useParams } from "react-router-dom";
+import PropTypes from "prop-types";
 
 const prefix = "danh-sach-lop-hoc-phan";
 const getNamHocsQuery = queries.query.getNamHocs(GET_NAM_HOC_FRAGMENT);
 
-const LopHocPhanList = () => {
-  const [dataListLopHocPhan, setDataListLopHocPhan] = useState([]);
+const LopHocPhanList = ({ data, refetchFindHocPhan }) => {
+  const { hoc_phan_id } = useParams();
+
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [currentNamHoc, setCurrentNamHoc] = useState({});
   const [currentHocKy, setCurrentHocKy] = useState({});
+  const [showModalAdd, setShowModalAdd] = useState(false);
 
   /**
    * API
@@ -40,22 +45,6 @@ const LopHocPhanList = () => {
    */
 
   /**
-   * handle init data for table
-   */
-  useEffect(() => {
-    const _data = [...Array(30).keys()]?.map((item) => ({
-      key: item,
-      id: item,
-      maLopHocPhan: "1231231231231",
-      tenLopHocPhan: `Ten lop hoc phan ${item}`,
-      trangThai: "Đã mở lớp",
-      soLuongToiDa: 80,
-    }));
-
-    setDataListLopHocPhan(_data);
-  }, []);
-
-  /**
    * function
    * ======================================
    */
@@ -78,7 +67,15 @@ const LopHocPhanList = () => {
   const handleClickRowTable = (e, record) => {
     const _origin = window?.location?.origin;
 
-    window.location.href = `${_origin}/lop-hoc-phan/${record?.id}`;
+    window.location.href = `${_origin}/hoc-phan/${hoc_phan_id}/lop-hoc-phan/${record?.id}`;
+  };
+
+  const handleClickCreateLopHocPhan = () => {
+    setShowModalAdd(true);
+  };
+
+  const handleWhenModalSuccess = (payload) => {
+    setShowModalAdd(false);
   };
 
   /**
@@ -102,8 +99,8 @@ const LopHocPhanList = () => {
       title: "Tên lớp học phần",
     },
     {
-      key: "trangThai",
-      dataIndex: "trangThai",
+      key: "trangThaiLopHocPhan",
+      dataIndex: "trangThaiLopHocPhan",
       title: "Trạng thái",
     },
     {
@@ -130,7 +127,11 @@ const LopHocPhanList = () => {
       <div className={`${prefix}__title`}>
         <div className={`${prefix}__title__left`}>Danh sách lớp học phần</div>
         <div className={`${prefix}__title__right`}>
-          <Button disabled={isEmpty(currentHocKy)} type="primary">
+          <Button
+            onClick={handleClickCreateLopHocPhan}
+            disabled={isEmpty(currentHocKy)}
+            type="primary"
+          >
             Thêm lớp học phần
           </Button>
           <Button danger>Xóa lớp học phần đã chọn</Button>
@@ -167,10 +168,27 @@ const LopHocPhanList = () => {
           onChange: handleSelectedRowChange,
         }}
         columns={columns}
-        dataSource={dataListLopHocPhan}
+        dataSource={data}
+      />
+
+      <ModalLopHocPhan
+        hocPhanId={hoc_phan_id}
+        hocKyId={currentHocKy?.id}
+        visible={showModalAdd}
+        closeModal={() => setShowModalAdd(false)}
+        onCallAPISuccess={handleWhenModalSuccess}
       />
     </Card>
   );
 };
 
 export default LopHocPhanList;
+
+LopHocPhanList.propType = {
+  data: PropTypes.objectOf(PropTypes.any),
+  refetchFindHocPhan: PropTypes.func,
+};
+
+LopHocPhanList.defaultProps = {
+  refetchFindHocPhan: () => {},
+};
