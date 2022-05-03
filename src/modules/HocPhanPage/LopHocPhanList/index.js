@@ -49,6 +49,12 @@ const LopHocPhanList = ({ data, refetchFindHocPhan }) => {
    * ======================================
    */
 
+  const handleDataForTable = () => {
+    if (isEmpty(currentHocKy)) return data;
+
+    return data?.filter((item) => item?.hocKyNormal?.id === currentHocKy?.id);
+  };
+
   const handleHocKyChange = (id) => {
     const _data = dataForSelectHocKy?.find((item) => item?.id === id);
     setCurrentHocKy(_data);
@@ -168,7 +174,7 @@ const LopHocPhanList = ({ data, refetchFindHocPhan }) => {
           onChange: handleSelectedRowChange,
         }}
         columns={columns}
-        dataSource={data}
+        dataSource={handleDataForTable()}
       />
 
       <ModalLopHocPhan

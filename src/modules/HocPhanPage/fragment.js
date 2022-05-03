@@ -39,6 +39,10 @@ lopHocPhans {
   }
   soLuongHienTai
   lopDuKien
+  hocKyNormal {
+    id
+    thuTuHocKy
+  }
 }
 `;
 
