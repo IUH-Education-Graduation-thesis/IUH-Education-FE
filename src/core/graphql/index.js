@@ -46,6 +46,7 @@ import getNamHocs from './getNamHocs';
 import themLopHocPhan from './themLopHocPhan';
 import getLopHocPhan from './getLopHocPhan';
 import themLichHoc from './themLichHoc';
+import findGiangVien from './findGiangVien';
 
 const query = {
   ...GetProfile.query,
@@ -59,6 +60,7 @@ const query = {
   ...findChuyenNganh.query,
   ...getNamHocs.query,
   ...getLopHocPhan.query,
+  ...findGiangVien.query,
 };
 
 const mutation = {

@@ -12,6 +12,9 @@ monHocs {
   id
   moTa
   ten
+  khoaVien {
+    id
+  }
   giangViens {
     id
     hoTenDem
@@ -20,4 +23,10 @@ monHocs {
     soDienThoai
   }
 }
+`;
+
+export const FIND_GIANG_VIEN_FRAGMENT = `
+  id
+  hoTenDem
+  ten
 `;

@@ -172,7 +172,7 @@ const ListGiangVien = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
       <ModalGiangVien
         onCallAPISuccess={handleCallAPIAddSuccess}
         chuyenNganhId={chuyenNganhId}
-        closeModal={() => setShowModalEdit(false)}
+        closeModal={() => setShowModalAdd(false)}
         type="add"
         visible={showModalAdd}
       />

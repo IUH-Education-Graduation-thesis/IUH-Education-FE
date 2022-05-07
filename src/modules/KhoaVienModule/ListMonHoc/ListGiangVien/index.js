@@ -1,9 +1,14 @@
 import { Button, Table } from 'antd';
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+
+import ModalGiangVien from './ModalGiangVien';
 
 const prefix = 'list-mon-hoc-in-khoa-vien';
 
-const ListMonHoc = ({ data }) => {
+const ListGiangVien = ({ data, monHoc, refetchFindKhoaVien }) => {
+  const [showModalAdd, setShowModalAdd] = useState(false);
+
   const columns = [
     {
       key: 'id',
@@ -37,7 +42,6 @@ const ListMonHoc = ({ data }) => {
       width: 200,
       render: () => (
         <div>
-          <Button danger>Chỉnh sửa</Button>
           <Button>Xóa</Button>
         </div>
       ),
@@ -55,6 +59,15 @@ const ListMonHoc = ({ data }) => {
     setSelectedRowKeys(payload);
   };
 
+  const handleThemGiangVien = () => {
+    setShowModalAdd(true);
+  };
+
+  const handleModalGiangVienSuccess = () => {
+    setShowModalAdd(false);
+    refetchFindKhoaVien();
+  };
+
   /**
    * render view
    * =====================================================================
@@ -64,7 +77,9 @@ const ListMonHoc = ({ data }) => {
     <div className={prefix}>
       <div className={`${prefix}__head`}>
         <Button danger>Xóa giảng viên đã chọn</Button>
-        <Button type="primary">Thêm giảng viên</Button>
+        <Button onClick={handleThemGiangVien} type="primary">
+          Thêm giảng viên
+        </Button>
       </div>
 
       <div className={`${prefix}__wrap-table`}>
@@ -77,8 +92,24 @@ const ListMonHoc = ({ data }) => {
           dataSource={data}
         />
       </div>
+      <ModalGiangVien
+        monHoc={monHoc}
+        visible={showModalAdd}
+        closeModal={() => setShowModalAdd(false)}
+        onCallAPISuccess={handleModalGiangVienSuccess}
+      />
     </div>
   );
 };
 
-export default ListMonHoc;
+export default ListGiangVien;
+
+ListGiangVien.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.any).isRequired,
+  monHoc: PropTypes.objectOf(PropTypes.any).isRequired,
+  refetchFindKhoaVien: PropTypes.func,
+};
+
+ListGiangVien.defaultProps = {
+  refetchFindKhoaVien: () => {},
+};
