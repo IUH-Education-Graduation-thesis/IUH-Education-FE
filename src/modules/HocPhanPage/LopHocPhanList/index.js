@@ -1,14 +1,14 @@
-import { Button, Card, Form, Select, Table } from "antd";
-import React, { useEffect, useState } from "react";
-import queries from "core/graphql";
-import { GET_NAM_HOC_FRAGMENT } from "../fragment";
-import { useQuery } from "@apollo/client";
-import { isEmpty } from "lodash";
-import ModalLopHocPhan from "./ModalLopHocPhan";
-import { useParams } from "react-router-dom";
-import PropTypes from "prop-types";
+import { Button, Card, Form, Select, Table } from 'antd';
+import React, { useState } from 'react';
+import queries from 'core/graphql';
+import { GET_NAM_HOC_FRAGMENT } from '../fragment';
+import { useQuery } from '@apollo/client';
+import { isEmpty } from 'lodash';
+import ModalLopHocPhan from './ModalLopHocPhan';
+import { useParams } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-const prefix = "danh-sach-lop-hoc-phan";
+const prefix = 'danh-sach-lop-hoc-phan';
 const getNamHocsQuery = queries.query.getNamHocs(GET_NAM_HOC_FRAGMENT);
 
 const LopHocPhanList = ({ data, refetchFindHocPhan }) => {
@@ -80,7 +80,7 @@ const LopHocPhanList = ({ data, refetchFindHocPhan }) => {
     setShowModalAdd(true);
   };
 
-  const handleWhenModalSuccess = (payload) => {
+  const handleWhenModalSuccess = () => {
     setShowModalAdd(false);
     refetchFindHocPhan();
   };
@@ -91,36 +91,36 @@ const LopHocPhanList = ({ data, refetchFindHocPhan }) => {
    */
   const columns = [
     {
-      key: "id",
-      dataIndex: "id",
-      title: "ID",
+      key: 'id',
+      dataIndex: 'id',
+      title: 'ID',
     },
     {
-      key: "maLopHocPhan",
-      dataIndex: "maLopHocPhan",
-      title: "Mã lớp học phần",
+      key: 'maLopHocPhan',
+      dataIndex: 'maLopHocPhan',
+      title: 'Mã lớp học phần',
     },
     {
-      key: "tenLopHocPhan",
-      dataIndex: "tenLopHocPhan",
-      title: "Tên lớp học phần",
+      key: 'tenLopHocPhan',
+      dataIndex: 'tenLopHocPhan',
+      title: 'Tên lớp học phần',
     },
     {
-      key: "trangThaiLopHocPhan",
-      dataIndex: "trangThaiLopHocPhan",
-      title: "Trạng thái",
+      key: 'trangThaiLopHocPhan',
+      dataIndex: 'trangThaiLopHocPhan',
+      title: 'Trạng thái',
     },
     {
-      key: "soLuongToiDa",
-      dataIndex: "soLuongToiDa",
-      title: "Số lượng tối đa",
+      key: 'soLuongToiDa',
+      dataIndex: 'soLuongToiDa',
+      title: 'Số lượng tối đa',
     },
     {
-      title: "Action",
-      key: "operation",
-      fixed: "right",
+      title: 'Action',
+      key: 'operation',
+      fixed: 'right',
       width: 200,
-      render: (e) => (
+      render: () => (
         <div>
           <Button danger>Chỉnh sửa</Button>
           <Button>Xóa</Button>
@@ -158,16 +158,12 @@ const LopHocPhanList = ({ data, refetchFindHocPhan }) => {
           />
         </Form.Item>
         <Form.Item label="Học kỳ">
-          <Select
-            onChange={handleHocKyChange}
-            options={dataForSelectHocKy}
-            placeholder="Học kỳ"
-          />
+          <Select onChange={handleHocKyChange} options={dataForSelectHocKy} placeholder="Học kỳ" />
         </Form.Item>
       </Form>
 
       <Table
-        onRow={(record, index) => ({
+        onRow={(record) => ({
           onClick: (e) => handleClickRowTable(e, record),
         })}
         rowSelection={{

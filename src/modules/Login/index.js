@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Input, Button, notification } from 'antd';
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { get, isEmpty } from 'lodash';
 
 import LogoIUH from 'assets/images/Logo_IUH.png';
@@ -28,7 +28,7 @@ const Login = () => {
         return errors?.map((item) =>
           notification['error']({
             message: item?.message,
-          })
+          }),
         );
       }
 
@@ -70,18 +70,14 @@ const Login = () => {
           >
             <Form.Item
               name="username"
-              rules={[
-                { required: true, message: 'Please input your username!' },
-              ]}
+              rules={[{ required: true, message: 'Please input your username!' }]}
             >
               <Input placeholder="Tài khoản..." />
             </Form.Item>
 
             <Form.Item
               name="password"
-              rules={[
-                { required: true, message: 'Please input your password!' },
-              ]}
+              rules={[{ required: true, message: 'Please input your password!' }]}
             >
               <Input.Password placeholder="Mật khẩu..." />
             </Form.Item>

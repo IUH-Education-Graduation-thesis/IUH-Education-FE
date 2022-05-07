@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const config = {
   IS_LOCAL_BE: process.env.REACT_APP_BE_ENV === 'dev',
   IS_LOCAL: process.env.NODE_ENV === 'dev',

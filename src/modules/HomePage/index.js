@@ -4,17 +4,12 @@ import { UserOutlined, LaptopOutlined } from '@ant-design/icons';
 
 import SinhVienComponent from 'components/SinhVien';
 import KhoaComponent from 'components/Khoa';
-import ChuyenNganh from 'components/ChuyenNganh';
-import MonHoc from 'components/MonHoc';
-import HocKy from 'components/HocKy';
-import HocPhan from 'components/HocPhan';
-import LopHocPhan from 'components/LopHocPhan';
+
 import './HomePage.scss';
 import { isEmpty } from 'lodash';
 import KhoaHocComponent from 'components/KhoaHoc';
 import DayNha from 'components/DayNha';
-import PhongHoc from 'components/PhongHoc';
-import NamHoc from 'components/NamHoc';
+
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
@@ -50,9 +45,7 @@ const HomePage = () => {
   };
 
   const renderContent = () => {
-    const _component = listComponent?.find(
-      (item) => item?.key === currentComponent
-    );
+    const _component = listComponent?.find((item) => item?.key === currentComponent);
 
     if (isEmpty(_component)) return;
 

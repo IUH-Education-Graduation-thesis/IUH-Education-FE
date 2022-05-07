@@ -1,23 +1,16 @@
-import React, { useEffect } from "react";
-import { Modal, Form, Input, notification } from "antd";
-import queries from "core/graphql";
-import PropTypes from "prop-types";
+import React, { useEffect } from 'react';
+import { Modal, Form, Input, notification } from 'antd';
+import queries from 'core/graphql';
+import PropTypes from 'prop-types';
 
-import { isEmpty } from "lodash";
-import { useMutation } from "@apollo/client";
-import { checkTrulyObject } from "components/helper";
+import { isEmpty } from 'lodash';
+import { useMutation } from '@apollo/client';
+import { checkTrulyObject } from 'components/helper';
 
-const themHocKyMutation = queries.mutation.themHocKy("id");
-const suaHocKyMutation = queries.mutation.suaHocKy("id");
+const themHocKyMutation = queries.mutation.themHocKy('id');
+const suaHocKyMutation = queries.mutation.suaHocKy('id');
 
-const ModalHocKy = ({
-  visible,
-  closeModal,
-  type,
-  data,
-  onCallAPISuccess,
-  khoaId,
-}) => {
+const ModalHocKy = ({ visible, closeModal, type, data, onCallAPISuccess, khoaId }) => {
   const layout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 24 },
@@ -30,64 +23,58 @@ const ModalHocKy = ({
    * ===========================================================
    */
 
-  const [actThemHocKy, { loading: loadingThemHocKy }] = useMutation(
-    themHocKyMutation,
-    {
-      onCompleted: (dataRes) => {
-        const _errors = dataRes?.themHocKy?.errors || [];
-        const _data = dataRes?.themHocKy?.data || [];
+  const [actThemHocKy, { loading: loadingThemHocKy }] = useMutation(themHocKyMutation, {
+    onCompleted: (dataRes) => {
+      const _errors = dataRes?.themHocKy?.errors || [];
+      const _data = dataRes?.themHocKy?.data || [];
 
-        if (!isEmpty(_errors))
-          return _errors?.map((item) =>
-            notification["error"]({
-              message: item?.message,
-            })
-          );
+      if (!isEmpty(_errors))
+        return _errors?.map((item) =>
+          notification['error']({
+            message: item?.message,
+          }),
+        );
 
-        if (isEmpty(_data)) {
-          notification["error"]({
-            message: "Lỗi hệ thống!",
-          });
-          return;
-        }
-
-        onCallAPISuccess(_data?.[0]);
-
-        notification["success"]({
-          message: "Thêm học kỳ thành công.",
+      if (isEmpty(_data)) {
+        notification['error']({
+          message: 'Lỗi hệ thống!',
         });
-      },
-    }
-  );
-  const [actSuaHocKy, { loading: loadingSuaHocKy }] = useMutation(
-    suaHocKyMutation,
-    {
-      onCompleted: (dataRes) => {
-        const _errors = dataRes?.suaHocKy?.errors || [];
-        const _data = dataRes?.suaHocKy?.data || [];
+        return;
+      }
 
-        if (!isEmpty(_errors))
-          return _errors?.map((item) =>
-            notification["error"]({
-              message: item?.message,
-            })
-          );
+      onCallAPISuccess(_data?.[0]);
 
-        if (isEmpty(_data)) {
-          notification["error"]({
-            message: "Lỗi hệ thống!",
-          });
-          return;
-        }
+      notification['success']({
+        message: 'Thêm học kỳ thành công.',
+      });
+    },
+  });
+  const [actSuaHocKy, { loading: loadingSuaHocKy }] = useMutation(suaHocKyMutation, {
+    onCompleted: (dataRes) => {
+      const _errors = dataRes?.suaHocKy?.errors || [];
+      const _data = dataRes?.suaHocKy?.data || [];
 
-        onCallAPISuccess(_data?.[0]);
+      if (!isEmpty(_errors))
+        return _errors?.map((item) =>
+          notification['error']({
+            message: item?.message,
+          }),
+        );
 
-        notification["success"]({
-          message: "Sửa học kỳ thành công.",
+      if (isEmpty(_data)) {
+        notification['error']({
+          message: 'Lỗi hệ thống!',
         });
-      },
-    }
-  );
+        return;
+      }
+
+      onCallAPISuccess(_data?.[0]);
+
+      notification['success']({
+        message: 'Sửa học kỳ thành công.',
+      });
+    },
+  });
 
   /**
    * function
@@ -124,18 +111,18 @@ const ModalHocKy = ({
 
         const _inputsFormat = checkTrulyObject(_inputs);
 
-        if (type === "add") {
+        if (type === 'add') {
           handleCallAPIAdd(_inputsFormat);
           return;
         }
 
-        const _id = form?.getFieldValue("id");
+        const _id = form?.getFieldValue('id');
 
         handleCallAPIEdit(_inputsFormat, _id);
       })
       ?.catch(() => {
-        notification["error"]({
-          message: "Nhập thiếu thông tin!",
+        notification['error']({
+          message: 'Nhập thiếu thông tin!',
         });
       });
   };
@@ -164,22 +151,22 @@ const ModalHocKy = ({
   const renderForm = () => {
     return (
       <Form {...layout} form={form} name="nest-messages">
-        <Form.Item name={"id"} label="Mã học kỳ">
+        <Form.Item name={'id'} label="Mã học kỳ">
           <Input disabled />
         </Form.Item>
         <Form.Item
           rules={[
             {
               required: true,
-              message: "Không được bỏ trống!",
+              message: 'Không được bỏ trống!',
             },
           ]}
-          name={"thuTu"}
+          name={'thuTu'}
           label="Tên Học kỳ"
         >
           <Input type="number" />
         </Form.Item>
-        <Form.Item name={"moTa"} label="Mô tả">
+        <Form.Item name={'moTa'} label="Mô tả">
           <Input />
         </Form.Item>
       </Form>
@@ -188,14 +175,14 @@ const ModalHocKy = ({
 
   return (
     <Modal
-      title={type === "add" ? "Thêm Học kỳ" : "Sửa học kỳ"}
+      title={type === 'add' ? 'Thêm Học kỳ' : 'Sửa học kỳ'}
       centered
       visible={visible}
       onCancel={() => closeModal(false)}
       width={1000}
       confirmLoading={loadingThemHocKy || loadingSuaHocKy}
       onOk={handleButtonOkClick}
-      okText={type === "add" ? "Thêm" : "Sửa"}
+      okText={type === 'add' ? 'Thêm' : 'Sửa'}
     >
       {renderForm()}
     </Modal>
@@ -207,7 +194,7 @@ export default ModalHocKy;
 ModalHocKy.propTypes = {
   visible: PropTypes.bool,
   closeModal: PropTypes.func,
-  type: PropTypes.oneOf(["edit", "add"]),
+  type: PropTypes.oneOf(['edit', 'add']),
   data: PropTypes.objectOf(PropTypes.any),
   onCallAPISuccess: PropTypes.func,
   khoaId: PropTypes.string.isRequired,
@@ -216,7 +203,7 @@ ModalHocKy.propTypes = {
 ModalHocKy.defaultProps = {
   visible: false,
   closeModal: () => {},
-  type: "add",
+  type: 'add',
   data: {},
   onCallAPISuccess: () => {},
 };

@@ -95,15 +95,15 @@ const LopHocPhan = () => {
       key: i,
       id: `${i}`,
       maHocPhan: `400129343${i}`,
-      tenVietTat: `DHKTPM14`,
-      tenLopHocPhan: `----`,
+      tenVietTat: 'DHKTPM14',
+      tenLopHocPhan: '----',
       soNhomTH: 4,
-      trangThai: `Đang mở`,
-      soLuongDangKyToiDa: `90`,
-      soLuongDangKyHienTai: `35`,
-      idLopHocPhanTuongUng: `1231241`,
+      trangThai: 'Đang mở',
+      soLuongDangKyToiDa: '90',
+      soLuongDangKyHienTai: '35',
+      idLopHocPhanTuongUng: '1231241',
       hocKy: 5,
-      moTa: `không`,
+      moTa: 'không',
     });
   }
   const handlerEditButton = (lopHocPhan) => {
@@ -119,33 +119,17 @@ const LopHocPhan = () => {
       <h1>DANH SÁCH LỚP HỌC PHẦN</h1>
       <div className="combox-sv">
         <span>Khoa</span>
-        <Select
-          className="ant-select-selector"
-          defaultValue={khoaData[0]}
-          style={{ width: 300 }}
-        >
+        <Select className="ant-select-selector" defaultValue={khoaData[0]} style={{ width: 300 }}>
           {khoaData.map((khoaData) => (
             <Option key={khoaData}>{khoaData}</Option>
           ))}
         </Select>
       </div>
-      <Button
-        className="ant-btn-primary"
-        type="primary"
-        onClick={() => setVisibleModalAdd(true)}
-      >
+      <Button className="ant-btn-primary" type="primary" onClick={() => setVisibleModalAdd(true)}>
         + Thêm lớp học phần
       </Button>
-      <Table
-        columns={columns}
-        dataSource={data}
-        scroll={{ x: 1500, y: '50vh' }}
-      />
-      <ModalAddLopHocPhan
-        type="add"
-        visible={visibleModalAdd}
-        closeModal={setVisibleModalAdd}
-      />
+      <Table columns={columns} dataSource={data} scroll={{ x: 1500, y: '50vh' }} />
+      <ModalAddLopHocPhan type="add" visible={visibleModalAdd} closeModal={setVisibleModalAdd} />
       <ModalAddLopHocPhan
         type="edit"
         visible={visibleModalEdit}

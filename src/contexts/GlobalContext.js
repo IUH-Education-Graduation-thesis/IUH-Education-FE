@@ -9,11 +9,7 @@ const GlobalProvider = () => {
 
   const store = { state, setState };
 
-  return (
-    <GlobalContext.Provider value={store}>
-      {props.children}
-    </GlobalContext.Provider>
-  );
+  return <GlobalContext.Provider value={store}>{props.children}</GlobalContext.Provider>;
 };
 
 export { GlobalContext, GlobalConsumer, GlobalProvider };

@@ -1,50 +1,50 @@
-import { Button, Checkbox, notification, Table } from "antd";
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { isEmpty } from "lodash";
+import { Button, Checkbox, notification, Table } from 'antd';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { isEmpty } from 'lodash';
 
-import queries from "core/graphql";
-import ModalHocPhan from "./ModalHocPhan";
-import { useMutation } from "@apollo/client";
+import queries from 'core/graphql';
+import ModalHocPhan from './ModalHocPhan';
+import { useMutation } from '@apollo/client';
 
-const prefix = "khoa-hoc-ky-hoc-phan";
+const prefix = 'khoa-hoc-ky-hoc-phan';
 
-const xoaHocPhansMutation = queries.mutation.xoaHocPhans("id");
+const xoaHocPhansMutation = queries.mutation.xoaHocPhans('id');
 
 const ListHocPhan = ({ data, hocKyId, refetchFindKhoaHoc }) => {
   const columns = [
     {
-      key: "id",
-      dataIndex: "id",
-      title: "ID",
+      key: 'id',
+      dataIndex: 'id',
+      title: 'ID',
     },
     {
-      key: "maHocPhan",
-      dataIndex: "maHocPhan",
-      title: "Mã học phần",
+      key: 'maHocPhan',
+      dataIndex: 'maHocPhan',
+      title: 'Mã học phần',
     },
     {
       render: (_, record) => record?.monHoc?.ten,
-      title: "Môn học",
+      title: 'Môn học',
     },
     {
-      title: "Bắt buộc",
+      title: 'Bắt buộc',
       render: (_, record) => <Checkbox checked={record?.batBuoc} />,
     },
     {
-      key: "soTinChiLyThuet",
-      dataIndex: "soTinChiLyThuyet",
-      title: "Tín chỉ lý thuyết",
+      key: 'soTinChiLyThuet',
+      dataIndex: 'soTinChiLyThuyet',
+      title: 'Tín chỉ lý thuyết',
     },
     {
-      key: "soTinChiThucHanh",
-      dataIndex: "soTinChiThucHanh",
-      title: "Tín chỉ thực hành",
+      key: 'soTinChiThucHanh',
+      dataIndex: 'soTinChiThucHanh',
+      title: 'Tín chỉ thực hành',
     },
     {
-      title: "Action",
-      key: "operation",
-      fixed: "right",
+      title: 'Action',
+      key: 'operation',
+      fixed: 'right',
       width: 200,
       render: (_, record) => (
         <div>
@@ -69,36 +69,33 @@ const ListHocPhan = ({ data, hocKyId, refetchFindKhoaHoc }) => {
    * =====================================================
    */
 
-  const [actXoaHocPhans, { loading: loadinbXoaHocPhans }] = useMutation(
-    xoaHocPhansMutation,
-    {
-      onCompleted: (dataRes) => {
-        const _errors = dataRes?.xoaHocPhans?.errors || [];
-        const _data = dataRes?.xoaHocPhans?.data || [];
+  const [actXoaHocPhans, { loading: loadinbXoaHocPhans }] = useMutation(xoaHocPhansMutation, {
+    onCompleted: (dataRes) => {
+      const _errors = dataRes?.xoaHocPhans?.errors || [];
+      const _data = dataRes?.xoaHocPhans?.data || [];
 
-        if (!isEmpty(_errors))
-          return _errors?.map((item) =>
-            notification["error"]({
-              message: item?.message,
-            })
-          );
+      if (!isEmpty(_errors))
+        return _errors?.map((item) =>
+          notification['error']({
+            message: item?.message,
+          }),
+        );
 
-        if (isEmpty(_data)) {
-          notification["error"]({
-            message: "Lỗi hệ thống!",
-          });
-          return;
-        }
-
-        setSelectedRowKeys([]);
-        refetchFindKhoaHoc();
-
-        notification["success"]({
-          message: `Xóa ${_data?.length} học phần thành công.`,
+      if (isEmpty(_data)) {
+        notification['error']({
+          message: 'Lỗi hệ thống!',
         });
-      },
-    }
-  );
+        return;
+      }
+
+      setSelectedRowKeys([]);
+      refetchFindKhoaHoc();
+
+      notification['success']({
+        message: `Xóa ${_data?.length} học phần thành công.`,
+      });
+    },
+  });
 
   /**
    * Function
@@ -130,7 +127,7 @@ const ListHocPhan = ({ data, hocKyId, refetchFindKhoaHoc }) => {
     setShowModalAdd(true);
   };
 
-  const handleWhenModalHocPhanSuccess = (payload) => {
+  const handleWhenModalHocPhanSuccess = () => {
     setShowModaEdit(false);
     setShowModalAdd(false);
     refetchFindKhoaHoc();
@@ -160,9 +157,7 @@ const ListHocPhan = ({ data, hocKyId, refetchFindKhoaHoc }) => {
   return (
     <div className={prefix}>
       <div className={`${prefix}__head`}>
-        <div className={`${prefix}__head__left`}>
-          Môn học của học kỳ {data?.thuTuHocKy}
-        </div>
+        <div className={`${prefix}__head__left`}>Môn học của học kỳ {data?.thuTuHocKy}</div>
         <div className={`${prefix}__head__right`}>
           <Button
             onClick={handleDeleteMutipleRow}
@@ -182,7 +177,7 @@ const ListHocPhan = ({ data, hocKyId, refetchFindKhoaHoc }) => {
           selectedRowKeys,
           onChange: handleSelectedRowChange,
         }}
-        onRow={(record, index) => ({
+        onRow={(record) => ({
           onClick: (e) => handleOnRowClick(e, record),
         })}
         bordered

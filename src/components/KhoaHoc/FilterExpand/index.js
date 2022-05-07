@@ -1,49 +1,43 @@
-import React, { useMemo, useState } from "react";
-import classNames from "classnames";
-import PropTypes from "prop-types";
+import React, { useMemo, useState } from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
 
-import { Button, Form, Input, Select } from "antd";
+import { Button, Form, Input, Select } from 'antd';
 import {
   SearchOutlined,
   ArrowDownOutlined,
   ClearOutlined,
   ArrowUpOutlined,
-} from "@ant-design/icons";
+} from '@ant-design/icons';
 
-const prefix = "sinh-vien--filter";
+const prefix = 'sinh-vien--filter';
 
 const dataMockKhoaVien = [
   {
     id: 1,
-    label: "Công nghệ thông tin",
+    label: 'Công nghệ thông tin',
     value: 2,
   },
   {
     id: 2,
-    label: "May thời trang",
+    label: 'May thời trang',
     value: 3,
   },
   {
     id: 3,
-    label: "Tài ngân",
+    label: 'Tài ngân',
     value: 4,
   },
   {
     id: 4,
-    label: "Xây dựng",
+    label: 'Xây dựng',
     value: 25,
   },
 ];
 
 const { useForm } = Form;
 
-const ExpandFilter = ({
-  onAddAStudentClick,
-  onAddWithFileClick,
-  onFilterChange,
-  currentFilterData,
-  onClear,
-}) => {
+const ExpandFilter = ({ onAddAStudentClick, onFilterChange, currentFilterData, onClear }) => {
   const [form] = useForm();
 
   const [expanded, setExpanded] = useState(false);
@@ -89,22 +83,16 @@ const ExpandFilter = ({
       <div className={`${prefix}__top`}>
         <div className={`${prefix}__top__left`}>
           <Form.Item name="id">
-            <Input
-              prefix={<SearchOutlined />}
-              placeholder="Nhập mã khóa học..."
-            />
+            <Input prefix={<SearchOutlined />} placeholder="Nhập mã khóa học..." />
           </Form.Item>
           <Form.Item name="tenKhoaHoc">
-            <Input
-              prefix={<SearchOutlined />}
-              placeholder="Nhập tên khóa học..."
-            />
+            <Input prefix={<SearchOutlined />} placeholder="Nhập tên khóa học..." />
           </Form.Item>
         </div>
 
         <div className={`${prefix}__top__right`}>
           <Button onClick={onAddAStudentClick} type="primary">
-            {" "}
+            {' '}
             + Thêm 1 khóa học
           </Button>
 
@@ -118,18 +106,10 @@ const ExpandFilter = ({
         })}
       >
         <Form.Item name="khoa_vien">
-          <Select
-            options={dataMockKhoaVien}
-            mode="multiple"
-            placeholder="Khoa Viện"
-          ></Select>
+          <Select options={dataMockKhoaVien} mode="multiple" placeholder="Khoa Viện"></Select>
         </Form.Item>
         <Form.Item name="chuyen_nganh">
-          <Select
-            options={dataMockKhoaVien}
-            mode="multiple"
-            placeholder="Chuyên ngành"
-          ></Select>
+          <Select options={dataMockKhoaVien} mode="multiple" placeholder="Chuyên ngành"></Select>
         </Form.Item>
       </div>
     </Form>

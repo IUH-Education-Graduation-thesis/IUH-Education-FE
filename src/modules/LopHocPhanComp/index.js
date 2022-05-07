@@ -1,16 +1,16 @@
-import React from "react";
+import React from 'react';
 
-import { Card, Col, PageHeader, Row } from "antd";
-import ListLichHocPanel from "./LichHocPanel";
-import ListSinhVienPanel from "./SinhVienPanel";
-import queries from "core/graphql";
+import { Card, Col, PageHeader, Row } from 'antd';
+import ListLichHocPanel from './LichHocPanel';
+import ListSinhVienPanel from './SinhVienPanel';
+import queries from 'core/graphql';
 
-import "modules/LopHocPhanComp/LopHocPhanComp.scss";
-import { GET_LOP_HOC_PHAN } from "./fragment";
-import { useQuery } from "@apollo/client";
-import { useParams } from "react-router-dom";
+import 'modules/LopHocPhanComp/LopHocPhanComp.scss';
+import { GET_LOP_HOC_PHAN } from './fragment';
+import { useQuery } from '@apollo/client';
+import { useParams } from 'react-router-dom';
 
-const prefix = "chi-tiet-lop-hoc-phan";
+const prefix = 'chi-tiet-lop-hoc-phan';
 const getLopHocPhanQuery = queries.query.getLopHocPhan(GET_LOP_HOC_PHAN);
 
 const LopHocPhanModule = () => {
@@ -21,15 +21,12 @@ const LopHocPhanModule = () => {
    * =======================================================
    */
 
-  const { data: dataGetLopHocPhan, refetch: refetchGetLopHocPhan } = useQuery(
-    getLopHocPhanQuery,
-    {
-      skip: !lop_hoc_phan_id,
-      variables: {
-        id: lop_hoc_phan_id,
-      },
-    }
-  );
+  const { data: dataGetLopHocPhan, refetch: refetchGetLopHocPhan } = useQuery(getLopHocPhanQuery, {
+    skip: !lop_hoc_phan_id,
+    variables: {
+      id: lop_hoc_phan_id,
+    },
+  });
 
   const lopHocPhan = dataGetLopHocPhan?.getLopHocPhan?.data?.[0] || {};
 
@@ -44,7 +41,7 @@ const LopHocPhanModule = () => {
       <Col span={16}>
         <PageHeader
           style={{
-            border: "1px solid rgb(235, 237, 240)",
+            border: '1px solid rgb(235, 237, 240)',
           }}
           className="site-page-header"
           onBack={() => null}
@@ -57,15 +54,13 @@ const LopHocPhanModule = () => {
               <b>Môn học:</b> {lopHocPhan?.hocPhan?.monHoc?.ten}
             </Col>
             <Col span={8}>
-              <b>Số tín chỉ lý thuyết:</b>{" "}
-              {lopHocPhan?.hocPhan?.soTinChiLyThuyet}
+              <b>Số tín chỉ lý thuyết:</b> {lopHocPhan?.hocPhan?.soTinChiLyThuyet}
             </Col>
             <Col span={8}>
-              <b>Số tín chỉ thực hành:</b>{" "}
-              {lopHocPhan?.hocPhan?.soTinChiThucHanh}
+              <b>Số tín chỉ thực hành:</b> {lopHocPhan?.hocPhan?.soTinChiThucHanh}
             </Col>
             <Col span={8}>
-              <b>Năm học:</b>{" "}
+              <b>Năm học:</b>{' '}
               {`${lopHocPhan?.hocKyNormal?.namHoc?.namBatDau} - ${lopHocPhan?.hocKyNormal?.namHoc?.namKetThuc}`}
             </Col>
             <Col span={8}>

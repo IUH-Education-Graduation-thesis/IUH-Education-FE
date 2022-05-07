@@ -125,12 +125,7 @@ const MonHoc = () => {
         dataSource={listMonHoc}
       />
       <ModalMonHoc type="add" visible={visible} closeModal={setVisibleModal} />
-      <ModalMonHoc
-        type="sua"
-        visible={visibleSua}
-        closeModal={setVisibleModalSua}
-        data={monHoc}
-      />
+      <ModalMonHoc type="sua" visible={visibleSua} closeModal={setVisibleModalSua} data={monHoc} />
     </div>
   );
 };

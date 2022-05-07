@@ -1,40 +1,40 @@
-import { Button, Collapse, notification, Table } from "antd";
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
-import PropTypes from "prop-types";
-import queries from "core/graphql";
-import ModalChuyenNganh from "./ModalChuyenNganh";
-import { useMutation } from "@apollo/client";
-import { isEmpty } from "lodash";
+import { Button, Collapse, notification, Table } from 'antd';
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import queries from 'core/graphql';
+import ModalChuyenNganh from './ModalChuyenNganh';
+import { useMutation } from '@apollo/client';
+import { isEmpty } from 'lodash';
 
 const { Panel } = Collapse;
-const prefix = "khoa-vien-chuyen-nganh";
+const prefix = 'khoa-vien-chuyen-nganh';
 
-const xoaChuyenNganhMutation = queries.mutation.xoaChuyenNganhs("id");
+const xoaChuyenNganhMutation = queries.mutation.xoaChuyenNganhs('id');
 
 const ChuyenNganhList = ({ data, refetchKhoaVien }) => {
   const { id: khoaVienId } = useParams();
 
   const columns = [
     {
-      key: "id",
-      dataIndex: "id",
-      title: "ID",
+      key: 'id',
+      dataIndex: 'id',
+      title: 'ID',
     },
     {
-      key: "ten",
-      dataIndex: "ten",
-      title: "Tên chuyên ngành",
+      key: 'ten',
+      dataIndex: 'ten',
+      title: 'Tên chuyên ngành',
     },
     {
-      key: "moTa",
-      dataIndex: "moTa",
-      title: "Mô tả",
+      key: 'moTa',
+      dataIndex: 'moTa',
+      title: 'Mô tả',
     },
     {
-      title: "Action",
-      key: "operation",
-      fixed: "right",
+      title: 'Action',
+      key: 'operation',
+      fixed: 'right',
       width: 200,
       render: (_, record) => (
         <div>
@@ -64,14 +64,14 @@ const ChuyenNganhList = ({ data, refetchKhoaVien }) => {
 
       if (!isEmpty(_errors))
         return _errors?.map((item) =>
-          notification["error"]({
+          notification['error']({
             message: item?.message,
-          })
+          }),
         );
 
       if (isEmpty(_data)) {
-        notification["error"]({
-          message: "Lỗi hệ thống!",
+        notification['error']({
+          message: 'Lỗi hệ thống!',
         });
         return;
       }
@@ -79,7 +79,7 @@ const ChuyenNganhList = ({ data, refetchKhoaVien }) => {
       setSelectedRowKeys([]);
       refetchKhoaVien();
 
-      notification["success"]({
+      notification['success']({
         message: `Xóa ${_data?.length} chuyên ngành thành công.`,
       });
     },
@@ -114,7 +114,7 @@ const ChuyenNganhList = ({ data, refetchKhoaVien }) => {
     setSelectedRowKeys(payload);
   };
 
-  const handleCallAPIAddSuccess = (payload) => {
+  const handleCallAPIAddSuccess = () => {
     setShowModalAdd(false);
     setShowModalSua(false);
     refetchKhoaVien();
@@ -154,16 +154,11 @@ const ChuyenNganhList = ({ data, refetchKhoaVien }) => {
   return (
     <>
       <Collapse className={prefix}>
-        <Panel
-          className={prefix}
-          showArrow={false}
-          header={renderHeadOfPanel()}
-          key="1"
-        >
+        <Panel className={prefix} showArrow={false} header={renderHeadOfPanel()} key="1">
           <Table
             onRow={(record) => {
               return {
-                onClick: (e) => {
+                onClick: () => {
                   const _origin = window?.location?.origin;
 
                   window.location.href = `${_origin}/khoa-vien/${khoaVienId}/chuyen-nganh/${record?.id}`;

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Form, Input, DatePicker, Select } from 'antd';
+import { Modal, Form, Input, Select } from 'antd';
 
 import { isEmpty } from 'lodash';
 
 const ModalHocPhan = ({ visible, closeModal, type, data }) => {
-  const [hocPhan, setHocPhan] = useState({});
+  const [, setHocPhan] = useState({});
   const layout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 24 },
@@ -27,9 +27,7 @@ const ModalHocPhan = ({ visible, closeModal, type, data }) => {
       moTa: data.moTa,
     });
   }, [data]);
-  function onChange(date, dateString) {
-    console.log(date, dateString);
-  }
+
   const monHoc = [
     { value: 'toanCC', label: 'Toán cao cấp' },
     { value: 'cauTrucRoiRac', label: 'Cấu trúc rời rạc' },
@@ -56,11 +54,7 @@ const ModalHocPhan = ({ visible, closeModal, type, data }) => {
           <Input />
         </Form.Item>
         <Form.Item label="Môn học">
-          <Select
-            options={monHoc}
-            style={{ width: 290 }}
-            placeholder="Môn học"
-          />
+          <Select options={monHoc} style={{ width: 290 }} placeholder="Môn học" />
         </Form.Item>
         <Form.Item name={'tinChiLT'} label="Số tín chỉ LT">
           <Input />
@@ -79,11 +73,7 @@ const ModalHocPhan = ({ visible, closeModal, type, data }) => {
           />
         </Form.Item>
         <Form.Item label="Môn học song hành">
-          <Select
-            options={monHocSongHanh}
-            style={{ width: 290 }}
-            placeholder="Môn học song hành"
-          />
+          <Select options={monHocSongHanh} style={{ width: 290 }} placeholder="Môn học song hành" />
         </Form.Item>
         <Form.Item label="Môn học tương đương">
           <Select

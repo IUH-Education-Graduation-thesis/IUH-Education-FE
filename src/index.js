@@ -1,12 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { ApolloProvider } from '@apollo/client';
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Routes,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import client from 'core/apollo';
 import reportWebVitals from './reportWebVitals';
@@ -40,28 +35,16 @@ ReactDOM.render(
           <Route exact path="/khoa-vien/:id/chuyen-nganh/:chuyen_nganh_id">
             <ChuyenNganhPage />
           </Route>
-          <Route
-            exact
-            path="/khoa-vien/:id/chuyen-nganh/:chuyen_nganh_id/lop/:lop_id"
-          >
+          <Route exact path="/khoa-vien/:id/chuyen-nganh/:chuyen_nganh_id/lop/:lop_id">
             <LopPage />
           </Route>
-          <Route
-            exact
-            path="/khoa-vien/:id/chuyen-nganh/:chuyen_nganh_id/khoa/:khoa_id"
-          >
+          <Route exact path="/khoa-vien/:id/chuyen-nganh/:chuyen_nganh_id/khoa/:khoa_id">
             <KhoaHocPage />
           </Route>
-          <Route
-            exact
-            path="/hoc-phan/:hoc_phan_id"
-          >
+          <Route exact path="/hoc-phan/:hoc_phan_id">
             <HocPhanPage />
           </Route>
-          <Route
-            exact
-            path="/hoc-phan/:hoc_phan_id/lop-hoc-phan/:lop_hoc_phan_id"
-          >
+          <Route exact path="/hoc-phan/:hoc_phan_id/lop-hoc-phan/:lop_hoc_phan_id">
             <LopHocPhanPage />
           </Route>
           <Route path="/login">
@@ -71,7 +54,7 @@ ReactDOM.render(
       </Router>
     </ApolloProvider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
 
 // If you want to start measuring performance in your app, pass a function

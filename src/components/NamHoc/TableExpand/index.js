@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const prefix = 'day-nha-expand';
 
-const TableExpand = ({ data, onAddClassRoom, onDeleteMultipleClassroom }) => {
+const TableExpand = ({ data }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const columns = [
@@ -31,7 +31,7 @@ const TableExpand = ({ data, onAddClassRoom, onDeleteMultipleClassroom }) => {
       title: 'Thao tác',
       key: 'thaoTac',
       width: 300,
-      render: (e) => (
+      render: () => (
         <div>
           <Button danger>Chỉnh sửa</Button>
           <Button style={{ marginLeft: 10 }}>Xóa</Button>
@@ -81,7 +81,7 @@ TableExpand.propTypes = {
       id: PropTypes.number,
       thuTuHocKy: PropTypes.number,
       moTa: PropTypes.string,
-    })
+    }),
   ),
   onAddClassRoom: PropTypes.func,
   onDeleteMultipleClassroom: PropTypes.func,

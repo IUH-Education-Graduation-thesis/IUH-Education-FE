@@ -2,9 +2,8 @@ import React, { useEffect } from 'react';
 import { Modal, Form, Input, notification, Button } from 'antd';
 import queries from 'core/graphql';
 import { GET_DAYNHA_FRAGMENT } from '../fragment';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { get, isEmpty } from 'lodash';
-import suaDayNha from 'core/graphql/suaDayNha';
 // init APi
 const createDayNhaMutation = queries.mutation.themDayNha(GET_DAYNHA_FRAGMENT);
 const updateDayNhaMutation = queries.mutation.suaDayNha(GET_DAYNHA_FRAGMENT);
@@ -15,62 +14,56 @@ const ModalDayNha = ({ visible, closeModal, type, data, onCreateComplete }) => {
     wrapperCol: { span: 24 },
   };
   const [form] = Form.useForm();
-  const [actCreate, { data: dataCreate, loading: loadingCreate }] = useMutation(
-    createDayNhaMutation,
-    {
-      onCompleted: (dataReturn) => {
-        const errors = get(dataReturn, 'themDayNha.errors', []);
-        if (!isEmpty(errors)) {
-          return errors.map((item) =>
-            notification['error']({
-              message: item?.message,
-            })
-          );
-        }
-        const _data = get(dataReturn, 'themDayNha.data', {});
-        const status = get(dataReturn, 'themDayNha.status', {});
-        if (!isEmpty(_data)) {
-          onCreateComplete(_data?.[0]);
-          notification.open({
-            message: 'Thông báo',
-            description: status,
-          });
-          return;
-        }
-        notification['error']({
-          message: 'Loi ket noi',
+  const [actCreate, { loading: loadingCreate }] = useMutation(createDayNhaMutation, {
+    onCompleted: (dataReturn) => {
+      const errors = get(dataReturn, 'themDayNha.errors', []);
+      if (!isEmpty(errors)) {
+        return errors.map((item) =>
+          notification['error']({
+            message: item?.message,
+          }),
+        );
+      }
+      const _data = get(dataReturn, 'themDayNha.data', {});
+      const status = get(dataReturn, 'themDayNha.status', {});
+      if (!isEmpty(_data)) {
+        onCreateComplete(_data?.[0]);
+        notification.open({
+          message: 'Thông báo',
+          description: status,
         });
-      },
-    }
-  );
-  const [actUpdate, { data: dataUpdate, loading: loadingUpdate }] = useMutation(
-    updateDayNhaMutation,
-    {
-      onCompleted: (dataReturn) => {
-        const errors = get(dataReturn, 'suaDayNha.errors', []);
-        if (!isEmpty(errors)) {
-          return errors.map((item) =>
-            notification['error']({
-              message: item?.message,
-            })
-          );
-        }
-        const _data = get(dataReturn, 'suaDayNha.data', {});
-        const status = get(dataReturn, 'suaDayNha.status', {});
-        if (!isEmpty(_data)) {
-          onCreateComplete(_data?.[0]);
-          notification.open({
-            message: 'Thông báo',
-            description: status,
-          });
-          return;
-        }
-        notification['error']({
-          message: 'Loi ket noi',
+        return;
+      }
+      notification['error']({
+        message: 'Loi ket noi',
+      });
+    },
+  });
+  const [actUpdate, { loading: loadingUpdate }] = useMutation(updateDayNhaMutation, {
+    onCompleted: (dataReturn) => {
+      const errors = get(dataReturn, 'suaDayNha.errors', []);
+      if (!isEmpty(errors)) {
+        return errors.map((item) =>
+          notification['error']({
+            message: item?.message,
+          }),
+        );
+      }
+      const _data = get(dataReturn, 'suaDayNha.data', {});
+      const status = get(dataReturn, 'suaDayNha.status', {});
+      if (!isEmpty(_data)) {
+        onCreateComplete(_data?.[0]);
+        notification.open({
+          message: 'Thông báo',
+          description: status,
         });
-      },
-    }
-  );
+        return;
+      }
+      notification['error']({
+        message: 'Loi ket noi',
+      });
+    },
+  });
   const handleAdd = async () => {
     const _dataForm = form.getFieldsValue(true);
     await actCreate({
@@ -108,9 +101,6 @@ const ModalDayNha = ({ visible, closeModal, type, data, onCreateComplete }) => {
     });
   }, [data]);
 
-  function handleChange(value) {
-    console.log(`selected ${value}`);
-  }
   const renderForm = () => {
     return (
       <Form

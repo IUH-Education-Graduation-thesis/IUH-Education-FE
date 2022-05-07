@@ -1,26 +1,17 @@
-import React, { useEffect } from "react";
-import { Modal, Form, Input, notification, DatePicker } from "antd";
-import queries from "core/graphql";
-import PropTypes from "prop-types";
+import React, { useEffect } from 'react';
+import { Modal, Form, Input, notification, DatePicker } from 'antd';
+import queries from 'core/graphql';
+import PropTypes from 'prop-types';
 
-import { isEmpty } from "lodash";
-import { useMutation } from "@apollo/client";
-import { checkTrulyObject } from "components/helper";
-import moment from "moment";
+import { isEmpty } from 'lodash';
+import { useMutation } from '@apollo/client';
+import { checkTrulyObject } from 'components/helper';
+import moment from 'moment';
 
-const suaChuyenNganhMutation = queries.mutation.suaChuyenNganh("id");
+const themKhoaHocMutation = queries.mutation.themKhoaHoc('id');
+const suaKhoaHocMutation = queries.mutation.suaKhoaHoc('id');
 
-const themKhoaHocMutation = queries.mutation.themKhoaHoc("id");
-const suaKhoaHocMutation = queries.mutation.suaKhoaHoc("id");
-
-const ModalKhoaHoc = ({
-  visible,
-  closeModal,
-  type,
-  data,
-  onCallAPISuccess,
-  chuyenNganhId,
-}) => {
+const ModalKhoaHoc = ({ visible, closeModal, type, data, onCallAPISuccess, chuyenNganhId }) => {
   const layout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 24 },
@@ -33,65 +24,59 @@ const ModalKhoaHoc = ({
    * ===========================================================
    */
 
-  const [actThemKhoaHoc, { loading: loadingThemKhoaHoc }] = useMutation(
-    themKhoaHocMutation,
-    {
-      onCompleted: (dataRes) => {
-        const _errors = dataRes?.themKhoaHoc?.errors || [];
-        const _data = dataRes?.themKhoaHoc?.data || [];
+  const [actThemKhoaHoc, { loading: loadingThemKhoaHoc }] = useMutation(themKhoaHocMutation, {
+    onCompleted: (dataRes) => {
+      const _errors = dataRes?.themKhoaHoc?.errors || [];
+      const _data = dataRes?.themKhoaHoc?.data || [];
 
-        if (!isEmpty(_errors))
-          return _errors?.map((item) =>
-            notification["error"]({
-              message: item?.message,
-            })
-          );
+      if (!isEmpty(_errors))
+        return _errors?.map((item) =>
+          notification['error']({
+            message: item?.message,
+          }),
+        );
 
-        if (isEmpty(_data)) {
-          notification["error"]({
-            message: "Lỗi hệ thống!",
-          });
-          return;
-        }
-
-        onCallAPISuccess(_data?.[0]);
-
-        notification["success"]({
-          message: "Thêm khóa học thành công.",
+      if (isEmpty(_data)) {
+        notification['error']({
+          message: 'Lỗi hệ thống!',
         });
-      },
-    }
-  );
+        return;
+      }
 
-  const [actSuaKhoaHoc, { loading: loadingSuaKhoaHoc }] = useMutation(
-    suaKhoaHocMutation,
-    {
-      onCompleted: (dataRes) => {
-        const _errors = dataRes?.suaKhoaHoc?.errors || [];
-        const _data = dataRes?.suaKhoaHoc?.data || [];
+      onCallAPISuccess(_data?.[0]);
 
-        if (!isEmpty(_errors))
-          return _errors?.map((item) =>
-            notification["error"]({
-              message: item?.message,
-            })
-          );
+      notification['success']({
+        message: 'Thêm khóa học thành công.',
+      });
+    },
+  });
 
-        if (isEmpty(_data)) {
-          notification["error"]({
-            message: "Lỗi hệ thống!",
-          });
-          return;
-        }
+  const [actSuaKhoaHoc, { loading: loadingSuaKhoaHoc }] = useMutation(suaKhoaHocMutation, {
+    onCompleted: (dataRes) => {
+      const _errors = dataRes?.suaKhoaHoc?.errors || [];
+      const _data = dataRes?.suaKhoaHoc?.data || [];
 
-        onCallAPISuccess(_data?.[0]);
+      if (!isEmpty(_errors))
+        return _errors?.map((item) =>
+          notification['error']({
+            message: item?.message,
+          }),
+        );
 
-        notification["success"]({
-          message: `Sửa khóa học thành công.`,
+      if (isEmpty(_data)) {
+        notification['error']({
+          message: 'Lỗi hệ thống!',
         });
-      },
-    }
-  );
+        return;
+      }
+
+      onCallAPISuccess(_data?.[0]);
+
+      notification['success']({
+        message: 'Sửa khóa học thành công.',
+      });
+    },
+  });
 
   /**
    * function
@@ -130,18 +115,18 @@ const ModalKhoaHoc = ({
 
         const _inputsFormat = checkTrulyObject(_inputs);
 
-        if (type === "add") {
+        if (type === 'add') {
           handleCallAPIAdd(_inputsFormat);
           return;
         }
 
-        const _id = form?.getFieldValue("id");
+        const _id = form?.getFieldValue('id');
 
         handleCallAPIEdit(_inputsFormat, _id);
       })
       ?.catch(() => {
-        notification["error"]({
-          message: "Nhập thiếu thông tin!",
+        notification['error']({
+          message: 'Nhập thiếu thông tin!',
         });
       });
   };
@@ -152,16 +137,16 @@ const ModalKhoaHoc = ({
     const _name = payload?.[0]?.name?.[0];
     const _value = payload?.[0]?.value;
 
-    if (_name === "_thoiGianBatDau") {
-      const _thoiGianBatDauFormat = _value?.format("YYYY-MM-DD");
+    if (_name === '_thoiGianBatDau') {
+      const _thoiGianBatDauFormat = _value?.format('YYYY-MM-DD');
 
       form?.setFieldsValue({
         thoiGianBatDau: _thoiGianBatDauFormat,
       });
     }
 
-    if (_name === "_thoiGianKetThuc") {
-      const _thoiGianKetThucFormat = _value?.format("YYYY-MM-DD");
+    if (_name === '_thoiGianKetThuc') {
+      const _thoiGianKetThucFormat = _value?.format('YYYY-MM-DD');
 
       form?.setFieldsValue({
         thoiGianKetThuc: _thoiGianKetThucFormat,
@@ -201,23 +186,18 @@ const ModalKhoaHoc = ({
 
   const renderForm = () => {
     return (
-      <Form
-        onFieldsChange={handleOnFileChange}
-        {...layout}
-        form={form}
-        name="nest-messages"
-      >
-        <Form.Item name={"id"} label="Mã khóa">
+      <Form onFieldsChange={handleOnFileChange} {...layout} form={form} name="nest-messages">
+        <Form.Item name={'id'} label="Mã khóa">
           <Input disabled />
         </Form.Item>
         <Form.Item
           rules={[
             {
               required: true,
-              message: "Không được bỏ trống!",
+              message: 'Không được bỏ trống!',
             },
           ]}
-          name={"khoa"}
+          name={'khoa'}
           label="Tên khóa"
         >
           <Input type="number" />
@@ -228,7 +208,7 @@ const ModalKhoaHoc = ({
         <Form.Item label="Thời gian kết thúc" name="_thoiGianKetThuc">
           <DatePicker />
         </Form.Item>
-        <Form.Item name={"moTa"} label="Mô tả">
+        <Form.Item name={'moTa'} label="Mô tả">
           <Input />
         </Form.Item>
       </Form>
@@ -237,14 +217,14 @@ const ModalKhoaHoc = ({
 
   return (
     <Modal
-      title={type === "add" ? "Thêm khóa học" : "Sửa khóa học"}
+      title={type === 'add' ? 'Thêm khóa học' : 'Sửa khóa học'}
       centered
       visible={visible}
       onCancel={() => closeModal(false)}
       width={1000}
       confirmLoading={loadingThemKhoaHoc || loadingSuaKhoaHoc}
       onOk={handleButtonOkClick}
-      okText={type === "add" ? "Thêm" : "Sửa"}
+      okText={type === 'add' ? 'Thêm' : 'Sửa'}
     >
       {renderForm()}
     </Modal>
@@ -256,7 +236,7 @@ export default ModalKhoaHoc;
 ModalKhoaHoc.propTypes = {
   visible: PropTypes.bool,
   closeModal: PropTypes.func,
-  type: PropTypes.oneOf(["edit", "add"]),
+  type: PropTypes.oneOf(['edit', 'add']),
   data: PropTypes.objectOf(PropTypes.any),
   onCallAPISuccess: PropTypes.func,
   chuyenNganhId: PropTypes.string.isRequired,
@@ -265,7 +245,7 @@ ModalKhoaHoc.propTypes = {
 ModalKhoaHoc.defaultProps = {
   visible: false,
   closeModal: () => {},
-  type: "add",
+  type: 'add',
   data: {},
   onCallAPISuccess: () => {},
 };

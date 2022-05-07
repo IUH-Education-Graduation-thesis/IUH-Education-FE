@@ -1,5 +1,4 @@
-import { gql } from "@apollo/client";
-// eslint-disable-next-line import/no-anonymous-default-export
+import { gql } from '@apollo/client';
 export default {
   mutation: {
     themKhoaHoc: (fragment) => gql`

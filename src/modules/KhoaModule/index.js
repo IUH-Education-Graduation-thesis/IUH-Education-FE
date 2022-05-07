@@ -1,14 +1,14 @@
-import { Card, Col, PageHeader, Row } from "antd";
-import React from "react";
-import ListHocKy from "./ListHocKy";
-import queries from "core/graphql";
-import { useParams } from "react-router-dom";
-import { FIND_KHOA_HOC_FRAGMENT } from "./fragment";
+import { Card, Col, PageHeader, Row } from 'antd';
+import React from 'react';
+import ListHocKy from './ListHocKy';
+import queries from 'core/graphql';
+import { useParams } from 'react-router-dom';
+import { FIND_KHOA_HOC_FRAGMENT } from './fragment';
 
-import "modules/KhoaModule/KhoaModule.scss";
-import { useQuery } from "@apollo/client";
+import 'modules/KhoaModule/KhoaModule.scss';
+import { useQuery } from '@apollo/client';
 
-const prefix = "khoa-hoc";
+const prefix = 'khoa-hoc';
 const findKhoaHocQuery = queries.query.findKhoaHocs(FIND_KHOA_HOC_FRAGMENT);
 
 const KhoaHocModule = () => {
@@ -19,13 +19,9 @@ const KhoaHocModule = () => {
    * =======================================================
    */
 
-  const {
-    data: dataFindKhoaHoc,
-    loadingFindKhoaHoc,
-    refetch: refetchFindKhoaHoc,
-  } = useQuery(findKhoaHocQuery, {
+  const { data: dataFindKhoaHoc, refetch: refetchFindKhoaHoc } = useQuery(findKhoaHocQuery, {
     skip: !khoa_id,
-    fetchPolicy: "network-only",
+    fetchPolicy: 'network-only',
     variables: {
       inputs: {
         id: khoa_id,
@@ -51,7 +47,7 @@ const KhoaHocModule = () => {
       <Col span={16}>
         <PageHeader
           style={{
-            border: "1px solid rgb(235, 237, 240)",
+            border: '1px solid rgb(235, 237, 240)',
           }}
           onBack={() => null}
           title="Chi tiết khóa học"
@@ -75,11 +71,7 @@ const KhoaHocModule = () => {
             </Col>
           </Row>
         </Card>
-        <ListHocKy
-          refetchFindKhoaHoc={refetchFindKhoaHoc}
-          khoaId={khoa_id}
-          data={listHocKy}
-        />
+        <ListHocKy refetchFindKhoaHoc={refetchFindKhoaHoc} khoaId={khoa_id} data={listHocKy} />
       </Col>
       <Col span={4}></Col>
     </Row>

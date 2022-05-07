@@ -26,7 +26,7 @@ const MonHocCollapse = () => {
       dataIndex: '',
       title: 'Hành động',
       fixed: 'right',
-      render: (_, record) => {
+      render: () => {
         return (
           <div className={`${prefix}__table__action`}>
             <Button danger>Xóa</Button>
@@ -55,25 +55,13 @@ const MonHocCollapse = () => {
 
   return (
     <Collapse className={`${prefix}`}>
-      <Panel
-        showArrow={false}
-        header={renderHeadOfCollapse('Môn học tiên quyết')}
-        key="1"
-      >
+      <Panel showArrow={false} header={renderHeadOfCollapse('Môn học tiên quyết')} key="1">
         <Table columns={columns} bordered />
       </Panel>
-      <Panel
-        showArrow={false}
-        header={renderHeadOfCollapse('Môn học song hành')}
-        key="2"
-      >
+      <Panel showArrow={false} header={renderHeadOfCollapse('Môn học song hành')} key="2">
         <Table columns={columns} bordered />
       </Panel>
-      <Panel
-        showArrow={false}
-        header={renderHeadOfCollapse('Môn học trước')}
-        key="3"
-      >
+      <Panel showArrow={false} header={renderHeadOfCollapse('Môn học trước')} key="3">
         <Table columns={columns} bordered />
       </Panel>
     </Collapse>

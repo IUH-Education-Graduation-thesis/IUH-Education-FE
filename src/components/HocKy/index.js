@@ -59,8 +59,8 @@ const HocKy = () => {
       maHocKy: `${i}`,
       moTa: `K1${i}`,
       hocKy: 1,
-      namHocBatDau: `2018`,
-      namHocKetThuc: `2022`,
+      namHocBatDau: '2018',
+      namHocKetThuc: '2022',
     });
   }
   const handlerEditButton = (hocKy) => {
@@ -70,23 +70,11 @@ const HocKy = () => {
   return (
     <div className="hocKy">
       <h1>DANH SÁCH HỌC KỲ</h1>
-      <Button
-        className="ant-btn-primary"
-        type="primary"
-        onClick={() => setVisibleModal(true)}
-      >
+      <Button className="ant-btn-primary" type="primary" onClick={() => setVisibleModal(true)}>
         + Thêm học kỳ
       </Button>
-      <Table
-        className="ant-table-wrapper"
-        columns={columns}
-        dataSource={data}
-      />
-      <ModalHocKy
-        type="add"
-        visible={visibleModal}
-        closeModal={setVisibleModal}
-      />
+      <Table className="ant-table-wrapper" columns={columns} dataSource={data} />
+      <ModalHocKy type="add" visible={visibleModal} closeModal={setVisibleModal} />
       <ModalHocKy
         type="sua"
         visible={visibleModalSua}

@@ -35,7 +35,7 @@ const ListMonHoc = ({ data }) => {
       key: 'operation',
       fixed: 'right',
       width: 200,
-      render: (e) => (
+      render: () => (
         <div>
           <Button danger>Chỉnh sửa</Button>
           <Button>Xóa</Button>

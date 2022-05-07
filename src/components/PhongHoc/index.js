@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Table, Modal } from 'antd';
+import { Button, Table } from 'antd';
 import './PhongHoc.scss';
 import ModalAddPhonghoc from './FormAddPhongHoc';
 import queries from 'core/graphql';
@@ -7,21 +7,15 @@ import { GET_PHONGHOC_FRAGMENT } from './fragment';
 import { useMutation, useQuery } from '@apollo/client';
 import { get, isEmpty } from 'lodash';
 
-const createPhongHocMutation = queries.mutation.themPhongHoc(
-  GET_PHONGHOC_FRAGMENT
-);
 const findPhongHocQuery = queries.query.findPhongHocs(GET_PHONGHOC_FRAGMENT);
-const deletePhongHocMutation = queries.mutation.xoaPhongHoc(
-  GET_PHONGHOC_FRAGMENT
-);
+const deletePhongHocMutation = queries.mutation.xoaPhongHoc(GET_PHONGHOC_FRAGMENT);
 
 const PhongHoc = () => {
   const [visibleModalEdit, setVisibleModalEdit] = useState(false);
   const [visibleModalAdd, setVisibleModalAdd] = useState(false);
   const [dayNha, setDayNha] = useState({});
   const [data, setData] = useState([]);
-  const { data: dataGetPhongHoc, loading: loadingGetPhongHoc } =
-    useQuery(findPhongHocQuery);
+  const { data: dataGetPhongHoc } = useQuery(findPhongHocQuery);
 
   const columns = [
     {
@@ -57,19 +51,14 @@ const PhongHoc = () => {
           <Button danger onClick={() => handlerEditButton(e)}>
             Chỉnh sửa
           </Button>
-          <Button
-            style={{ marginLeft: 10 }}
-            onClick={() => handleButtonDelete(e)}
-          >
+          <Button style={{ marginLeft: 10 }} onClick={() => handleButtonDelete(e)}>
             Xóa
           </Button>
         </div>
       ),
     },
   ];
-  const [actDelete, { data: dataDelete, loading: loadingDelete }] = useMutation(
-    deletePhongHocMutation
-  );
+  const [actDelete] = useMutation(deletePhongHocMutation);
   useEffect(() => {
     const _listPhongHoc = dataGetPhongHoc?.findPhongHocs?.data || [];
     setData(_listPhongHoc);
@@ -95,10 +84,7 @@ const PhongHoc = () => {
       const _index = data?.findIndex((item) => item?.id === phongHoc?.id);
 
       let _listPhongHoc = data;
-      _listPhongHoc = [
-        ..._listPhongHoc.slice(0, _index),
-        ..._listPhongHoc.slice(_index + 1),
-      ];
+      _listPhongHoc = [..._listPhongHoc.slice(0, _index), ..._listPhongHoc.slice(_index + 1)];
 
       setData(_listPhongHoc);
 
@@ -120,11 +106,7 @@ const PhongHoc = () => {
   return (
     <div className="phongHoc">
       <h1>DANH SÁCH PHÒNG HỌC </h1>
-      <Button
-        className="ant-btn-primary"
-        type="primary"
-        onClick={() => setVisibleModalAdd(true)}
-      >
+      <Button className="ant-btn-primary" type="primary" onClick={() => setVisibleModalAdd(true)}>
         + Thêm phòng học
       </Button>
       <Table

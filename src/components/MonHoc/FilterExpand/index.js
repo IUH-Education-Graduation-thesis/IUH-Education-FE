@@ -89,16 +89,10 @@ const ExpandFilter = ({
       <div className={`${prefix}__top`}>
         <div className={`${prefix}__top__left`}>
           <Form.Item name="id">
-            <Input
-              prefix={<SearchOutlined />}
-              placeholder="Nhập mã môn học..."
-            />
+            <Input prefix={<SearchOutlined />} placeholder="Nhập mã môn học..." />
           </Form.Item>
           <Form.Item name="ten">
-            <Input
-              prefix={<SearchOutlined />}
-              placeholder="Nhập tên môn học..."
-            />
+            <Input prefix={<SearchOutlined />} placeholder="Nhập tên môn học..." />
           </Form.Item>
         </div>
 
@@ -121,18 +115,10 @@ const ExpandFilter = ({
         })}
       >
         <Form.Item name="khoa_vien">
-          <Select
-            options={dataMockKhoaVien}
-            mode="multiple"
-            placeholder="Khoa Viện"
-          ></Select>
+          <Select options={dataMockKhoaVien} mode="multiple" placeholder="Khoa Viện"></Select>
         </Form.Item>
         <Form.Item name="chuyen_nganh">
-          <Select
-            options={dataMockKhoaVien}
-            mode="multiple"
-            placeholder="Chuyên ngành"
-          ></Select>
+          <Select options={dataMockKhoaVien} mode="multiple" placeholder="Chuyên ngành"></Select>
         </Form.Item>
       </div>
     </Form>

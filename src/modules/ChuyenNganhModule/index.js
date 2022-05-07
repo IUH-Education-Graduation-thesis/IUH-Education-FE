@@ -1,20 +1,20 @@
-import React from "react";
+import React from 'react';
 
-import { Row, Col, PageHeader, Card } from "antd";
-import ListGiangVien from "./ListGiangVien";
-import { useParams } from "react-router-dom";
-import ListLopHoc from "./ListLopHoc";
-import queries from "core/graphql";
-import { useQuery } from "@apollo/client";
-import { FIND_CHUYEN_NGANH } from "./fragment";
+import { Row, Col, PageHeader, Card } from 'antd';
+import ListGiangVien from './ListGiangVien';
+import { useParams } from 'react-router-dom';
+import ListLopHoc from './ListLopHoc';
+import queries from 'core/graphql';
+import { useQuery } from '@apollo/client';
+import { FIND_CHUYEN_NGANH } from './fragment';
 
-import "modules/ChuyenNganhModule/ChuyenNganhModule.scss";
+import 'modules/ChuyenNganhModule/ChuyenNganhModule.scss';
 
-const prefix = "chuyen-nganh";
+const prefix = 'chuyen-nganh';
 const findChuyenNganhQuery = queries.query.findChuyenNganh(FIND_CHUYEN_NGANH);
 
 const ChuyenNganhModule = () => {
-  const { chuyen_nganh_id, id } = useParams();
+  const { chuyen_nganh_id } = useParams();
 
   /**
    * API
@@ -22,22 +22,22 @@ const ChuyenNganhModule = () => {
    *
    */
 
-  const { data: dataFindChuyenNganh, refetch: refetchFindChuyenNganh } =
-    useQuery(findChuyenNganhQuery, {
-      fetchPolicy: "network-only",
+  const { data: dataFindChuyenNganh, refetch: refetchFindChuyenNganh } = useQuery(
+    findChuyenNganhQuery,
+    {
+      fetchPolicy: 'network-only',
       skip: !chuyen_nganh_id,
       variables: {
         inputs: {
           id: chuyen_nganh_id,
         },
       },
-    });
+    },
+  );
 
   const chuyenNganh = dataFindChuyenNganh?.findChuyenNganh?.data?.[0] || {};
-  const giangVienList =
-    chuyenNganh?.giangViens?.map((item) => ({ ...item, key: item?.id })) || [];
-  const khoaHocList =
-    chuyenNganh?.khoas?.map((item) => ({ ...item, key: item?.id })) || [];
+  const giangVienList = chuyenNganh?.giangViens?.map((item) => ({ ...item, key: item?.id })) || [];
+  const khoaHocList = chuyenNganh?.khoas?.map((item) => ({ ...item, key: item?.id })) || [];
 
   /**
    * render view
@@ -50,7 +50,7 @@ const ChuyenNganhModule = () => {
       <Col span={16}>
         <PageHeader
           style={{
-            border: "1px solid rgb(235, 237, 240)",
+            border: '1px solid rgb(235, 237, 240)',
           }}
           onBack={() => null}
           title="Chi tiết Chuyên ngành"

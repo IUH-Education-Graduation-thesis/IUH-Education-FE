@@ -22,10 +22,8 @@ const NamHoc = () => {
   const [data, setData] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
-  const { data: dataGetNamHoc, loading: loadingGetNamHoc } =
-    useQuery(getAllNamHocQuery);
-  const [actDelete, { data: dataDeleteDayNha, loading: loadingDeleteDayNha }] =
-    useMutation(deleteMutation);
+  const { data: dataGetNamHoc } = useQuery(getAllNamHocQuery);
+  const [actDelete] = useMutation(deleteMutation);
 
   useEffect(() => {
     const _listDayNha = dataGetNamHoc?.findNamHoc?.data || [];
@@ -66,10 +64,7 @@ const NamHoc = () => {
           <Button danger onClick={() => handlerEditButton(e)}>
             Chỉnh sửa
           </Button>
-          <Button
-            style={{ marginLeft: 10 }}
-            onClick={() => handleButtonDelete(e)}
-          >
+          <Button style={{ marginLeft: 10 }} onClick={() => handleButtonDelete(e)}>
             Xóa
           </Button>
         </div>
@@ -102,7 +97,7 @@ const NamHoc = () => {
       errors?.map((item) =>
         notification['error']({
           message: item?.message,
-        })
+        }),
       );
       return;
     }
@@ -112,10 +107,7 @@ const NamHoc = () => {
       const _index = data?.findIndex((item) => item?.id === e?.id);
 
       let _listNamHoc = data;
-      _listNamHoc = [
-        ..._listNamHoc.slice(0, _index),
-        ..._listNamHoc.slice(_index + 1),
-      ];
+      _listNamHoc = [..._listNamHoc.slice(0, _index), ..._listNamHoc.slice(_index + 1)];
 
       setData(_listNamHoc);
       notification.open({

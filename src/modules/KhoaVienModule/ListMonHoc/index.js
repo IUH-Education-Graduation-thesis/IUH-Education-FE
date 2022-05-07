@@ -1,34 +1,34 @@
-import { Button, Collapse, notification, Table } from "antd";
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import queries from "core/graphql";
+import { Button, Collapse, notification, Table } from 'antd';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import queries from 'core/graphql';
 
-import ListGiangVien from "./ListGiangVien";
-import ModalMonHoc from "./ModalMonHoc";
-import { useMutation } from "@apollo/client";
-import { isEmpty } from "lodash";
+import ListGiangVien from './ListGiangVien';
+import ModalMonHoc from './ModalMonHoc';
+import { useMutation } from '@apollo/client';
+import { isEmpty } from 'lodash';
 
-const prefix = "khoa-vien-mon-hoc";
+const prefix = 'khoa-vien-mon-hoc';
 const { Panel } = Collapse;
 
-const xoaMonHocsMutation = queries.mutation.xoaMonHocs("id");
+const xoaMonHocsMutation = queries.mutation.xoaMonHocs('id');
 
 const ListMonHoc = ({ data, khoaVienID, refetchFindKhoaVien }) => {
   const columns = [
     {
-      key: "id",
-      dataIndex: "id",
-      title: "ID",
+      key: 'id',
+      dataIndex: 'id',
+      title: 'ID',
     },
     {
-      key: "ten",
-      dataIndex: "ten",
-      title: "Tên môn học",
+      key: 'ten',
+      dataIndex: 'ten',
+      title: 'Tên môn học',
     },
     {
-      title: "Action",
-      key: "operation",
-      fixed: "right",
+      title: 'Action',
+      key: 'operation',
+      fixed: 'right',
       width: 200,
       render: (_, record) => (
         <div>
@@ -51,36 +51,33 @@ const ListMonHoc = ({ data, khoaVienID, refetchFindKhoaVien }) => {
    * ==========================================================
    */
 
-  const [actXoaMonHocs, { loading: loadingXoaMonHoc }] = useMutation(
-    xoaMonHocsMutation,
-    {
-      onCompleted: (dataRes) => {
-        const _errors = dataRes?.xoaMonHocs?.errors || [];
-        const _data = dataRes?.xoaMonHocs?.data || [];
+  const [actXoaMonHocs, { loading: loadingXoaMonHoc }] = useMutation(xoaMonHocsMutation, {
+    onCompleted: (dataRes) => {
+      const _errors = dataRes?.xoaMonHocs?.errors || [];
+      const _data = dataRes?.xoaMonHocs?.data || [];
 
-        if (!isEmpty(_errors))
-          return _errors?.map((item) =>
-            notification["error"]({
-              message: item?.message,
-            })
-          );
+      if (!isEmpty(_errors))
+        return _errors?.map((item) =>
+          notification['error']({
+            message: item?.message,
+          }),
+        );
 
-        if (isEmpty(_data)) {
-          notification["error"]({
-            message: "Lỗi hệ thống!",
-          });
-          return;
-        }
-
-        setSelectedRowsKey([]);
-        refetchFindKhoaVien();
-
-        notification["success"]({
-          message: `Xóa ${_data?.length} môn học thành công.`,
+      if (isEmpty(_data)) {
+        notification['error']({
+          message: 'Lỗi hệ thống!',
         });
-      },
-    }
-  );
+        return;
+      }
+
+      setSelectedRowsKey([]);
+      refetchFindKhoaVien();
+
+      notification['success']({
+        message: `Xóa ${_data?.length} môn học thành công.`,
+      });
+    },
+  });
 
   /**
    * Function
@@ -137,11 +134,7 @@ const ListMonHoc = ({ data, khoaVienID, refetchFindKhoaVien }) => {
       <div className={`${prefix}__header`}>
         <div className={`${prefix}__header__left`}>Danh sách môn học</div>
         <div className={`${prefix}__header__right`}>
-          <Button
-            loading={loadingXoaMonHoc}
-            onClick={handleDeleteMultiMonHoc}
-            danger
-          >
+          <Button loading={loadingXoaMonHoc} onClick={handleDeleteMultiMonHoc} danger>
             Xóa môn học đã chọn
           </Button>
           <Button onClick={handleThemMonHoc} type="primary">
@@ -155,21 +148,14 @@ const ListMonHoc = ({ data, khoaVienID, refetchFindKhoaVien }) => {
   return (
     <>
       <Collapse className={prefix}>
-        <Panel
-          className={prefix}
-          showArrow={false}
-          header={renderHeadOfPanel()}
-          key="1"
-        >
+        <Panel className={prefix} showArrow={false} header={renderHeadOfPanel()} key="1">
           <Table
             rowSelection={{
               selectedRowKeys,
               onChange: handleSelectedKeyChange,
             }}
             expandable={{
-              expandedRowRender: (record) => (
-                <ListGiangVien data={record?.giangViens} />
-              ),
+              expandedRowRender: (record) => <ListGiangVien data={record?.giangViens} />,
             }}
             columns={columns}
             dataSource={data}

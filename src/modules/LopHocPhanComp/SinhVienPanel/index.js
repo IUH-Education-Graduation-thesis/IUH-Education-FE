@@ -56,7 +56,7 @@ const SinhVienList = () => {
       key: 'operation',
       fixed: 'right',
       width: 200,
-      render: (e) => (
+      render: () => (
         <div>
           <Button danger>Chỉnh sửa</Button>
           <Button>Xóa</Button>
@@ -83,12 +83,7 @@ const SinhVienList = () => {
 
   return (
     <Collapse className={prefix}>
-      <Panel
-        className={prefix}
-        showArrow={false}
-        header={renderHeadOfPanel()}
-        key="1"
-      >
+      <Panel className={prefix} showArrow={false} header={renderHeadOfPanel()} key="1">
         <Table columns={columns} />
       </Panel>
     </Collapse>

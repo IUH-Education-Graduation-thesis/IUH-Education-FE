@@ -1,25 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { Modal, Form, Input, notification, Switch, Select } from "antd";
-import queries from "core/graphql";
-import PropTypes from "prop-types";
+import React, { useEffect, useState } from 'react';
+import { Modal, Form, Input, notification, Switch, Select } from 'antd';
+import queries from 'core/graphql';
+import PropTypes from 'prop-types';
 
-import { isEmpty } from "lodash";
-import { useMutation, useQuery } from "@apollo/client";
-import { checkTrulyObject } from "components/helper";
-import { FIND_KHOA_VIEN_FRAGMENT } from "modules/KhoaModule/fragment";
+import { isEmpty } from 'lodash';
+import { useMutation, useQuery } from '@apollo/client';
+import { checkTrulyObject } from 'components/helper';
+import { FIND_KHOA_VIEN_FRAGMENT } from 'modules/KhoaModule/fragment';
 
-const themHocPhanMutation = queries.mutation.themHocPhan("id");
-const suaHocPhanMutation = queries.mutation.suaHocPhan("id");
+const themHocPhanMutation = queries.mutation.themHocPhan('id');
+const suaHocPhanMutation = queries.mutation.suaHocPhan('id');
 const findKhoaVien = queries.query.findKhoaVien(FIND_KHOA_VIEN_FRAGMENT);
 
-const ModalHocPhan = ({
-  visible,
-  closeModal,
-  type,
-  data,
-  onCallAPISuccess,
-  hocKyId,
-}) => {
+const ModalHocPhan = ({ visible, closeModal, type, data, onCallAPISuccess, hocKyId }) => {
   const layout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 24 },
@@ -36,64 +29,58 @@ const ModalHocPhan = ({
 
   const { data: dataFindKhoaVien } = useQuery(findKhoaVien);
 
-  const [actThemHocPhan, { loading: loadingThemHocPhan }] = useMutation(
-    themHocPhanMutation,
-    {
-      onCompleted: (dataRes) => {
-        const _errors = dataRes?.themHocPhan?.errors || [];
-        const _data = dataRes?.themHocPhan?.data || [];
+  const [actThemHocPhan, { loading: loadingThemHocPhan }] = useMutation(themHocPhanMutation, {
+    onCompleted: (dataRes) => {
+      const _errors = dataRes?.themHocPhan?.errors || [];
+      const _data = dataRes?.themHocPhan?.data || [];
 
-        if (!isEmpty(_errors))
-          return _errors?.map((item) =>
-            notification["error"]({
-              message: item?.message,
-            })
-          );
+      if (!isEmpty(_errors))
+        return _errors?.map((item) =>
+          notification['error']({
+            message: item?.message,
+          }),
+        );
 
-        if (isEmpty(_data)) {
-          notification["error"]({
-            message: "Lỗi hệ thống!",
-          });
-          return;
-        }
-
-        onCallAPISuccess(_data?.[0]);
-
-        notification["success"]({
-          message: "Thêm học phần thành công.",
+      if (isEmpty(_data)) {
+        notification['error']({
+          message: 'Lỗi hệ thống!',
         });
-      },
-    }
-  );
-  const [actSuaHocPhan, { loading: loadingSuaHocPhan }] = useMutation(
-    suaHocPhanMutation,
-    {
-      onCompleted: (dataRes) => {
-        const _errors = dataRes?.suaHocPhan?.errors || [];
-        const _data = dataRes?.suaHocPhan?.data || [];
+        return;
+      }
 
-        if (!isEmpty(_errors))
-          return _errors?.map((item) =>
-            notification["error"]({
-              message: item?.message,
-            })
-          );
+      onCallAPISuccess(_data?.[0]);
 
-        if (isEmpty(_data)) {
-          notification["error"]({
-            message: "Lỗi hệ thống!",
-          });
-          return;
-        }
+      notification['success']({
+        message: 'Thêm học phần thành công.',
+      });
+    },
+  });
+  const [actSuaHocPhan, { loading: loadingSuaHocPhan }] = useMutation(suaHocPhanMutation, {
+    onCompleted: (dataRes) => {
+      const _errors = dataRes?.suaHocPhan?.errors || [];
+      const _data = dataRes?.suaHocPhan?.data || [];
 
-        onCallAPISuccess(_data?.[0]);
+      if (!isEmpty(_errors))
+        return _errors?.map((item) =>
+          notification['error']({
+            message: item?.message,
+          }),
+        );
 
-        notification["success"]({
-          message: "Sửa học phần thành công.",
+      if (isEmpty(_data)) {
+        notification['error']({
+          message: 'Lỗi hệ thống!',
         });
-      },
-    }
-  );
+        return;
+      }
+
+      onCallAPISuccess(_data?.[0]);
+
+      notification['success']({
+        message: 'Sửa học phần thành công.',
+      });
+    },
+  });
 
   const dataForKhoaVien =
     dataFindKhoaVien?.findKhoaVien?.data?.[0]?.data?.map((item) => ({
@@ -144,20 +131,20 @@ const ModalHocPhan = ({
           hocKyId,
         };
 
-        const _inputsFormat = checkTrulyObject(_inputs, ["batBuoc"]);
+        const _inputsFormat = checkTrulyObject(_inputs, ['batBuoc']);
 
-        if (type === "add") {
+        if (type === 'add') {
           handleCallAPIAdd(_inputsFormat);
           return;
         }
 
-        const _id = form?.getFieldValue("id");
+        const _id = form?.getFieldValue('id');
 
         handleCallAPIEdit(_inputsFormat, _id);
       })
       ?.catch(() => {
-        notification["error"]({
-          message: "Nhập thiếu thông tin!",
+        notification['error']({
+          message: 'Nhập thiếu thông tin!',
         });
       });
   };
@@ -195,47 +182,47 @@ const ModalHocPhan = ({
   const renderForm = () => {
     return (
       <Form {...layout} form={form} name="nest-messages">
-        <Form.Item name={"id"} label="ID">
+        <Form.Item name={'id'} label="ID">
           <Input disabled />
         </Form.Item>
         <Form.Item
           rules={[
             {
               required: true,
-              message: "Không được bỏ trống!",
+              message: 'Không được bỏ trống!',
             },
           ]}
-          name={"maHocPhan"}
+          name={'maHocPhan'}
           label="Mã học phần"
         >
           <Input />
         </Form.Item>
-        <Form.Item label="Bắt buộc" name={"batBuoc"}>
+        <Form.Item label="Bắt buộc" name={'batBuoc'}>
           <Switch />
         </Form.Item>
         <Form.Item
           rules={[
             {
               required: true,
-              message: "Không được bỏ trống!",
+              message: 'Không được bỏ trống!',
             },
           ]}
-          name={"soTinChiLyThuyet"}
+          name={'soTinChiLyThuyet'}
           label="Số tín chỉ lý thuyết"
         >
-          <Input type={"number"} />
+          <Input type={'number'} />
         </Form.Item>
         <Form.Item
           rules={[
             {
               required: true,
-              message: "Không được bỏ trống!",
+              message: 'Không được bỏ trống!',
             },
           ]}
-          name={"soTinChiThucHanh"}
+          name={'soTinChiThucHanh'}
           label="Số tín chỉ thực hành"
         >
-          <Input type={"number"} />
+          <Input type={'number'} />
         </Form.Item>
         <Form.Item required label="Môn học">
           <Select
@@ -247,14 +234,14 @@ const ModalHocPhan = ({
           />
 
           <Form.Item
-            rules={[{ required: true, message: "Không được để trống!" }]}
-            name={"monHocId"}
+            rules={[{ required: true, message: 'Không được để trống!' }]}
+            name={'monHocId'}
           >
             <Select showSearch options={dataForMonHoc} placeholder="Môn học" />
           </Form.Item>
         </Form.Item>
 
-        <Form.Item name={"moTa"} label="Mô tả">
+        <Form.Item name={'moTa'} label="Mô tả">
           <Input />
         </Form.Item>
       </Form>
@@ -264,14 +251,14 @@ const ModalHocPhan = ({
   return (
     <Modal
       destroyOnClose
-      title={type === "add" ? "Thêm học phần" : "Sửa học phần"}
+      title={type === 'add' ? 'Thêm học phần' : 'Sửa học phần'}
       centered
       visible={visible}
       onCancel={() => closeModal(false)}
       width={1000}
       confirmLoading={loadingThemHocPhan || loadingSuaHocPhan}
       onOk={handleButtonOkClick}
-      okText={type === "add" ? "Thêm" : "Sửa"}
+      okText={type === 'add' ? 'Thêm' : 'Sửa'}
     >
       {renderForm()}
     </Modal>
@@ -283,7 +270,7 @@ export default ModalHocPhan;
 ModalHocPhan.propTypes = {
   visible: PropTypes.bool,
   closeModal: PropTypes.func,
-  type: PropTypes.oneOf(["edit", "add"]),
+  type: PropTypes.oneOf(['edit', 'add']),
   data: PropTypes.objectOf(PropTypes.any),
   onCallAPISuccess: PropTypes.func,
   hocKyId: PropTypes.string.isRequired,
@@ -292,7 +279,7 @@ ModalHocPhan.propTypes = {
 ModalHocPhan.defaultProps = {
   visible: false,
   closeModal: () => {},
-  type: "add",
+  type: 'add',
   data: {},
   onCallAPISuccess: () => {},
 };

@@ -1,46 +1,46 @@
-import { Button, Collapse, notification, Table } from "antd";
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import ModalGiangVien from "./ModalGiangVien";
-import queries from "core/graphql";
-import { useMutation } from "@apollo/client";
-import { isEmpty } from "lodash";
+import { Button, Collapse, notification, Table } from 'antd';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import ModalGiangVien from './ModalGiangVien';
+import queries from 'core/graphql';
+import { useMutation } from '@apollo/client';
+import { isEmpty } from 'lodash';
 
 const { Panel } = Collapse;
-const prefix = "khoa-vien-chuyen-nganh";
-const xoaGiangViensMutation = queries.mutation.xoaGiangViens("id");
+const prefix = 'khoa-vien-chuyen-nganh';
+const xoaGiangViensMutation = queries.mutation.xoaGiangViens('id');
 
 const ListGiangVien = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
   const columns = [
     {
-      key: "id",
-      dataIndex: "id",
-      title: "ID",
+      key: 'id',
+      dataIndex: 'id',
+      title: 'ID',
     },
     {
-      key: "hoTenDem",
-      dataIndex: "hoTenDem",
-      title: "Họ tên đệm",
+      key: 'hoTenDem',
+      dataIndex: 'hoTenDem',
+      title: 'Họ tên đệm',
     },
     {
-      key: "ten",
-      dataIndex: "ten",
-      title: "Tên",
+      key: 'ten',
+      dataIndex: 'ten',
+      title: 'Tên',
     },
     {
-      key: "email",
-      dataIndex: "email",
-      title: "Email",
+      key: 'email',
+      dataIndex: 'email',
+      title: 'Email',
     },
     {
-      key: "soDienThoai",
-      dataIndex: "soDienThoai",
-      title: "Số điện thoại",
+      key: 'soDienThoai',
+      dataIndex: 'soDienThoai',
+      title: 'Số điện thoại',
     },
     {
-      title: "Action",
-      key: "operation",
-      fixed: "right",
+      title: 'Action',
+      key: 'operation',
+      fixed: 'right',
       width: 200,
       render: (_, record) => (
         <div>
@@ -63,36 +63,33 @@ const ListGiangVien = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
    * ====================================================
    */
 
-  const [actXoaGiangVien, { loading: loadingXoaGiangViens }] = useMutation(
-    xoaGiangViensMutation,
-    {
-      onCompleted: (dataRes) => {
-        const _errors = dataRes?.xoaGiangViens?.errors || [];
-        const _data = dataRes?.xoaGiangViens?.data || [];
+  const [actXoaGiangVien] = useMutation(xoaGiangViensMutation, {
+    onCompleted: (dataRes) => {
+      const _errors = dataRes?.xoaGiangViens?.errors || [];
+      const _data = dataRes?.xoaGiangViens?.data || [];
 
-        if (!isEmpty(_errors))
-          return _errors?.map((item) =>
-            notification["error"]({
-              message: item?.message,
-            })
-          );
+      if (!isEmpty(_errors))
+        return _errors?.map((item) =>
+          notification['error']({
+            message: item?.message,
+          }),
+        );
 
-        if (isEmpty(_data)) {
-          notification["error"]({
-            message: "Lỗi hệ thống!",
-          });
-          return;
-        }
-
-        setSelectedRowKeys([]);
-        refetchFindChuyenNganh();
-
-        notification["success"]({
-          message: `Xóa ${_data?.length} giảng viên thành công.`,
+      if (isEmpty(_data)) {
+        notification['error']({
+          message: 'Lỗi hệ thống!',
         });
-      },
-    }
-  );
+        return;
+      }
+
+      setSelectedRowKeys([]);
+      refetchFindChuyenNganh();
+
+      notification['success']({
+        message: `Xóa ${_data?.length} giảng viên thành công.`,
+      });
+    },
+  });
 
   /**
    * Function
@@ -122,7 +119,7 @@ const ListGiangVien = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
     setShowModalAdd(true);
   };
 
-  const handleCallAPIAddSuccess = (payload) => {
+  const handleCallAPIAddSuccess = () => {
     setShowModalAdd(false);
     setShowModalEdit(false);
     refetchFindChuyenNganh();
@@ -161,12 +158,7 @@ const ListGiangVien = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
   return (
     <>
       <Collapse className={prefix}>
-        <Panel
-          className={prefix}
-          showArrow={false}
-          header={renderHeadOfPanel()}
-          key="1"
-        >
+        <Panel className={prefix} showArrow={false} header={renderHeadOfPanel()} key="1">
           <Table
             rowSelection={{
               selectedRowKeys,

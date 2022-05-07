@@ -9,12 +9,7 @@ const prefix = 'sinh-vien--filter';
 
 const { useForm } = Form;
 
-const ExpandFilter = ({
-  onAddAStudentClick,
-  onFilterChange,
-  currentFilterData,
-  onClear,
-}) => {
+const ExpandFilter = ({ onAddAStudentClick, onFilterChange, currentFilterData, onClear }) => {
   const [form] = useForm();
 
   /**
@@ -50,10 +45,7 @@ const ExpandFilter = ({
       <div className={`${prefix}__top`}>
         <div className={`${prefix}__top__left`}>
           <Form.Item name="id">
-            <Input
-              prefix={<SearchOutlined />}
-              placeholder="Nhập id năm học..."
-            />
+            <Input prefix={<SearchOutlined />} placeholder="Nhập id năm học..." />
           </Form.Item>
           <Form.Item name="date">
             <RangePicker picker="year" />

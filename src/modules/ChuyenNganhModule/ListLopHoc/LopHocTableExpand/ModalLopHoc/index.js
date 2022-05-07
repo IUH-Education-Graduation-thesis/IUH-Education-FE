@@ -1,25 +1,16 @@
-import React, { useEffect } from "react";
-import { Modal, Form, Input, notification, DatePicker } from "antd";
-import queries from "core/graphql";
-import PropTypes from "prop-types";
+import React, { useEffect } from 'react';
+import { Modal, Form, Input, notification } from 'antd';
+import queries from 'core/graphql';
+import PropTypes from 'prop-types';
 
-import { isEmpty } from "lodash";
-import { useMutation } from "@apollo/client";
-import { checkTrulyObject } from "components/helper";
-import moment from "moment";
-import themLop from "core/graphql/themLop";
+import { isEmpty } from 'lodash';
+import { useMutation } from '@apollo/client';
+import { checkTrulyObject } from 'components/helper';
 
-const themLopMutation = queries.mutation.themLop("id");
-const suaLopMutation = queries.mutation.suaLop("id");
+const themLopMutation = queries.mutation.themLop('id');
+const suaLopMutation = queries.mutation.suaLop('id');
 
-const ModalLopHoc = ({
-  visible,
-  closeModal,
-  type,
-  data,
-  onCallAPISuccess,
-  khoaId,
-}) => {
+const ModalLopHoc = ({ visible, closeModal, type, data, onCallAPISuccess, khoaId }) => {
   const layout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 24 },
@@ -32,35 +23,32 @@ const ModalLopHoc = ({
    * ===========================================================
    */
 
-  const [acThemLop, { loading: loadingThemLop }] = useMutation(
-    themLopMutation,
-    {
-      onCompleted: (dataRes) => {
-        const _errors = dataRes?.themLop?.errors || [];
-        const _data = dataRes?.themLop?.data || [];
+  const [acThemLop, { loading: loadingThemLop }] = useMutation(themLopMutation, {
+    onCompleted: (dataRes) => {
+      const _errors = dataRes?.themLop?.errors || [];
+      const _data = dataRes?.themLop?.data || [];
 
-        if (!isEmpty(_errors))
-          return _errors?.map((item) =>
-            notification["error"]({
-              message: item?.message,
-            })
-          );
+      if (!isEmpty(_errors))
+        return _errors?.map((item) =>
+          notification['error']({
+            message: item?.message,
+          }),
+        );
 
-        if (isEmpty(_data)) {
-          notification["error"]({
-            message: "Lỗi hệ thống!",
-          });
-          return;
-        }
-
-        onCallAPISuccess(_data?.[0]);
-
-        notification["success"]({
-          message: "Thêm lớp học thành công.",
+      if (isEmpty(_data)) {
+        notification['error']({
+          message: 'Lỗi hệ thống!',
         });
-      },
-    }
-  );
+        return;
+      }
+
+      onCallAPISuccess(_data?.[0]);
+
+      notification['success']({
+        message: 'Thêm lớp học thành công.',
+      });
+    },
+  });
 
   const [actSuaLop, { loading: loadingSuaLop }] = useMutation(suaLopMutation, {
     onCompleted: (dataRes) => {
@@ -69,22 +57,22 @@ const ModalLopHoc = ({
 
       if (!isEmpty(_errors))
         return _errors?.map((item) =>
-          notification["error"]({
+          notification['error']({
             message: item?.message,
-          })
+          }),
         );
 
       if (isEmpty(_data)) {
-        notification["error"]({
-          message: "Lỗi hệ thống!",
+        notification['error']({
+          message: 'Lỗi hệ thống!',
         });
         return;
       }
 
       onCallAPISuccess(_data?.[0]);
 
-      notification["success"]({
-        message: `Sửa lớp học thành công.`,
+      notification['success']({
+        message: 'Sửa lớp học thành công.',
       });
     },
   });
@@ -124,18 +112,18 @@ const ModalLopHoc = ({
 
         const _inputsFormat = checkTrulyObject(_inputs);
 
-        if (type === "add") {
+        if (type === 'add') {
           handleCallAPIAdd(_inputsFormat);
           return;
         }
 
-        const _id = form?.getFieldValue("id");
+        const _id = form?.getFieldValue('id');
 
         handleCallAPIEdit(_inputsFormat, _id);
       })
       ?.catch(() => {
-        notification["error"]({
-          message: "Nhập thiếu thông tin!",
+        notification['error']({
+          message: 'Nhập thiếu thông tin!',
         });
       });
   };
@@ -165,22 +153,22 @@ const ModalLopHoc = ({
   const renderForm = () => {
     return (
       <Form {...layout} form={form} name="nest-messages">
-        <Form.Item name={"id"} label="Mã khóa">
+        <Form.Item name={'id'} label="Mã khóa">
           <Input disabled />
         </Form.Item>
         <Form.Item
           rules={[
             {
               required: true,
-              message: "Không được bỏ trống!",
+              message: 'Không được bỏ trống!',
             },
           ]}
-          name={"ten"}
+          name={'ten'}
           label="Tên lớp"
         >
           <Input />
         </Form.Item>
-        <Form.Item name={"moTa"} label="Mô tả">
+        <Form.Item name={'moTa'} label="Mô tả">
           <Input />
         </Form.Item>
       </Form>
@@ -189,14 +177,14 @@ const ModalLopHoc = ({
 
   return (
     <Modal
-      title={type === "add" ? "Thêm lớp học" : "Sửa lớp học"}
+      title={type === 'add' ? 'Thêm lớp học' : 'Sửa lớp học'}
       centered
       visible={visible}
       onCancel={() => closeModal(false)}
       width={1000}
       confirmLoading={loadingThemLop || loadingSuaLop}
       onOk={handleButtonOkClick}
-      okText={type === "add" ? "Thêm" : "Sửa"}
+      okText={type === 'add' ? 'Thêm' : 'Sửa'}
     >
       {renderForm()}
     </Modal>
@@ -208,7 +196,7 @@ export default ModalLopHoc;
 ModalLopHoc.propTypes = {
   visible: PropTypes.bool,
   closeModal: PropTypes.func,
-  type: PropTypes.oneOf(["edit", "add"]),
+  type: PropTypes.oneOf(['edit', 'add']),
   data: PropTypes.objectOf(PropTypes.any),
   onCallAPISuccess: PropTypes.func,
   khoaId: PropTypes.string.isRequired,
@@ -217,7 +205,7 @@ ModalLopHoc.propTypes = {
 ModalLopHoc.defaultProps = {
   visible: false,
   closeModal: () => {},
-  type: "add",
+  type: 'add',
   data: {},
   onCallAPISuccess: () => {},
 };

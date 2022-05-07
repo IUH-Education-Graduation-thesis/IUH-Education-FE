@@ -1,7 +1,6 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-undef */
 import Cookies from 'js-cookie';
-import config from 'config';
 
 class ClientCache {
   constructor() {
@@ -76,9 +75,7 @@ class ClientCache {
   getDefaultFirstChapterWithLocalStorage() {
     if (typeof window === 'undefined') return;
 
-    const defaultFirstChapter = localStorage.getItem(
-      this.DEFAULT_FIRST_CHAPTER
-    );
+    const defaultFirstChapter = localStorage.getItem(this.DEFAULT_FIRST_CHAPTER);
     this.default_first_chapter = JSON.parse(defaultFirstChapter);
     return this.default_first_chapter;
   }
@@ -132,20 +129,10 @@ class ClientCache {
     this.refresh_token = '';
     this.authorization = '';
 
-    const domainConfig =
-      !config.IS_LOCAL && config.IS_DEV
-        ? {
-            domain: '.data-advising.net',
-            path: '/',
-          }
-        : config.IS_PROD
-        ? { domain: '.damsanx.com', path: '/' }
-        : { domain: '', path: '/' };
-
-    Cookies.remove(this.TOKEN_KEY, { ...domainConfig });
-    Cookies.remove(this.AUTHORIZATION, { ...domainConfig });
-    Cookies.remove(this.REFRESH_TOKEN_KEY, { ...domainConfig });
-    Cookies.remove(this.TOKEN_EXPIRED_KEY, { ...domainConfig });
+    Cookies.remove(this.TOKEN_KEY);
+    Cookies.remove(this.AUTHORIZATION);
+    Cookies.remove(this.REFRESH_TOKEN_KEY);
+    Cookies.remove(this.TOKEN_EXPIRED_KEY);
   }
 
   removeAllLocalStorage() {

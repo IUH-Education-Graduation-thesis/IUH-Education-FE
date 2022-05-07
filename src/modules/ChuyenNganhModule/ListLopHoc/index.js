@@ -1,53 +1,50 @@
-import { Button, Collapse, notification, Select, Table } from "antd";
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import TableExpand from "./LopHocTableExpand";
-import ModalKhoaHoc from "./ModalKhoaHoc";
-import queries from "core/graphql";
-import { useMutation } from "@apollo/client";
-import { isEmpty } from "lodash";
+import { Button, Collapse, notification, Table } from 'antd';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import TableExpand from './LopHocTableExpand';
+import ModalKhoaHoc from './ModalKhoaHoc';
+import queries from 'core/graphql';
+import { useMutation } from '@apollo/client';
+import { isEmpty } from 'lodash';
 
-const xoaKhoaHocsMutation = queries.mutation.xoaKhoaHocs("id");
+const xoaKhoaHocsMutation = queries.mutation.xoaKhoaHocs('id');
 
 const { Panel } = Collapse;
-const prefix = "chuyen-nganh-lop-hoc";
+const prefix = 'chuyen-nganh-lop-hoc';
 
 const ListLopHoc = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
   const columns = [
     {
-      key: "id",
-      dataIndex: "id",
-      title: "ID",
+      key: 'id',
+      dataIndex: 'id',
+      title: 'ID',
     },
     {
-      key: "khoa",
-      dataIndex: "khoa",
-      title: "Tên khóa",
+      key: 'khoa',
+      dataIndex: 'khoa',
+      title: 'Tên khóa',
     },
     {
-      key: "thoiGianBatDau",
-      dataIndex: "thoiGianBatDau",
-      title: "Thời gian bắt đầu",
+      key: 'thoiGianBatDau',
+      dataIndex: 'thoiGianBatDau',
+      title: 'Thời gian bắt đầu',
     },
     {
-      key: "thoiGianKetThuc",
-      dataIndex: "thoiGianKetThuc",
-      title: "Thời gian kết thúc",
+      key: 'thoiGianKetThuc',
+      dataIndex: 'thoiGianKetThuc',
+      title: 'Thời gian kết thúc',
     },
     {
-      title: "Action",
-      key: "operation",
-      fixed: "right",
+      title: 'Action',
+      key: 'operation',
+      fixed: 'right',
       width: 200,
       render: (_, record) => (
         <div>
           <Button onClick={(e) => handleEditRow(e, record)} danger>
             Chỉnh sửa
           </Button>
-          <Button
-            loading={loadingXoaKhoaHocs}
-            onClick={(e) => handleDeleteRow(e, record)}
-          >
+          <Button loading={loadingXoaKhoaHocs} onClick={(e) => handleDeleteRow(e, record)}>
             Xóa
           </Button>
         </div>
@@ -65,36 +62,33 @@ const ListLopHoc = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
    * ====================================================
    */
 
-  const [actXoaKhoaHocs, { loading: loadingXoaKhoaHocs }] = useMutation(
-    xoaKhoaHocsMutation,
-    {
-      onCompleted: (dataRes) => {
-        const _errors = dataRes?.xoaKhoaHocs?.errors || [];
-        const _data = dataRes?.xoaKhoaHocs?.data || [];
+  const [actXoaKhoaHocs, { loading: loadingXoaKhoaHocs }] = useMutation(xoaKhoaHocsMutation, {
+    onCompleted: (dataRes) => {
+      const _errors = dataRes?.xoaKhoaHocs?.errors || [];
+      const _data = dataRes?.xoaKhoaHocs?.data || [];
 
-        if (!isEmpty(_errors))
-          return _errors?.map((item) =>
-            notification["error"]({
-              message: item?.message,
-            })
-          );
+      if (!isEmpty(_errors))
+        return _errors?.map((item) =>
+          notification['error']({
+            message: item?.message,
+          }),
+        );
 
-        if (isEmpty(_data)) {
-          notification["error"]({
-            message: "Lỗi hệ thống!",
-          });
-          return;
-        }
-
-        setSelectedRowKeys([]);
-        refetchFindChuyenNganh();
-
-        notification["success"]({
-          message: `Xóa ${_data?.length} khóa học thành công.`,
+      if (isEmpty(_data)) {
+        notification['error']({
+          message: 'Lỗi hệ thống!',
         });
-      },
-    }
-  );
+        return;
+      }
+
+      setSelectedRowKeys([]);
+      refetchFindChuyenNganh();
+
+      notification['success']({
+        message: `Xóa ${_data?.length} khóa học thành công.`,
+      });
+    },
+  });
 
   /**
    * Function
@@ -126,7 +120,7 @@ const ListLopHoc = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
     setShowModalAdd(true);
   };
 
-  const handleCallAPIAddSuccess = (payload) => {
+  const handleCallAPIAddSuccess = () => {
     setShowModalEdit(false);
     setShowModalAdd(false);
     refetchFindChuyenNganh();
@@ -152,11 +146,7 @@ const ListLopHoc = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
       <div className={`${prefix}__header`}>
         <div className={`${prefix}__header__left`}>Danh sách khóa học</div>
         <div className={`${prefix}__header__right`}>
-          <Button
-            loading={loadingXoaKhoaHocs}
-            onClick={handleXoaKhaoHocs}
-            danger
-          >
+          <Button loading={loadingXoaKhoaHocs} onClick={handleXoaKhaoHocs} danger>
             Xóa khóa học đã chọn
           </Button>
           <Button onClick={handleClickThemKhoaHoc} type="primary">
@@ -170,12 +160,7 @@ const ListLopHoc = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
   return (
     <>
       <Collapse className={prefix}>
-        <Panel
-          className={prefix}
-          showArrow={false}
-          header={renderHeadOfPanel()}
-          key="1"
-        >
+        <Panel className={prefix} showArrow={false} header={renderHeadOfPanel()} key="1">
           <Table
             rowSelection={{
               selectedRowKeys,

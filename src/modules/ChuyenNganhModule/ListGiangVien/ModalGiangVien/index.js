@@ -1,23 +1,16 @@
-import React, { useEffect } from "react";
-import { Modal, Form, Input, notification } from "antd";
-import queries from "core/graphql";
-import PropTypes from "prop-types";
+import React, { useEffect } from 'react';
+import { Modal, Form, Input, notification } from 'antd';
+import queries from 'core/graphql';
+import PropTypes from 'prop-types';
 
-import { isEmpty } from "lodash";
-import { useMutation } from "@apollo/client";
-import { checkTrulyObject } from "components/helper";
+import { isEmpty } from 'lodash';
+import { useMutation } from '@apollo/client';
+import { checkTrulyObject } from 'components/helper';
 
-const suaGiangVienMutation = queries.mutation.suaGiangVien("id");
-const themGiangVienMutation = queries.mutation.themGiangVien("id");
+const suaGiangVienMutation = queries.mutation.suaGiangVien('id');
+const themGiangVienMutation = queries.mutation.themGiangVien('id');
 
-const ModalGiangVien = ({
-  visible,
-  closeModal,
-  type,
-  data,
-  onCallAPISuccess,
-  chuyenNganhId,
-}) => {
+const ModalGiangVien = ({ visible, closeModal, type, data, onCallAPISuccess, chuyenNganhId }) => {
   const layout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 24 },
@@ -30,64 +23,58 @@ const ModalGiangVien = ({
    * ===========================================================
    */
 
-  const [actThemGiangVien, { loading: loadingThemGiangVien }] = useMutation(
-    themGiangVienMutation,
-    {
-      onCompleted: (dataRes) => {
-        const _errors = dataRes?.themGiangVien?.errors || [];
-        const _data = dataRes?.themGiangVien?.data || [];
+  const [actThemGiangVien, { loading: loadingThemGiangVien }] = useMutation(themGiangVienMutation, {
+    onCompleted: (dataRes) => {
+      const _errors = dataRes?.themGiangVien?.errors || [];
+      const _data = dataRes?.themGiangVien?.data || [];
 
-        if (!isEmpty(_errors))
-          return _errors?.map((item) =>
-            notification["error"]({
-              message: item?.message,
-            })
-          );
+      if (!isEmpty(_errors))
+        return _errors?.map((item) =>
+          notification['error']({
+            message: item?.message,
+          }),
+        );
 
-        if (isEmpty(_data)) {
-          notification["error"]({
-            message: "Lỗi hệ thống!",
-          });
-          return;
-        }
-
-        onCallAPISuccess(_data?.[0]);
-
-        notification["success"]({
-          message: "Thêm giảng viên thành công.",
+      if (isEmpty(_data)) {
+        notification['error']({
+          message: 'Lỗi hệ thống!',
         });
-      },
-    }
-  );
-  const [actSuaGiangVien, { loading: loadingSuaGiangVien }] = useMutation(
-    suaGiangVienMutation,
-    {
-      onCompleted: (dataRes) => {
-        const _errors = dataRes?.suaGiangVien?.errors || [];
-        const _data = dataRes?.suaGiangVien?.data || [];
+        return;
+      }
 
-        if (!isEmpty(_errors))
-          return _errors?.map((item) =>
-            notification["error"]({
-              message: item?.message,
-            })
-          );
+      onCallAPISuccess(_data?.[0]);
 
-        if (isEmpty(_data)) {
-          notification["error"]({
-            message: "Lỗi hệ thống!",
-          });
-          return;
-        }
+      notification['success']({
+        message: 'Thêm giảng viên thành công.',
+      });
+    },
+  });
+  const [actSuaGiangVien, { loading: loadingSuaGiangVien }] = useMutation(suaGiangVienMutation, {
+    onCompleted: (dataRes) => {
+      const _errors = dataRes?.suaGiangVien?.errors || [];
+      const _data = dataRes?.suaGiangVien?.data || [];
 
-        onCallAPISuccess(_data?.[0]);
+      if (!isEmpty(_errors))
+        return _errors?.map((item) =>
+          notification['error']({
+            message: item?.message,
+          }),
+        );
 
-        notification["success"]({
-          message: "Sửa giảng viên thành công.",
+      if (isEmpty(_data)) {
+        notification['error']({
+          message: 'Lỗi hệ thống!',
         });
-      },
-    }
-  );
+        return;
+      }
+
+      onCallAPISuccess(_data?.[0]);
+
+      notification['success']({
+        message: 'Sửa giảng viên thành công.',
+      });
+    },
+  });
 
   /**
    * function
@@ -123,23 +110,23 @@ const ModalGiangVien = ({
           soDienThoai: _dataForm?.soDienThoai,
           chuyenNganhID: chuyenNganhId,
           gioiTinh: true,
-          hocHam: "THAC_SI",
+          hocHam: 'THAC_SI',
         };
 
         const _inputsFormat = checkTrulyObject(_inputs);
 
-        if (type === "add") {
+        if (type === 'add') {
           handleCallAPIAdd(_inputsFormat);
           return;
         }
 
-        const _id = form?.getFieldValue("id");
+        const _id = form?.getFieldValue('id');
 
         handleCallAPIEdit(_inputsFormat, _id);
       })
       ?.catch(() => {
-        notification["error"]({
-          message: "Nhập thiếu thông tin!",
+        notification['error']({
+          message: 'Nhập thiếu thông tin!',
         });
       });
   };
@@ -170,17 +157,17 @@ const ModalGiangVien = ({
   const renderForm = () => {
     return (
       <Form {...layout} form={form} name="nest-messages">
-        <Form.Item name={"id"} label="Mã giảng viên">
+        <Form.Item name={'id'} label="Mã giảng viên">
           <Input disabled />
         </Form.Item>
         <Form.Item
           rules={[
             {
               required: true,
-              message: "Không được bỏ trống!",
+              message: 'Không được bỏ trống!',
             },
           ]}
-          name={"hoTenDem"}
+          name={'hoTenDem'}
           label="Họ tên đệm"
         >
           <Input />
@@ -189,18 +176,18 @@ const ModalGiangVien = ({
           rules={[
             {
               required: true,
-              message: "Không được bỏ trống!",
+              message: 'Không được bỏ trống!',
             },
           ]}
-          name={"ten"}
+          name={'ten'}
           label="Tên"
         >
           <Input />
         </Form.Item>
-        <Form.Item name={"email"} label="Email">
+        <Form.Item name={'email'} label="Email">
           <Input />
         </Form.Item>
-        <Form.Item name={"soDienThoai"} label="Số điện thoại">
+        <Form.Item name={'soDienThoai'} label="Số điện thoại">
           <Input />
         </Form.Item>
       </Form>
@@ -209,14 +196,14 @@ const ModalGiangVien = ({
 
   return (
     <Modal
-      title={type === "add" ? "Thêm Giảng viên" : "Sửa Giảng viên"}
+      title={type === 'add' ? 'Thêm Giảng viên' : 'Sửa Giảng viên'}
       centered
       visible={visible}
       onCancel={() => closeModal(false)}
       width={1000}
       confirmLoading={loadingThemGiangVien || loadingSuaGiangVien}
       onOk={handleButtonOkClick}
-      okText={type === "add" ? "Thêm" : "Sửa"}
+      okText={type === 'add' ? 'Thêm' : 'Sửa'}
     >
       {renderForm()}
     </Modal>
@@ -228,7 +215,7 @@ export default ModalGiangVien;
 ModalGiangVien.propTypes = {
   visible: PropTypes.bool,
   closeModal: PropTypes.func,
-  type: PropTypes.oneOf(["edit", "add"]),
+  type: PropTypes.oneOf(['edit', 'add']),
   data: PropTypes.objectOf(PropTypes.any),
   onCallAPISuccess: PropTypes.func,
   khoaVienID: PropTypes.string.isRequired,
@@ -238,7 +225,7 @@ ModalGiangVien.propTypes = {
 ModalGiangVien.defaultProps = {
   visible: false,
   closeModal: () => {},
-  type: "add",
+  type: 'add',
   data: {},
   onCallAPISuccess: () => {},
 };

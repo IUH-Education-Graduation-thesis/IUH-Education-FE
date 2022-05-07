@@ -1,23 +1,16 @@
-import React, { useEffect } from "react";
-import { Modal, Form, Input, notification } from "antd";
-import queries from "core/graphql";
-import PropTypes from "prop-types";
+import React, { useEffect } from 'react';
+import { Modal, Form, Input, notification } from 'antd';
+import queries from 'core/graphql';
+import PropTypes from 'prop-types';
 
-import { isEmpty } from "lodash";
-import { useMutation } from "@apollo/client";
-import { checkTrulyObject } from "components/helper";
+import { isEmpty } from 'lodash';
+import { useMutation } from '@apollo/client';
+import { checkTrulyObject } from 'components/helper';
 
-const themChuyenNganhMutation = queries.mutation.themChuyenNganh("id");
-const suaChuyenNganhMutation = queries.mutation.suaChuyenNganh("id");
+const themChuyenNganhMutation = queries.mutation.themChuyenNganh('id');
+const suaChuyenNganhMutation = queries.mutation.suaChuyenNganh('id');
 
-const ModalChuyenNganh = ({
-  visible,
-  closeModal,
-  type,
-  data,
-  onCallAPISuccess,
-  khoaVienID,
-}) => {
+const ModalChuyenNganh = ({ visible, closeModal, type, data, onCallAPISuccess, khoaVienID }) => {
   const layout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 24 },
@@ -39,25 +32,25 @@ const ModalChuyenNganh = ({
 
         if (!isEmpty(_errors))
           return _errors?.map((item) =>
-            notification["error"]({
+            notification['error']({
               message: item?.message,
-            })
+            }),
           );
 
         if (isEmpty(_data)) {
-          notification["error"]({
-            message: "Lỗi hệ thống!",
+          notification['error']({
+            message: 'Lỗi hệ thống!',
           });
           return;
         }
 
         onCallAPISuccess(_data?.[0]);
 
-        notification["success"]({
-          message: "Thêm chuyên ngành thành công.",
+        notification['success']({
+          message: 'Thêm chuyên ngành thành công.',
         });
       },
-    }
+    },
   );
   const [actSuaChuyenNganh, { loading: loadingSuaChuyenNganh }] = useMutation(
     suaChuyenNganhMutation,
@@ -68,25 +61,25 @@ const ModalChuyenNganh = ({
 
         if (!isEmpty(_errors))
           return _errors?.map((item) =>
-            notification["error"]({
+            notification['error']({
               message: item?.message,
-            })
+            }),
           );
 
         if (isEmpty(_data)) {
-          notification["error"]({
-            message: "Lỗi hệ thống!",
+          notification['error']({
+            message: 'Lỗi hệ thống!',
           });
           return;
         }
 
         onCallAPISuccess(_data?.[0]);
 
-        notification["success"]({
-          message: "Sửa chuyên ngành thành công.",
+        notification['success']({
+          message: 'Sửa chuyên ngành thành công.',
         });
       },
-    }
+    },
   );
 
   /**
@@ -124,18 +117,18 @@ const ModalChuyenNganh = ({
 
         const _inputsFormat = checkTrulyObject(_inputs);
 
-        if (type === "add") {
+        if (type === 'add') {
           handleCallAPIAdd(_inputsFormat);
           return;
         }
 
-        const _id = form?.getFieldValue("id");
+        const _id = form?.getFieldValue('id');
 
         handleCallAPIEdit(_inputsFormat, _id);
       })
       ?.catch(() => {
-        notification["error"]({
-          message: "Nhập thiếu thông tin!",
+        notification['error']({
+          message: 'Nhập thiếu thông tin!',
         });
       });
   };
@@ -164,22 +157,22 @@ const ModalChuyenNganh = ({
   const renderForm = () => {
     return (
       <Form {...layout} form={form} name="nest-messages">
-        <Form.Item name={"id"} label="Mã chuyên ngành">
+        <Form.Item name={'id'} label="Mã chuyên ngành">
           <Input disabled />
         </Form.Item>
         <Form.Item
           rules={[
             {
               required: true,
-              message: "Không được bỏ trống!",
+              message: 'Không được bỏ trống!',
             },
           ]}
-          name={"ten"}
+          name={'ten'}
           label="Tên chuyên ngành"
         >
           <Input />
         </Form.Item>
-        <Form.Item name={"moTa"} label="Mô tả">
+        <Form.Item name={'moTa'} label="Mô tả">
           <Input />
         </Form.Item>
       </Form>
@@ -188,14 +181,14 @@ const ModalChuyenNganh = ({
 
   return (
     <Modal
-      title={type === "add" ? "Thêm Chuyên ngành" : "Sửa chuyên ngành"}
+      title={type === 'add' ? 'Thêm Chuyên ngành' : 'Sửa chuyên ngành'}
       centered
       visible={visible}
       onCancel={() => closeModal(false)}
       width={1000}
       confirmLoading={loadingThemChuyenNganh || loadingSuaChuyenNganh}
       onOk={handleButtonOkClick}
-      okText={type === "add" ? "Thêm" : "Sửa"}
+      okText={type === 'add' ? 'Thêm' : 'Sửa'}
     >
       {renderForm()}
     </Modal>
@@ -207,7 +200,7 @@ export default ModalChuyenNganh;
 ModalChuyenNganh.propTypes = {
   visible: PropTypes.bool,
   closeModal: PropTypes.func,
-  type: PropTypes.oneOf(["edit", "add"]),
+  type: PropTypes.oneOf(['edit', 'add']),
   data: PropTypes.objectOf(PropTypes.any),
   onCallAPISuccess: PropTypes.func,
   khoaVienID: PropTypes.string.isRequired,
@@ -216,7 +209,7 @@ ModalChuyenNganh.propTypes = {
 ModalChuyenNganh.defaultProps = {
   visible: false,
   closeModal: () => {},
-  type: "add",
+  type: 'add',
   data: {},
   onCallAPISuccess: () => {},
 };

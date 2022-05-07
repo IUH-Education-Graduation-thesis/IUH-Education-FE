@@ -1,70 +1,66 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Button, Table, Modal, Divider, notification } from "antd";
-import queries from "core/graphql";
-import { useLazyQuery, useMutation } from "@apollo/client";
-import { checkTrulyObject } from "components/helper";
-import { isEmpty } from "lodash";
+import React, { useCallback, useEffect, useState } from 'react';
+import { Button, Table, Divider, notification } from 'antd';
+import queries from 'core/graphql';
+import { useLazyQuery, useMutation } from '@apollo/client';
+import { checkTrulyObject } from 'components/helper';
+import { isEmpty } from 'lodash';
 
-import { FIND_KHOA_VIEN } from "./fragment";
-import "./Khoa.scss";
-import ModalAddKhoa from "./FormAddKhoa";
-import FilterExpand from "./FilterExpand";
-import ModalAddChuyenNganh from "../ChuyenNganh/FormAddChuyenNganh";
+import { FIND_KHOA_VIEN } from './fragment';
+import './Khoa.scss';
+import ModalAddKhoa from './FormAddKhoa';
+import FilterExpand from './FilterExpand';
+import ModalAddChuyenNganh from '../ChuyenNganh/FormAddChuyenNganh';
 
 const findKhoaVienQuery = queries.query.findKhoaVien(FIND_KHOA_VIEN);
-const xoaKhoaViensQuery = queries.mutation.xoaKhoaViens("id");
+const xoaKhoaViensQuery = queries.mutation.xoaKhoaViens('id');
 
 const KhoaComponent = () => {
   const [visibleModal1, setVisibleModal1] = useState(false);
   const [visibleModal, setVisibleModal] = useState(false);
-  const [visibelModalThemChuyenNganh, setvisibelModalThemChuyenNganh] =
-    useState(false);
+  const [visibelModalThemChuyenNganh, setvisibelModalThemChuyenNganh] = useState(false);
   const [khoa, setKhoa] = useState({});
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const [currentConfig, setCurrentConfig] = useState({
-    id: "",
-    ten: "",
+    id: '',
+    ten: '',
   });
 
   const columns = [
     {
-      title: "Mã khoa",
-      dataIndex: "id",
-      key: "id",
+      title: 'Mã khoa',
+      dataIndex: 'id',
+      key: 'id',
       width: 100,
     },
     {
-      title: "Tên khoa",
-      dataIndex: "ten",
-      key: "ten",
+      title: 'Tên khoa',
+      dataIndex: 'ten',
+      key: 'ten',
       width: 400,
     },
     {
-      title: "Mô tả",
-      dataIndex: "moTa",
-      key: "moTa",
+      title: 'Mô tả',
+      dataIndex: 'moTa',
+      key: 'moTa',
       width: 300,
     },
     {
-      title: "Link",
-      dataIndex: "link",
-      key: "link",
+      title: 'Link',
+      dataIndex: 'link',
+      key: 'link',
       width: 300,
     },
     {
-      title: "Thao tác",
-      key: "thaoTac",
+      title: 'Thao tác',
+      key: 'thaoTac',
       width: 300,
       render: (_, record) => (
         <div>
           <Button danger onClick={(e) => handlerEditButton(e, record)}>
             Chỉnh sửa
           </Button>
-          <Button
-            onClick={(e) => handleDeleteRow(e, record)}
-            style={{ marginLeft: 10 }}
-          >
+          <Button onClick={(e) => handleDeleteRow(e, record)} style={{ marginLeft: 10 }}>
             Xóa
           </Button>
         </div>
@@ -76,42 +72,39 @@ const KhoaComponent = () => {
    * API
    * ===============================================================
    */
-  const [actXoaKhoaViens, { loading: loadingXoaKhoaVien }] = useMutation(
-    xoaKhoaViensQuery,
-    {
-      onCompleted: (dataRes) => {
-        const _errors = dataRes?.xoaKhoaViens?.errors || [];
-        const _data = dataRes?.xoaKhoaViens?.data || [];
+  const [actXoaKhoaViens, { loading: loadingXoaKhoaVien }] = useMutation(xoaKhoaViensQuery, {
+    onCompleted: (dataRes) => {
+      const _errors = dataRes?.xoaKhoaViens?.errors || [];
+      const _data = dataRes?.xoaKhoaViens?.data || [];
 
-        if (!isEmpty(_errors))
-          return _errors?.map((item) =>
-            notification["error"]({
-              message: item?.message,
-            })
-          );
+      if (!isEmpty(_errors))
+        return _errors?.map((item) =>
+          notification['error']({
+            message: item?.message,
+          }),
+        );
 
-        if (isEmpty(_data)) {
-          notification["error"]({
-            message: "Lỗi hệ thống!",
-          });
-          return;
-        }
-
-        callAPIFindKhoaVien();
-
-        notification["success"]({
-          message: `Xóa thành công ${_data?.length} khoa viện.`,
+      if (isEmpty(_data)) {
+        notification['error']({
+          message: 'Lỗi hệ thống!',
         });
-      },
-    }
-  );
+        return;
+      }
 
-  const [
-    actFindKhoaVien,
-    { data: dataFindKhoaVien, loading: loadingFindKhoaVien },
-  ] = useLazyQuery(findKhoaVienQuery, {
-    fetchPolicy: "network-only",
+      callAPIFindKhoaVien();
+
+      notification['success']({
+        message: `Xóa thành công ${_data?.length} khoa viện.`,
+      });
+    },
   });
+
+  const [actFindKhoaVien, { data: dataFindKhoaVien, loading: loadingFindKhoaVien }] = useLazyQuery(
+    findKhoaVienQuery,
+    {
+      fetchPolicy: 'network-only',
+    },
+  );
 
   const listKhoaVien =
     dataFindKhoaVien?.findKhoaVien?.data?.[0]?.data?.map((item) => ({
@@ -145,7 +138,7 @@ const KhoaComponent = () => {
     });
   }, [actFindKhoaVien, currentConfig]);
 
-  const handleWhenAddKhoaVienSuccess = (payload) => {
+  const handleWhenAddKhoaVienSuccess = () => {
     callAPIFindKhoaVien();
     setVisibleModal(false);
     setVisibleModal1(false);
@@ -174,8 +167,8 @@ const KhoaComponent = () => {
 
   const handleFilterClear = () => {
     setCurrentConfig({
-      id: "",
-      ten: "",
+      id: '',
+      ten: '',
     });
   };
 
@@ -242,7 +235,7 @@ const KhoaComponent = () => {
         columns={columns}
         loading={loadingFindKhoaVien}
         dataSource={listKhoaVien}
-        onRow={(record, index) => {
+        onRow={(record) => {
           return {
             onClick: (e) => handleClickRowTable(e, record),
           };

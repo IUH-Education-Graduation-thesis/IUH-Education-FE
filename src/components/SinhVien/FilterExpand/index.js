@@ -16,29 +16,6 @@ import { FIND_KHOA_VIEN } from '../fragment';
 const prefix = 'sinh-vien--filter';
 const findKhoaVienQuery = queries.query.findKhoaVien(FIND_KHOA_VIEN);
 
-const dataMockKhoaVien = [
-  {
-    id: 1,
-    label: 'Công nghệ thông tin',
-    value: 2,
-  },
-  {
-    id: 2,
-    label: 'May thời trang',
-    value: 3,
-  },
-  {
-    id: 3,
-    label: 'Tài ngân',
-    value: 4,
-  },
-  {
-    id: 4,
-    label: 'Xây dựng',
-    value: 25,
-  },
-];
-
 const { useForm } = Form;
 
 const ExpandFilter = ({
@@ -52,8 +29,7 @@ const ExpandFilter = ({
 
   const [expanded, setExpanded] = useState(false);
 
-  const { data: dataFindKhoaVien, loading: loadingFindKhoaVien } =
-    useQuery(findKhoaVienQuery);
+  const { data: dataFindKhoaVien } = useQuery(findKhoaVienQuery);
 
   const dataForFilter = dataFindKhoaVien?.findKhoaVien?.data?.[0]?.data;
 
@@ -89,7 +65,7 @@ const ExpandFilter = ({
           value: _item?.id,
           label: _item?.khoa,
         }))
-        ?.flat()
+        ?.flat(),
     )
     ?.flat();
 
@@ -102,7 +78,7 @@ const ExpandFilter = ({
           value: _item?.id,
           label: _item?.ten,
         }))
-        ?.flat()
+        ?.flat(),
     )
     ?.flat();
 
@@ -147,16 +123,10 @@ const ExpandFilter = ({
       <div className={`${prefix}__top`}>
         <div className={`${prefix}__top__left`}>
           <Form.Item name="maSinhVien">
-            <Input
-              prefix={<SearchOutlined />}
-              placeholder="Nhập mã sinh viên..."
-            />
+            <Input prefix={<SearchOutlined />} placeholder="Nhập mã sinh viên..." />
           </Form.Item>
           <Form.Item name="tenSinhVien">
-            <Input
-              prefix={<SearchOutlined />}
-              placeholder="Nhập tên sinh viên..."
-            />
+            <Input prefix={<SearchOutlined />} placeholder="Nhập tên sinh viên..." />
           </Form.Item>
         </div>
 
@@ -179,32 +149,16 @@ const ExpandFilter = ({
         })}
       >
         <Form.Item className={`${prefix}__expand__all`} name="khoaVienIds">
-          <Select
-            options={dataForKhoaVien}
-            mode="multiple"
-            placeholder="Khoa Viện"
-          ></Select>
+          <Select options={dataForKhoaVien} mode="multiple" placeholder="Khoa Viện"></Select>
         </Form.Item>
         <Form.Item name="chuyenNganhIds">
-          <Select
-            options={dataForChuyenNganh}
-            mode="multiple"
-            placeholder="Chuyên ngành"
-          ></Select>
+          <Select options={dataForChuyenNganh} mode="multiple" placeholder="Chuyên ngành"></Select>
         </Form.Item>
         <Form.Item name="khoaHocIds">
-          <Select
-            options={dataForKhoa}
-            mode="multiple"
-            placeholder="Khóa"
-          ></Select>
+          <Select options={dataForKhoa} mode="multiple" placeholder="Khóa"></Select>
         </Form.Item>
         <Form.Item className={`${prefix}__expand__all`} name="lopIds">
-          <Select
-            options={dataForLop}
-            mode="multiple"
-            placeholder="Lớp"
-          ></Select>
+          <Select options={dataForLop} mode="multiple" placeholder="Lớp"></Select>
         </Form.Item>
       </div>
     </Form>

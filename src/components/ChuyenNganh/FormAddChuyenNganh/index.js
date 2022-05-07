@@ -35,12 +35,7 @@ const ModalChuyenNganh = ({ visible, closeModal, type, data, isKhoaMode }) => {
 
     return (
       <Form.Item label="Khoa">
-        <Select
-          options={khoa}
-          style={{ width: 290 }}
-          placeholder="Khoa"
-          onChange={handleChange}
-        />
+        <Select options={khoa} style={{ width: 290 }} placeholder="Khoa" onChange={handleChange} />
       </Form.Item>
     );
   }, [isKhoaMode, khoa]);

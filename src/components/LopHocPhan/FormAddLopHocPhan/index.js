@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Modal, Form, Input, DatePicker, Select } from 'antd';
+import { Modal, Form, Input, Select } from 'antd';
 
 import { isEmpty } from 'lodash';
 
@@ -27,25 +27,12 @@ const ModalAddLopHocPhan = ({ visible, closeModal, type, data }) => {
       moTa: data.moTa,
     });
   }, [data]);
-  function onChange(date, dateString) {
-    console.log(date, dateString);
-  }
+
   const trangThai = [
     { value: 'dangHoc', label: 'Đang học' },
     { value: 'daKetThuc', label: 'Đã kết thúc' },
   ];
-  const monHocTienQuyet = [
-    { value: 'toanCC', label: 'Toán cao cấp' },
-    { value: 'cauTrucRoiRac', label: 'Cấu trúc rời rạc' },
-  ];
-  const monHocSongHanh = [
-    { value: 'toanCC', label: 'Toán cao cấp' },
-    { value: 'cauTrucRoiRac', label: 'Cấu trúc rời rạc' },
-  ];
-  const monHocTuongDuong = [
-    { value: 'toanCC', label: 'Toán cao cấp' },
-    { value: 'cauTrucRoiRac', label: 'Cấu trúc rời rạc' },
-  ];
+
   const renderForm = () => {
     return (
       <Form {...layout} form={form} name="nest-messages">
@@ -65,25 +52,15 @@ const ModalAddLopHocPhan = ({ visible, closeModal, type, data }) => {
           <Input />
         </Form.Item>
         <Form.Item label="Trạng thái">
-          <Select
-            options={trangThai}
-            style={{ width: 290 }}
-            placeholder="Trạng thái"
-          />
+          <Select options={trangThai} style={{ width: 290 }} placeholder="Trạng thái" />
         </Form.Item>
         <Form.Item name={'soLuongDangKyToiDa'} label="Số lượng đăng ký tối đa">
           <Input />
         </Form.Item>
-        <Form.Item
-          name={'soLuongDangKyHienTai'}
-          label="Số lượng đăng ký hiện tại"
-        >
+        <Form.Item name={'soLuongDangKyHienTai'} label="Số lượng đăng ký hiện tại">
           <Input />
         </Form.Item>
-        <Form.Item
-          name={'idLopHocPhanTuongUng'}
-          label="ID lớp học phần tương ứng"
-        >
+        <Form.Item name={'idLopHocPhanTuongUng'} label="ID lớp học phần tương ứng">
           <Input />
         </Form.Item>
         <Form.Item name={'hocKy'} label="Học kỳ">

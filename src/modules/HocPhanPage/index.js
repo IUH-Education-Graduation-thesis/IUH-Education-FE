@@ -1,15 +1,15 @@
-import React from "react";
-import { Row, Col, PageHeader, Card } from "antd";
-import "modules/HocPhanPage/HocPhanPage.scss";
-import MonHocCollapse from "./MonHocCollapse";
-import LopHocPhanList from "./LopHocPhanList";
-import { useParams } from "react-router-dom";
+import React from 'react';
+import { Row, Col, PageHeader, Card } from 'antd';
+import 'modules/HocPhanPage/HocPhanPage.scss';
+import MonHocCollapse from './MonHocCollapse';
+import LopHocPhanList from './LopHocPhanList';
+import { useParams } from 'react-router-dom';
 
-import queries from "core/graphql";
-import { FIND_HOC_PHAN } from "./fragment";
-import { useQuery } from "@apollo/client";
+import queries from 'core/graphql';
+import { FIND_HOC_PHAN } from './fragment';
+import { useQuery } from '@apollo/client';
 
-const prefix = "hoc-phan-module";
+const prefix = 'hoc-phan-module';
 
 const findHocPhanQuery = queries.query.findHocPhan(FIND_HOC_PHAN);
 
@@ -21,17 +21,14 @@ const HocPhanModule = () => {
    * =================================================
    */
 
-  const { data: dataFindHocPhan, refetch: refetchFindHocPhan } = useQuery(
-    findHocPhanQuery,
-    {
-      skip: !hoc_phan_id,
-      variables: {
-        inputs: {
-          id: hoc_phan_id,
-        },
+  const { data: dataFindHocPhan, refetch: refetchFindHocPhan } = useQuery(findHocPhanQuery, {
+    skip: !hoc_phan_id,
+    variables: {
+      inputs: {
+        id: hoc_phan_id,
       },
-    }
-  );
+    },
+  });
 
   const hocPhan = dataFindHocPhan?.findHocPhans?.data?.[0]?.data?.[0] || {};
 
@@ -51,7 +48,7 @@ const HocPhanModule = () => {
       <Col span={16}>
         <PageHeader
           style={{
-            border: "1px solid rgb(235, 237, 240)",
+            border: '1px solid rgb(235, 237, 240)',
           }}
           className="site-page-header"
           onBack={() => null}
@@ -72,7 +69,7 @@ const HocPhanModule = () => {
               <b>Mô tả:</b> {hocPhan?.moTa}
             </Col>
             <Col span={8}>
-              <b>Bắt buộc:</b> {hocPhan?.batBuoc ? "có" : "không"}
+              <b>Bắt buộc:</b> {hocPhan?.batBuoc ? 'có' : 'không'}
             </Col>
             <Col span={8}>
               <b>Tín chỉ lý thuyết:</b> {hocPhan?.soTinChiLyThuyet}
@@ -83,10 +80,7 @@ const HocPhanModule = () => {
           </Row>
         </Card>
         <MonHocCollapse />
-        <LopHocPhanList
-          data={dataForListLopHocPhan}
-          refetchFindHocPhan={refetchFindHocPhan}
-        />
+        <LopHocPhanList data={dataForListLopHocPhan} refetchFindHocPhan={refetchFindHocPhan} />
       </Col>
       <Col span={4}></Col>
     </Row>

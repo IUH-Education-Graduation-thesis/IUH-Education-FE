@@ -39,11 +39,9 @@ const ExpandFilter = ({
    * ==================================================
    */
 
-  const { data: dataFindNamHoc, loading: loadingFindNamHoc } =
-    useQuery(findNamHocQuery);
+  const { data: dataFindNamHoc } = useQuery(findNamHocQuery);
 
-  const { data: dataFindKhoaVien, loading: loadingFindKhoaVien } =
-    useQuery(findKhoaVienQuery);
+  const { data: dataFindKhoaVien, loading: loadingFindKhoaVien } = useQuery(findKhoaVienQuery);
 
   const listKhoaVien = dataFindKhoaVien?.findKhoaVien?.data?.[0]?.data;
   const dataForSelectKhoaVien = listKhoaVien?.map((item) => ({
@@ -149,16 +147,10 @@ const ExpandFilter = ({
       <div className={`${prefix}__top`}>
         <div className={`${prefix}__top__left`}>
           <Form.Item name="id">
-            <Input
-              prefix={<SearchOutlined />}
-              placeholder="Nhập id học phần..."
-            />
+            <Input prefix={<SearchOutlined />} placeholder="Nhập id học phần..." />
           </Form.Item>
           <Form.Item name="maHocPhan">
-            <Input
-              prefix={<SearchOutlined />}
-              placeholder="Nhập mã học phần..."
-            />
+            <Input prefix={<SearchOutlined />} placeholder="Nhập mã học phần..." />
           </Form.Item>
         </div>
 
@@ -189,25 +181,13 @@ const ExpandFilter = ({
           ></Select>
         </Form.Item>
         <Form.Item name="monHocIds">
-          <Select
-            options={dataForSelectMonHoc}
-            mode="multiple"
-            placeholder="Môn học"
-          ></Select>
+          <Select options={dataForSelectMonHoc} mode="multiple" placeholder="Môn học"></Select>
         </Form.Item>
         <Form.Item name="namHocIds">
-          <Select
-            options={dataForSelectNamHoc}
-            mode="multiple"
-            placeholder="Năm học"
-          ></Select>
+          <Select options={dataForSelectNamHoc} mode="multiple" placeholder="Năm học"></Select>
         </Form.Item>
         <Form.Item name="hocKyIds">
-          <Select
-            options={dataForSelectHocKy}
-            mode="multiple"
-            placeholder="Học kỳ"
-          ></Select>
+          <Select options={dataForSelectHocKy} mode="multiple" placeholder="Học kỳ"></Select>
         </Form.Item>
       </div>
     </Form>

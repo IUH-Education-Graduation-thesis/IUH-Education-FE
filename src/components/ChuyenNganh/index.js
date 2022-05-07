@@ -41,9 +41,9 @@ const ChuyenNganh = () => {
     data.push({
       key: i,
       maChuyenNganh: `${i}`,
-      tenChuyenNganh: `Kỹ thuật phần mềm`,
-      soTinChi: `2`,
-      khoa: `CNTT`,
+      tenChuyenNganh: 'Kỹ thuật phần mềm',
+      soTinChi: '2',
+      khoa: 'CNTT',
       moTa: 'K14',
     });
   }
@@ -65,21 +65,13 @@ const ChuyenNganh = () => {
       <h1>DANH SÁCH CHUYÊN NGÀNH</h1>
       <div className="combox-sv">
         <span>Khoa</span>
-        <Select
-          className="ant-select-selector"
-          defaultValue={khoaData[0]}
-          style={{ width: 300 }}
-        >
+        <Select className="ant-select-selector" defaultValue={khoaData[0]} style={{ width: 300 }}>
           {khoaData.map((khoaData) => (
             <Option key={khoaData}>{khoaData}</Option>
           ))}
         </Select>
       </div>
-      <Button
-        className="ant-btn-primary"
-        type="primary"
-        onClick={() => setVisibleModal(true)}
-      >
+      <Button className="ant-btn-primary" type="primary" onClick={() => setVisibleModal(true)}>
         + Thêm chuyên ngành
       </Button>
       <Table
@@ -130,15 +122,10 @@ const ChuyenNganh = () => {
                   options={options}
                   placeholder="Tìm kiếm chuyên ngành"
                   filterOption={(inputValue, option) =>
-                    option.value
-                      .toUpperCase()
-                      .indexOf(inputValue.toUpperCase()) !== -1
+                    option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                   }
                 />
-                <Button
-                  type="primary"
-                  style={{ marginRight: 100, display: 'flex' }}
-                >
+                <Button type="primary" style={{ marginRight: 100, display: 'flex' }}>
                   Thêm
                 </Button>
               </div>
@@ -147,11 +134,7 @@ const ChuyenNganh = () => {
         }}
         dataSource={data}
       />
-      <ModalAddChuyenNganh
-        type="add"
-        visible={visibleModal}
-        closeModal={setVisibleModal}
-      />
+      <ModalAddChuyenNganh type="add" visible={visibleModal} closeModal={setVisibleModal} />
       <ModalAddChuyenNganh
         type="sua"
         visible={visibleModal1}

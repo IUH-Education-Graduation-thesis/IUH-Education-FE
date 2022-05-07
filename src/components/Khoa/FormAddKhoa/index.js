@@ -1,14 +1,14 @@
-import React, { useEffect } from "react";
-import { Modal, Form, Input, notification } from "antd";
-import queries from "core/graphql";
-import PropTypes from "prop-types";
+import React, { useEffect } from 'react';
+import { Modal, Form, Input, notification } from 'antd';
+import queries from 'core/graphql';
+import PropTypes from 'prop-types';
 
-import { isEmpty } from "lodash";
-import { useMutation } from "@apollo/client";
-import { checkTrulyObject } from "components/helper";
+import { isEmpty } from 'lodash';
+import { useMutation } from '@apollo/client';
+import { checkTrulyObject } from 'components/helper';
 
-const themKhoaVienQuery = queries.mutation.themKhoaVien("id");
-const suaKhoaVienQuery = queries.mutation.suaKhoaVien("id");
+const themKhoaVienQuery = queries.mutation.themKhoaVien('id');
+const suaKhoaVienQuery = queries.mutation.suaKhoaVien('id');
 
 const ModalKhoa = ({ visible, closeModal, type, data, onCallAPISuccess }) => {
   const layout = {
@@ -30,22 +30,22 @@ const ModalKhoa = ({ visible, closeModal, type, data, onCallAPISuccess }) => {
 
       if (!isEmpty(_errors))
         return _errors?.map((item) =>
-          notification["error"]({
+          notification['error']({
             message: item?.message,
-          })
+          }),
         );
 
       if (isEmpty(_data)) {
-        notification["error"]({
-          message: "Lỗi hệ thống!",
+        notification['error']({
+          message: 'Lỗi hệ thống!',
         });
         return;
       }
 
       onCallAPISuccess(_data?.[0]);
 
-      notification["success"]({
-        message: "Sửa khoa viên thành công.",
+      notification['success']({
+        message: 'Sửa khoa viên thành công.',
       });
     },
   });
@@ -57,22 +57,22 @@ const ModalKhoa = ({ visible, closeModal, type, data, onCallAPISuccess }) => {
 
       if (!isEmpty(_errors))
         return _errors?.map((item) =>
-          notification["error"]({
+          notification['error']({
             message: item?.message,
-          })
+          }),
         );
 
       if (isEmpty(_data)) {
-        notification["error"]({
-          message: "Lỗi hệ thống!",
+        notification['error']({
+          message: 'Lỗi hệ thống!',
         });
         return;
       }
 
       onCallAPISuccess(_data?.[0]);
 
-      notification["success"]({
-        message: "Thêm khoa viên thành công.",
+      notification['success']({
+        message: 'Thêm khoa viên thành công.',
       });
     },
   });
@@ -116,18 +116,18 @@ const ModalKhoa = ({ visible, closeModal, type, data, onCallAPISuccess }) => {
 
         const _inputsFormat = checkTrulyObject(_inputs);
 
-        if (type === "add") {
+        if (type === 'add') {
           handleCallAPIAdd(_inputsFormat);
           return;
         }
 
-        const _id = form?.getFieldValue("id");
+        const _id = form?.getFieldValue('id');
 
         handleCallAPIEdit(_inputsFormat, _id);
       })
       ?.catch(() => {
-        notification["error"]({
-          message: "Nhập thiếu thông tin!",
+        notification['error']({
+          message: 'Nhập thiếu thông tin!',
         });
       });
   };
@@ -157,25 +157,25 @@ const ModalKhoa = ({ visible, closeModal, type, data, onCallAPISuccess }) => {
   const renderForm = () => {
     return (
       <Form {...layout} form={form} name="nest-messages">
-        <Form.Item name={"id"} label="Mã khoa">
+        <Form.Item name={'id'} label="Mã khoa">
           <Input disabled />
         </Form.Item>
         <Form.Item
           rules={[
             {
               required: true,
-              message: "Không được bỏ trống!",
+              message: 'Không được bỏ trống!',
             },
           ]}
-          name={"ten"}
+          name={'ten'}
           label="Tên khoa"
         >
           <Input />
         </Form.Item>
-        <Form.Item name={"moTa"} label="Mô tả">
+        <Form.Item name={'moTa'} label="Mô tả">
           <Input />
         </Form.Item>
-        <Form.Item name={"link"} label="Link">
+        <Form.Item name={'link'} label="Link">
           <Input />
         </Form.Item>
       </Form>
@@ -184,13 +184,13 @@ const ModalKhoa = ({ visible, closeModal, type, data, onCallAPISuccess }) => {
 
   return (
     <Modal
-      title={type === "add" ? "Thêm khoa" : "Sửa khoa"}
+      title={type === 'add' ? 'Thêm khoa' : 'Sửa khoa'}
       centered
       visible={visible}
       onCancel={() => closeModal(false)}
       width={1000}
       onOk={handleButtonOkClick}
-      okText={type === "add" ? "Thêm" : "Sửa"}
+      okText={type === 'add' ? 'Thêm' : 'Sửa'}
     >
       {renderForm()}
     </Modal>
@@ -202,7 +202,7 @@ export default ModalKhoa;
 ModalKhoa.propTypes = {
   visible: PropTypes.bool,
   closeModal: PropTypes.func,
-  type: PropTypes.oneOf(["edit", "add"]),
+  type: PropTypes.oneOf(['edit', 'add']),
   data: PropTypes.objectOf(PropTypes.any),
   onCallAPISuccess: PropTypes.func,
 };
@@ -210,7 +210,7 @@ ModalKhoa.propTypes = {
 Modal.defaultProps = {
   visible: false,
   closeModal: () => {},
-  type: "add",
+  type: 'add',
   data: {},
   onCallAPISuccess: () => {},
 };

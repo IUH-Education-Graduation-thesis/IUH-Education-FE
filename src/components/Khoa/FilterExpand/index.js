@@ -50,16 +50,10 @@ const ExpandFilter = ({
       <div className={`${prefix}__top`}>
         <div className={`${prefix}__top__left`}>
           <Form.Item name="id">
-            <Input
-              prefix={<SearchOutlined />}
-              placeholder="Nhập id khoa viện..."
-            />
+            <Input prefix={<SearchOutlined />} placeholder="Nhập id khoa viện..." />
           </Form.Item>
           <Form.Item name="ten">
-            <Input
-              prefix={<SearchOutlined />}
-              placeholder="Nhập tên khoa viện..."
-            />
+            <Input prefix={<SearchOutlined />} placeholder="Nhập tên khoa viện..." />
           </Form.Item>
         </div>
 

@@ -1,19 +1,17 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Modal, Form, Input, DatePicker, Select, notification } from "antd";
-import { useMutation, useQuery } from "@apollo/client";
-import queries from "core/graphql";
-import PropTypes from "prop-types";
+import React, { useCallback, useEffect, useState } from 'react';
+import { Modal, Form, Input, DatePicker, Select, notification } from 'antd';
+import { useMutation, useQuery } from '@apollo/client';
+import queries from 'core/graphql';
+import PropTypes from 'prop-types';
 
-import { isEmpty } from "lodash";
-import { checkTrulyObject } from "components/helper";
-import { FIND_KHOA_VIEN, THEM_SINH_VIEN_FRAGMENT } from "../fragment";
-import moment from "moment";
+import { isEmpty } from 'lodash';
+import { checkTrulyObject } from 'components/helper';
+import { FIND_KHOA_VIEN, THEM_SINH_VIEN_FRAGMENT } from '../fragment';
+import moment from 'moment';
 
 const findKhoaVienQuery = queries?.query.findKhoaVien(FIND_KHOA_VIEN);
-const themSinhVienMutation = queries.mutation.themSinhVien(
-  THEM_SINH_VIEN_FRAGMENT
-);
-const suaSinhVienMutation = queries.mutation.suaSinhVien("id");
+const themSinhVienMutation = queries.mutation.themSinhVien(THEM_SINH_VIEN_FRAGMENT);
+const suaSinhVienMutation = queries.mutation.suaSinhVien('id');
 
 const ModalStudent = ({ visible, closeModal, type, data, onAddSuccess }) => {
   const layout = {
@@ -32,15 +30,13 @@ const ModalStudent = ({ visible, closeModal, type, data, onAddSuccess }) => {
 
   const [actThemSinhVien] = useMutation(themSinhVienMutation);
 
-  const { data: dataFindKhoaVien, loading: loadingFindKhoaVien } =
-    useQuery(findKhoaVienQuery);
+  const { data: dataFindKhoaVien, loading: loadingFindKhoaVien } = useQuery(findKhoaVienQuery);
 
-  const dataForKhoaVienSelect =
-    dataFindKhoaVien?.findKhoaVien?.data?.[0]?.data?.map((item) => ({
-      ...item,
-      value: item?.id,
-      label: item?.ten,
-    }));
+  const dataForKhoaVienSelect = dataFindKhoaVien?.findKhoaVien?.data?.[0]?.data?.map((item) => ({
+    ...item,
+    value: item?.id,
+    label: item?.ten,
+  }));
 
   const [actSuaSinhVien] = useMutation(suaSinhVienMutation);
 
@@ -54,21 +50,13 @@ const ModalStudent = ({ visible, closeModal, type, data, onAddSuccess }) => {
       return;
     }
 
-    const _ngaySinhMoment = isEmpty(data?.ngaySinh)
-      ? null
-      : moment(data?.ngaySinh);
+    const _ngaySinhMoment = isEmpty(data?.ngaySinh) ? null : moment(data?.ngaySinh);
 
-    const _ngayVaoTruongMoment = isEmpty(data?.ngayVaoTruong)
-      ? null
-      : moment(data?.ngayVaoTruong);
+    const _ngayVaoTruongMoment = isEmpty(data?.ngayVaoTruong) ? null : moment(data?.ngayVaoTruong);
 
-    const _ngayVaoDoanMoment = isEmpty(data?._ngayVaoDoan)
-      ? null
-      : moment(data?.ngayVaoDoan);
+    const _ngayVaoDoanMoment = isEmpty(data?._ngayVaoDoan) ? null : moment(data?.ngayVaoDoan);
 
-    const _ngayVaoDangMoment = isEmpty(data?.ngayVaoDang)
-      ? null
-      : moment(data?.ngayVaoDang);
+    const _ngayVaoDangMoment = isEmpty(data?.ngayVaoDang) ? null : moment(data?.ngayVaoDang);
 
     form.setFieldsValue({
       id: data.id,
@@ -173,7 +161,7 @@ const ModalStudent = ({ visible, closeModal, type, data, onAddSuccess }) => {
 
         const _inputAfterFilter = checkTrulyObject(_inputsReal);
 
-        if (type == "add") {
+        if (type == 'add') {
           const _dataRes = await actThemSinhVien({
             variables: {
               inputs: {
@@ -186,28 +174,28 @@ const ModalStudent = ({ visible, closeModal, type, data, onAddSuccess }) => {
 
           if (!isEmpty(_errors)) {
             return _errors?.map((item) =>
-              notification["error"]({
+              notification['error']({
                 message: item?.message,
-              })
+              }),
             );
           }
 
           const _data = _dataRes?.data?.themSinhVien?.data || [];
 
           if (isEmpty(_data)) {
-            return notification["error"]({
-              message: "Lỗi kết nối!",
+            return notification['error']({
+              message: 'Lỗi kết nối!',
             });
           }
 
           onAddSuccess(_data?.[0]);
 
-          return notification["success"]({
-            message: "Thêm học sinh thành công.",
+          return notification['success']({
+            message: 'Thêm học sinh thành công.',
           });
         }
 
-        const _idSinhVien = _inputs?.id || "";
+        const _idSinhVien = _inputs?.id || '';
 
         const _dataRes = await actSuaSinhVien({
           variables: {
@@ -220,29 +208,29 @@ const ModalStudent = ({ visible, closeModal, type, data, onAddSuccess }) => {
 
         if (!isEmpty(_errors)) {
           return _errors?.map((item) =>
-            notification["error"]({
+            notification['error']({
               message: item?.message,
-            })
+            }),
           );
         }
 
         const _data = _dataRes?.data?.suaSinhVien?.data || [];
 
         if (isEmpty(_data)) {
-          return notification["error"]({
-            message: "Lỗi kết nối!",
+          return notification['error']({
+            message: 'Lỗi kết nối!',
           });
         }
 
         onAddSuccess(_data?.[0]);
 
-        return notification["success"]({
-          message: "Sửa học sinh thành công.",
+        return notification['success']({
+          message: 'Sửa học sinh thành công.',
         });
       })
       .catch(() => {
-        notification["error"]({
-          message: "Nhập thiếu thông tin yêu cầu!",
+        notification['error']({
+          message: 'Nhập thiếu thông tin yêu cầu!',
         });
       });
   }, [actSuaSinhVien, actThemSinhVien, form, onAddSuccess, type]);
@@ -251,8 +239,8 @@ const ModalStudent = ({ visible, closeModal, type, data, onAddSuccess }) => {
     const _nameField = payload?.[0]?.name?.[0];
     const _value = payload?.[0]?.value;
 
-    if (_nameField === "_ngaySinh") {
-      const _dataFormat = _value?.format("YYYY-MM-DD");
+    if (_nameField === '_ngaySinh') {
+      const _dataFormat = _value?.format('YYYY-MM-DD');
       form?.setFieldsValue({
         ngaySinh: _dataFormat,
       });
@@ -260,8 +248,8 @@ const ModalStudent = ({ visible, closeModal, type, data, onAddSuccess }) => {
       return;
     }
 
-    if (_nameField === "_ngayVaoTruong") {
-      const _dataFormat = _value?.format("YYYY-MM-DD");
+    if (_nameField === '_ngayVaoTruong') {
+      const _dataFormat = _value?.format('YYYY-MM-DD');
       form?.setFieldsValue({
         ngayVaoTruong: _dataFormat,
       });
@@ -269,8 +257,8 @@ const ModalStudent = ({ visible, closeModal, type, data, onAddSuccess }) => {
       return;
     }
 
-    if (_nameField === "_ngayVaoDoan") {
-      const _dataFormat = _value?.format("YYYY-MM-DD");
+    if (_nameField === '_ngayVaoDoan') {
+      const _dataFormat = _value?.format('YYYY-MM-DD');
       form?.setFieldsValue({
         ngayVaoDoan: _dataFormat,
       });
@@ -278,8 +266,8 @@ const ModalStudent = ({ visible, closeModal, type, data, onAddSuccess }) => {
       return;
     }
 
-    if (_nameField === "_ngayVaoDang") {
-      const _dataFormat = _value?.format("YYYY-MM-DD");
+    if (_nameField === '_ngayVaoDang') {
+      const _dataFormat = _value?.format('YYYY-MM-DD');
       form?.setFieldsValue({
         ngayVaoDang: _dataFormat,
       });
@@ -295,12 +283,7 @@ const ModalStudent = ({ visible, closeModal, type, data, onAddSuccess }) => {
 
   const renderForm = () => {
     return (
-      <Form
-        onFieldsChange={handleFieldFormChange}
-        {...layout}
-        form={form}
-        name="nest-messages"
-      >
+      <Form onFieldsChange={handleFieldFormChange} {...layout} form={form} name="nest-messages">
         <Form.Item name="id" label="ID">
           <Input disabled />
         </Form.Item>
@@ -311,10 +294,10 @@ const ModalStudent = ({ visible, closeModal, type, data, onAddSuccess }) => {
           rules={[
             {
               required: true,
-              message: "Họ tên đệm không được bỏ trống",
+              message: 'Họ tên đệm không được bỏ trống',
             },
           ]}
-          name={"hoTenDem"}
+          name={'hoTenDem'}
           label="Họ tên đệm"
         >
           <Input />
@@ -323,21 +306,21 @@ const ModalStudent = ({ visible, closeModal, type, data, onAddSuccess }) => {
           rules={[
             {
               required: true,
-              message: "Tên không được bỏ trống!",
+              message: 'Tên không được bỏ trống!',
             },
           ]}
-          name={"ten"}
+          name={'ten'}
           label="Tên"
         >
           <Input />
         </Form.Item>
-        <Form.Item name={"soDienThoai"} label="Số điện thoại">
+        <Form.Item name={'soDienThoai'} label="Số điện thoại">
           <Input />
         </Form.Item>
-        <Form.Item name={"soCMND"} label="CMND">
+        <Form.Item name={'soCMND'} label="CMND">
           <Input />
         </Form.Item>
-        <Form.Item name={"email"} label="Email">
+        <Form.Item name={'email'} label="Email">
           <Input />
         </Form.Item>
         <Form.Item name="_ngaySinh" label="Ngày sinh">
@@ -385,16 +368,12 @@ const ModalStudent = ({ visible, closeModal, type, data, onAddSuccess }) => {
           rules={[
             {
               required: true,
-              message: "Lóp không được để trống!",
+              message: 'Lóp không được để trống!',
             },
           ]}
           name="_lopId"
         >
-          <Select
-            options={handleDataForLop()}
-            placeholder="Lớp"
-            onChange={handleLopChange}
-          />
+          <Select options={handleDataForLop()} placeholder="Lớp" onChange={handleLopChange} />
         </Form.Item>
       </Form>
     );
@@ -402,13 +381,13 @@ const ModalStudent = ({ visible, closeModal, type, data, onAddSuccess }) => {
 
   return (
     <Modal
-      title={type === "add" ? "Thêm sinh viên" : "Sửa sinh viên"}
+      title={type === 'add' ? 'Thêm sinh viên' : 'Sửa sinh viên'}
       centered
       visible={visible}
       onCancel={() => closeModal(false)}
       width={1000}
       destroyOnClose
-      okText={type === "add" ? "Thêm" : "Sửa"}
+      okText={type === 'add' ? 'Thêm' : 'Sửa'}
       onOk={handleSubmit}
     >
       {renderForm()}
@@ -421,7 +400,7 @@ export default ModalStudent;
 ModalStudent.propTypes = {
   visible: PropTypes.bool,
   closeModal: PropTypes.func,
-  type: PropTypes.oneOf(["edit", "add"]),
+  type: PropTypes.oneOf(['edit', 'add']),
   data: PropTypes.objectOf(PropTypes.any),
   onAddSuccess: PropTypes.func,
 };
@@ -429,7 +408,7 @@ ModalStudent.propTypes = {
 ModalStudent.defaultProps = {
   visible: false,
   closeModal: () => {},
-  type: "add",
+  type: 'add',
   data: {},
   onAddSuccess: () => {},
 };

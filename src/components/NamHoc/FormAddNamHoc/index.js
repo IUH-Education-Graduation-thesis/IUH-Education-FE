@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Form, Input, notification, Button, DatePicker } from 'antd';
 import queries from 'core/graphql';
 import { GET_NAMHOC_FRAGMENT } from '../fragment';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { get, isEmpty } from 'lodash';
-import suaDayNha from 'core/graphql/suaDayNha';
 // init APi
 const createMutation = queries.mutation.themNamHoc(GET_NAMHOC_FRAGMENT);
 
@@ -14,37 +13,34 @@ const ModalNamHoc = ({ visible, closeModal, type, data, onCreateComplete }) => {
     wrapperCol: { span: 24 },
   };
   const [form] = Form.useForm();
-  const [ngayBatDau, setNgayBatDau] = useState();
-  const [ngayKetThuc, setNgayKetThuc] = useState();
+  const [, setNgayBatDau] = useState();
+  const [, setNgayKetThuc] = useState();
 
-  const [actCreate, { data: dataCreate, loading: loadingCreate }] = useMutation(
-    createMutation,
-    {
-      onCompleted: (dataReturn) => {
-        const errors = get(dataReturn, 'themNamHoc.errors', []);
-        if (!isEmpty(errors)) {
-          return errors.map((item) =>
-            notification['error']({
-              message: item?.message,
-            })
-          );
-        }
-        const _data = get(dataReturn, 'themNamHoc.data', {});
-        const status = get(dataReturn, 'themNamHoc.status', {});
-        if (!isEmpty(_data)) {
-          onCreateComplete(_data?.[0]);
-          notification.open({
-            message: 'Thông báo',
-            description: status,
-          });
-          return;
-        }
-        notification['error']({
-          message: 'Loi ket noi',
+  const [actCreate, { loading: loadingCreate }] = useMutation(createMutation, {
+    onCompleted: (dataReturn) => {
+      const errors = get(dataReturn, 'themNamHoc.errors', []);
+      if (!isEmpty(errors)) {
+        return errors.map((item) =>
+          notification['error']({
+            message: item?.message,
+          }),
+        );
+      }
+      const _data = get(dataReturn, 'themNamHoc.data', {});
+      const status = get(dataReturn, 'themNamHoc.status', {});
+      if (!isEmpty(_data)) {
+        onCreateComplete(_data?.[0]);
+        notification.open({
+          message: 'Thông báo',
+          description: status,
         });
-      },
-    }
-  );
+        return;
+      }
+      notification['error']({
+        message: 'Loi ket noi',
+      });
+    },
+  });
 
   const handleAdd = async () => {
     const _dataForm = form.getFieldsValue(true);
@@ -80,9 +76,6 @@ const ModalNamHoc = ({ visible, closeModal, type, data, onCreateComplete }) => {
     }
   };
 
-  function handleChange(value) {
-    console.log(`selected ${value}`);
-  }
   const renderForm = () => {
     return (
       <Form
@@ -97,28 +90,20 @@ const ModalNamHoc = ({ visible, closeModal, type, data, onCreateComplete }) => {
         <Form.Item
           name="ngayBatDau"
           label="Ngày bắt đầu"
-          rules={[
-            { required: true, message: 'Yêu cầu chọn ngày bắt đầu năm học!' },
-          ]}
+          rules={[{ required: true, message: 'Yêu cầu chọn ngày bắt đầu năm học!' }]}
         >
           <DatePicker
-            onChange={(date, dateString) =>
-              handleChangeNgay('ngayBatDau', date, dateString)
-            }
+            onChange={(date, dateString) => handleChangeNgay('ngayBatDau', date, dateString)}
             placeholder="Ngày bắt đầu"
           />
         </Form.Item>
         <Form.Item
           name="ngayKetThuc"
           label="Ngày kết thúc"
-          rules={[
-            { required: true, message: 'Yêu cầu chọn ngày kết thúc năm học!' },
-          ]}
+          rules={[{ required: true, message: 'Yêu cầu chọn ngày kết thúc năm học!' }]}
         >
           <DatePicker
-            onChange={(date, dateString) =>
-              handleChangeNgay('ngayKetThuc', date, dateString)
-            }
+            onChange={(date, dateString) => handleChangeNgay('ngayKetThuc', date, dateString)}
             placeholder="Ngày kết thúc"
           />
         </Form.Item>

@@ -10,13 +10,7 @@ import { Option } from 'antd/lib/mentions';
 const createMutation = queries.mutation.themPhongHoc(GET_PHONGHOC_FRAGMENT);
 const getAllDayNhaQuery = queries.query.findDayNha(GET_DAYNHA_FRAGMENT);
 
-const ModalPhongHoc = ({
-  visible,
-  closeModal,
-  type,
-  data,
-  onCreateComplete,
-}) => {
+const ModalPhongHoc = ({ visible, closeModal, type, data, onCreateComplete }) => {
   const layout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 24 },
@@ -24,42 +18,38 @@ const ModalPhongHoc = ({
   const [form] = Form.useForm();
   const [dataDayNha, setDataDayNha] = useState([]);
   const [currentDayNha, setCurrentDayNha] = useState({});
-  const { data: dataGetDayNha, loading: loadingGetDayNha } =
-    useQuery(getAllDayNhaQuery);
+  const { data: dataGetDayNha } = useQuery(getAllDayNhaQuery);
 
   useEffect(() => {
     const _listDayNha = dataGetDayNha?.findDayNha?.data || [];
     setDataDayNha(_listDayNha);
   }, [dataGetDayNha]);
 
-  const [actCreate, { data: dataCreate, loading: loadingCreate }] = useMutation(
-    createMutation,
-    {
-      onCompleted: (dataReturn) => {
-        const errors = get(dataReturn, 'themPhongHoc.errors', []);
-        if (!isEmpty(errors)) {
-          return errors.map((item) =>
-            notification['error']({
-              message: item?.message,
-            })
-          );
-        }
-        const _data = get(dataReturn, 'themPhongHoc.data', {});
-        const status = get(dataReturn, 'themPhongHoc.status', {});
-        if (!isEmpty(_data)) {
-          onCreateComplete(_data?.[0]);
-          notification.open({
-            message: 'Thông báo',
-            description: status,
-          });
-          return;
-        }
-        notification['error']({
-          message: 'Loi ket noi',
+  const [actCreate, { loading: loadingCreate }] = useMutation(createMutation, {
+    onCompleted: (dataReturn) => {
+      const errors = get(dataReturn, 'themPhongHoc.errors', []);
+      if (!isEmpty(errors)) {
+        return errors.map((item) =>
+          notification['error']({
+            message: item?.message,
+          }),
+        );
+      }
+      const _data = get(dataReturn, 'themPhongHoc.data', {});
+      const status = get(dataReturn, 'themPhongHoc.status', {});
+      if (!isEmpty(_data)) {
+        onCreateComplete(_data?.[0]);
+        notification.open({
+          message: 'Thông báo',
+          description: status,
         });
-      },
-    }
-  );
+        return;
+      }
+      notification['error']({
+        message: 'Loi ket noi',
+      });
+    },
+  });
 
   const handleAdd = async () => {
     const _dataForm = form.getFieldsValue(true);
@@ -89,10 +79,6 @@ const ModalPhongHoc = ({
     setCurrentDayNha(data.tenDayNha);
   }, [data]);
 
-  function handleChange(value) {
-    console.log(`selected ${value}`);
-  }
-
   const handleChangeDayNha = (e) => {
     const _currentDayNha = dataDayNha?.find((item) => item?.id === e);
     setCurrentDayNha(_currentDayNha);
@@ -119,9 +105,7 @@ const ModalPhongHoc = ({
         <Form.Item
           name={'sucChua'}
           label="Sức chứa sinh viên"
-          rules={[
-            { required: true, message: 'Yêu cầu nhập sức chứa sinh viên!' },
-          ]}
+          rules={[{ required: true, message: 'Yêu cầu nhập sức chứa sinh viên!' }]}
         >
           <Input type={'number'} />
         </Form.Item>

@@ -8,12 +8,7 @@ const prefix = 'sinh-vien--filter';
 
 const { useForm } = Form;
 
-const ExpandFilter = ({
-  onAddAStudentClick,
-  onFilterChange,
-  currentFilterData,
-  onClear,
-}) => {
+const ExpandFilter = ({ onAddAStudentClick, onFilterChange, currentFilterData, onClear }) => {
   const [form] = useForm();
 
   /**
@@ -49,16 +44,10 @@ const ExpandFilter = ({
       <div className={`${prefix}__top`}>
         <div className={`${prefix}__top__left`}>
           <Form.Item name="id">
-            <Input
-              prefix={<SearchOutlined />}
-              placeholder="Nhập id dãy nhà..."
-            />
+            <Input prefix={<SearchOutlined />} placeholder="Nhập id dãy nhà..." />
           </Form.Item>
           <Form.Item name="ten">
-            <Input
-              prefix={<SearchOutlined />}
-              placeholder="Nhập tên dãy nhà..."
-            />
+            <Input prefix={<SearchOutlined />} placeholder="Nhập tên dãy nhà..." />
           </Form.Item>
         </div>
 

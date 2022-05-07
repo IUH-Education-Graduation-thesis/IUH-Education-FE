@@ -1,14 +1,14 @@
-import React, { useEffect } from "react";
-import { Modal, Form, Input, notification } from "antd";
-import queries from "core/graphql";
-import PropTypes from "prop-types";
+import React, { useEffect } from 'react';
+import { Modal, Form, Input, notification } from 'antd';
+import queries from 'core/graphql';
+import PropTypes from 'prop-types';
 
-import { isEmpty } from "lodash";
-import { useMutation } from "@apollo/client";
-import { checkTrulyObject } from "components/helper";
+import { isEmpty } from 'lodash';
+import { useMutation } from '@apollo/client';
+import { checkTrulyObject } from 'components/helper';
 
-const themLopHocPhanMutation = queries.mutation.themLopHocPhan("id");
-const suaHocPhanMutation = queries.mutation.suaHocPhan("id");
+const themLopHocPhanMutation = queries.mutation.themLopHocPhan('id');
+const suaHocPhanMutation = queries.mutation.suaHocPhan('id');
 
 const ModalLopHocPhan = ({
   visible,
@@ -31,64 +31,58 @@ const ModalLopHocPhan = ({
    * ===========================================================
    */
 
-  const [actThemLopHocPhan, { loading: loadingThemHocPhan }] = useMutation(
-    themLopHocPhanMutation,
-    {
-      onCompleted: (dataRes) => {
-        const _errors = dataRes?.themLopHocPhan?.errors || [];
-        const _data = dataRes?.themLopHocPhan?.data || [];
+  const [actThemLopHocPhan, { loading: loadingThemHocPhan }] = useMutation(themLopHocPhanMutation, {
+    onCompleted: (dataRes) => {
+      const _errors = dataRes?.themLopHocPhan?.errors || [];
+      const _data = dataRes?.themLopHocPhan?.data || [];
 
-        if (!isEmpty(_errors))
-          return _errors?.map((item) =>
-            notification["error"]({
-              message: item?.message,
-            })
-          );
+      if (!isEmpty(_errors))
+        return _errors?.map((item) =>
+          notification['error']({
+            message: item?.message,
+          }),
+        );
 
-        if (isEmpty(_data)) {
-          notification["error"]({
-            message: "Lỗi hệ thống!",
-          });
-          return;
-        }
-
-        onCallAPISuccess(_data?.[0]);
-
-        notification["success"]({
-          message: "Thêm lớp học phần thành công.",
+      if (isEmpty(_data)) {
+        notification['error']({
+          message: 'Lỗi hệ thống!',
         });
-      },
-    }
-  );
-  const [actSuaHocPhan, { loading: loadingSuaHocPhan }] = useMutation(
-    suaHocPhanMutation,
-    {
-      onCompleted: (dataRes) => {
-        const _errors = dataRes?.suaHocPhan?.errors || [];
-        const _data = dataRes?.suaHocPhan?.data || [];
+        return;
+      }
 
-        if (!isEmpty(_errors))
-          return _errors?.map((item) =>
-            notification["error"]({
-              message: item?.message,
-            })
-          );
+      onCallAPISuccess(_data?.[0]);
 
-        if (isEmpty(_data)) {
-          notification["error"]({
-            message: "Lỗi hệ thống!",
-          });
-          return;
-        }
+      notification['success']({
+        message: 'Thêm lớp học phần thành công.',
+      });
+    },
+  });
+  const [actSuaHocPhan, { loading: loadingSuaHocPhan }] = useMutation(suaHocPhanMutation, {
+    onCompleted: (dataRes) => {
+      const _errors = dataRes?.suaHocPhan?.errors || [];
+      const _data = dataRes?.suaHocPhan?.data || [];
 
-        onCallAPISuccess(_data?.[0]);
+      if (!isEmpty(_errors))
+        return _errors?.map((item) =>
+          notification['error']({
+            message: item?.message,
+          }),
+        );
 
-        notification["success"]({
-          message: "Sửa học phần thành công.",
+      if (isEmpty(_data)) {
+        notification['error']({
+          message: 'Lỗi hệ thống!',
         });
-      },
-    }
-  );
+        return;
+      }
+
+      onCallAPISuccess(_data?.[0]);
+
+      notification['success']({
+        message: 'Sửa học phần thành công.',
+      });
+    },
+  });
 
   /**
    * function
@@ -129,18 +123,18 @@ const ModalLopHocPhan = ({
 
         const _inputsFormat = checkTrulyObject(_inputs);
 
-        if (type === "add") {
+        if (type === 'add') {
           handleCallAPIAdd(_inputsFormat);
           return;
         }
 
-        const _id = form?.getFieldValue("id");
+        const _id = form?.getFieldValue('id');
 
         handleCallAPIEdit(_inputsFormat, _id);
       })
       ?.catch(() => {
-        notification["error"]({
-          message: "Nhập thiếu thông tin!",
+        notification['error']({
+          message: 'Nhập thiếu thông tin!',
         });
       });
   };
@@ -174,17 +168,17 @@ const ModalLopHocPhan = ({
   const renderForm = () => {
     return (
       <Form {...layout} form={form} name="nest-messages">
-        <Form.Item name={"id"} label="ID">
+        <Form.Item name={'id'} label="ID">
           <Input disabled />
         </Form.Item>
         <Form.Item
           rules={[
             {
               required: true,
-              message: "Không được bỏ trống!",
+              message: 'Không được bỏ trống!',
             },
           ]}
-          name={"maLopHocPhan"}
+          name={'maLopHocPhan'}
           label="Mã lớp học phần"
         >
           <Input />
@@ -193,26 +187,26 @@ const ModalLopHocPhan = ({
           rules={[
             {
               required: true,
-              message: "Không được bỏ trống!",
+              message: 'Không được bỏ trống!',
             },
           ]}
           label="Số nhóm thực hành"
           name="soNhomThucHanh"
         >
-          <Input type={"number"} />
+          <Input type={'number'} />
         </Form.Item>
 
         <Form.Item
           rules={[
             {
               required: true,
-              message: "Không được bỏ trống!",
+              message: 'Không được bỏ trống!',
             },
           ]}
           label="Số lượng tối đa"
           name="soLuongToiDa"
         >
-          <Input type={"number"} />
+          <Input type={'number'} />
         </Form.Item>
 
         <Form.Item label="Lớp dự kiến" name="lopDuKien">
@@ -229,14 +223,14 @@ const ModalLopHocPhan = ({
   return (
     <Modal
       destroyOnClose
-      title={type === "add" ? "Thêm lớp học phần" : "Sửa lớp học phần"}
+      title={type === 'add' ? 'Thêm lớp học phần' : 'Sửa lớp học phần'}
       centered
       visible={visible}
       onCancel={() => closeModal(false)}
       width={1000}
       confirmLoading={loadingThemHocPhan || loadingSuaHocPhan}
       onOk={handleButtonOkClick}
-      okText={type === "add" ? "Thêm" : "Sửa"}
+      okText={type === 'add' ? 'Thêm' : 'Sửa'}
     >
       {renderForm()}
     </Modal>
@@ -248,7 +242,7 @@ export default ModalLopHocPhan;
 ModalLopHocPhan.propTypes = {
   visible: PropTypes.bool,
   closeModal: PropTypes.func,
-  type: PropTypes.oneOf(["edit", "add"]),
+  type: PropTypes.oneOf(['edit', 'add']),
   data: PropTypes.objectOf(PropTypes.any),
   onCallAPISuccess: PropTypes.func,
   hocKyId: PropTypes.string.isRequired,
@@ -258,7 +252,7 @@ ModalLopHocPhan.propTypes = {
 ModalLopHocPhan.defaultProps = {
   visible: false,
   closeModal: () => {},
-  type: "add",
+  type: 'add',
   data: {},
   onCallAPISuccess: () => {},
 };

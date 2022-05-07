@@ -1,21 +1,15 @@
-import { Button, Divider, notification, Table } from "antd";
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import ModalLopHoc from "./ModalLopHoc";
-import queries from "core/graphql";
-import { useMutation } from "@apollo/client";
-import { isEmpty } from "lodash";
+import { Button, Divider, notification, Table } from 'antd';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import ModalLopHoc from './ModalLopHoc';
+import queries from 'core/graphql';
+import { useMutation } from '@apollo/client';
+import { isEmpty } from 'lodash';
 
-const prefix = "lop-hoc-expand";
-const xoaLopsMutation = queries.mutation.xoaLops("id");
+const prefix = 'lop-hoc-expand';
+const xoaLopsMutation = queries.mutation.xoaLops('id');
 
-const TableExpand = ({
-  data,
-  khoaId,
-  refetchFindChuyenNganh,
-  onAddClassRoom,
-  onDeleteMultipleClassroom,
-}) => {
+const TableExpand = ({ data, khoaId, refetchFindChuyenNganh }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [showModalAdd, setShowModalAdd] = useState(false);
   const [showModalEdit, setShowModalEdit] = useState(false);
@@ -23,26 +17,26 @@ const TableExpand = ({
 
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
       width: 100,
     },
     {
-      title: "Tên lớp",
-      dataIndex: "ten",
-      key: "ten",
+      title: 'Tên lớp',
+      dataIndex: 'ten',
+      key: 'ten',
       width: 400,
     },
     {
-      title: "Mô tả",
-      dataIndex: "moTa",
-      key: "moTa",
+      title: 'Mô tả',
+      dataIndex: 'moTa',
+      key: 'moTa',
       width: 300,
     },
     {
-      title: "Thao tác",
-      key: "thaoTac",
+      title: 'Thao tác',
+      key: 'thaoTac',
       width: 300,
       render: (_, record) => (
         <div>
@@ -65,36 +59,33 @@ const TableExpand = ({
    * API
    * =====================================================
    */
-  const [actXoaLops, { loading: loadingXoaLops }] = useMutation(
-    xoaLopsMutation,
-    {
-      onCompleted: (dataRes) => {
-        const _errors = dataRes?.xoaLops?.errors || [];
-        const _data = dataRes?.xoaLops?.data || [];
+  const [actXoaLops, { loading: loadingXoaLops }] = useMutation(xoaLopsMutation, {
+    onCompleted: (dataRes) => {
+      const _errors = dataRes?.xoaLops?.errors || [];
+      const _data = dataRes?.xoaLops?.data || [];
 
-        if (!isEmpty(_errors))
-          return _errors?.map((item) =>
-            notification["error"]({
-              message: item?.message,
-            })
-          );
+      if (!isEmpty(_errors))
+        return _errors?.map((item) =>
+          notification['error']({
+            message: item?.message,
+          }),
+        );
 
-        if (isEmpty(_data)) {
-          notification["error"]({
-            message: "Lỗi hệ thống!",
-          });
-          return;
-        }
-
-        setSelectedRowKeys([]);
-        refetchFindChuyenNganh();
-
-        notification["success"]({
-          message: `Xóa ${_data?.length} lớp thành công.`,
+      if (isEmpty(_data)) {
+        notification['error']({
+          message: 'Lỗi hệ thống!',
         });
-      },
-    }
-  );
+        return;
+      }
+
+      setSelectedRowKeys([]);
+      refetchFindChuyenNganh();
+
+      notification['success']({
+        message: `Xóa ${_data?.length} lớp thành công.`,
+      });
+    },
+  });
 
   /**
    * function
@@ -119,7 +110,7 @@ const TableExpand = ({
     setSelectedRowKeys(payload);
   };
 
-  const handleCallAPIAddSuccess = (payload) => {
+  const handleCallAPIAddSuccess = () => {
     setShowModalAdd(false);
     setShowModalEdit(false);
     refetchFindChuyenNganh();
@@ -194,7 +185,7 @@ TableExpand.propTypes = {
       tenPhongHoc: PropTypes.string,
       sucChua: PropTypes.number,
       moTa: PropTypes.string,
-    })
+    }),
   ),
   onAddClassRoom: PropTypes.func,
   onDeleteMultipleClassroom: PropTypes.func,

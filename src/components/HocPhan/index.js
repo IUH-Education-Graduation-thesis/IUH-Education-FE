@@ -15,8 +15,6 @@ const HocPhan = () => {
   const [visibleModalAdd, setVisibleModalAdd] = useState(false);
   const [visibleModalEdit, setVisibleModalEdit] = useState(false);
   const [hocPhan, setHocPhan] = useState({});
-  const [currentPage, setCurrentPage] = useState(0);
-  const [currentPageSize, setCurrentPageSize] = useState(10);
   const [seletedRowKeys, setSelectedRowKeys] = useState([]);
   const [currentFilterData, setCurrentFilterData] = useState({
     id: '',
@@ -85,22 +83,19 @@ const HocPhan = () => {
    * ==========================================================================================
    */
 
-  const [actFindHocPhan, { data: dataFindHocPhan, loadingFindHocPhan }] =
-    useLazyQuery(FindHocPhanQuery, {
-      fetchPolicy: 'network-only',
-    });
+  const [actFindHocPhan, { data: dataFindHocPhan }] = useLazyQuery(FindHocPhanQuery, {
+    fetchPolicy: 'network-only',
+  });
 
-  const dataForTable = dataFindHocPhan?.findHocPhans?.data?.[0]?.data?.map(
-    (item) => ({
-      key: item?.id,
-      id: item?.id,
-      maHocPhan: item?.maHocPhan,
-      moTa: item?.moTa,
-      tenMonHoc: item?.monHoc?.ten,
-      soTinChiLyThuyet: item?.monHoc?.soTinChiLyThuyet,
-      soTinChiThucHanh: item?.monHoc?.soTinChiThucHanh,
-    })
-  );
+  const dataForTable = dataFindHocPhan?.findHocPhans?.data?.[0]?.data?.map((item) => ({
+    key: item?.id,
+    id: item?.id,
+    maHocPhan: item?.maHocPhan,
+    moTa: item?.moTa,
+    tenMonHoc: item?.monHoc?.ten,
+    soTinChiLyThuyet: item?.monHoc?.soTinChiLyThuyet,
+    soTinChiThucHanh: item?.monHoc?.soTinChiThucHanh,
+  }));
 
   /**
    * Function
@@ -121,21 +116,11 @@ const HocPhan = () => {
   const handleCallAPIWithFilter = (filterData) => {
     const _inputs = {
       id: !isEmpty(filterData?.id) ? filterData?.id : undefined,
-      maHocPhan: !isEmpty(filterData?.maHocPhan)
-        ? filterData?.maHocPhan
-        : undefined,
-      namHocIds: !isEmpty(filterData?.namHocIds)
-        ? filterData?.namHocIds
-        : undefined,
-      hocKyIds: !isEmpty(filterData?.hocKyIds)
-        ? filterData?.hocKyIds
-        : undefined,
-      khoaVienIds: !isEmpty(filterData?.khoaVienIds)
-        ? filterData?.khoaVienIds
-        : undefined,
-      monHocIds: !isEmpty(filterData?.monHocIds)
-        ? filterData?.monHocIds
-        : undefined,
+      maHocPhan: !isEmpty(filterData?.maHocPhan) ? filterData?.maHocPhan : undefined,
+      namHocIds: !isEmpty(filterData?.namHocIds) ? filterData?.namHocIds : undefined,
+      hocKyIds: !isEmpty(filterData?.hocKyIds) ? filterData?.hocKyIds : undefined,
+      khoaVienIds: !isEmpty(filterData?.khoaVienIds) ? filterData?.khoaVienIds : undefined,
+      monHocIds: !isEmpty(filterData?.monHocIds) ? filterData?.monHocIds : undefined,
     };
 
     actFindHocPhan({
@@ -145,11 +130,7 @@ const HocPhan = () => {
     });
   };
 
-  const handleOnFilterChange = (
-    currentFieldChange,
-    currentFilterDataComp,
-    name
-  ) => {
+  const handleOnFilterChange = (currentFieldChange) => {
     const _data = {
       ...currentFilterData,
       ...currentFieldChange,
@@ -187,7 +168,7 @@ const HocPhan = () => {
         <Button danger>Xóa học phần đã chọn</Button>
       </div>
       <Table
-        onRow={(record, index) => ({
+        onRow={(record) => ({
           onClick: (e) => handleOnRowClick(e, record),
         })}
         columns={columns}
@@ -198,11 +179,7 @@ const HocPhan = () => {
           onChange: handleSelectedRowKeyChange,
         }}
       />
-      <ModalHocPhan
-        type="add"
-        visible={visibleModalAdd}
-        closeModal={setVisibleModalAdd}
-      />
+      <ModalHocPhan type="add" visible={visibleModalAdd} closeModal={setVisibleModalAdd} />
       <ModalHocPhan
         type="edit"
         visible={visibleModalEdit}

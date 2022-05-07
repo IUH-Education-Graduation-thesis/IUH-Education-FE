@@ -1,3 +1,4 @@
+/* eslint-disable no-unsafe-optional-chaining */
 import React, { useEffect, useState } from 'react';
 import { Button, Divider, Table } from 'antd';
 import { GET_DAYNHA_FRAGMENT } from './fragment';
@@ -21,12 +22,8 @@ const DayNha = () => {
   const [data, setData] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
-  const { data: dataGetDayNha, loading: loadingGetDayNha } =
-    useQuery(getAllDayNhaQuery);
-  const [
-    actDeleteDayNha,
-    { data: dataDeleteDayNha, loading: loadingDeleteDayNha },
-  ] = useMutation(deleteDayNhaMutation);
+  const { data: dataGetDayNha } = useQuery(getAllDayNhaQuery);
+  const [actDeleteDayNha] = useMutation(deleteDayNhaMutation);
 
   useEffect(() => {
     const _listDayNha =
@@ -65,10 +62,7 @@ const DayNha = () => {
           <Button danger onClick={() => handlerEditButton(e)}>
             Chỉnh sửa
           </Button>
-          <Button
-            style={{ marginLeft: 10 }}
-            onClick={() => handleButtonDelete(e)}
-          >
+          <Button style={{ marginLeft: 10 }} onClick={() => handleButtonDelete(e)}>
             Xóa
           </Button>
         </div>
@@ -101,10 +95,7 @@ const DayNha = () => {
       const _index = data?.findIndex((item) => item?.id === dayNha?.id);
 
       let _listDayNha = data;
-      _listDayNha = [
-        ..._listDayNha.slice(0, _index),
-        ..._listDayNha.slice(_index + 1),
-      ];
+      _listDayNha = [..._listDayNha.slice(0, _index), ..._listDayNha.slice(_index + 1)];
 
       setData(_listDayNha);
 
@@ -170,9 +161,7 @@ const DayNha = () => {
           onChange: handleSelectedRowChange,
         }}
         expandable={{
-          expandedRowRender: (record) => (
-            <TableExpand data={record?.phongHocs} />
-          ),
+          expandedRowRender: (record) => <TableExpand data={record?.phongHocs} />,
         }}
       />
       <ModalAddDayNha
