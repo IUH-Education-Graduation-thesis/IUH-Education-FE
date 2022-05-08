@@ -48,6 +48,7 @@ import getLopHocPhan from './getLopHocPhan';
 import themLichHoc from './themLichHoc';
 import findGiangVien from './findGiangVien';
 import suaLopHocPhan from './suaLopHocPhan';
+import themSinnhVienVaoLopHocPhan from './themSinnhVienVaoLopHocPhan';
 
 const query = {
   ...GetProfile.query,
@@ -103,6 +104,7 @@ const mutation = {
   ...themLopHocPhan.mutation,
   ...suaLopHocPhan.mutation,
   ...themLichHoc.mutation,
+  ...themSinnhVienVaoLopHocPhan.mutation,
 };
 
 export default {

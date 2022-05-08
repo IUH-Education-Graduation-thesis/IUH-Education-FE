@@ -105,7 +105,7 @@ const ListLichHocPanel = ({ refetchGetLopHocPhan, lopHocPhan }) => {
   };
 
   return (
-    <Collapse className={prefix}>
+    <Collapse defaultActiveKey={['1']} className={prefix}>
       <Panel className={prefix} showArrow={false} header={renderHeadOfPanel()} key="1">
         <Table columns={columns} dataSource={lichHocs} />
       </Panel>

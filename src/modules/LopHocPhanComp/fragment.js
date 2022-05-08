@@ -79,6 +79,19 @@ sinhVienLopHocPhans {
 }
 `;
 
+export const FIND_SINH_VIEN = `
+id
+maSinhVien
+hoTenDem
+ten
+email
+soDienThoai
+lop {
+  id
+  ten
+}
+`;
+
 export const FIND_DAY_NHA_FRAGMENT = `
 id
 moTa

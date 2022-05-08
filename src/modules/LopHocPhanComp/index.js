@@ -48,8 +48,6 @@ const LopHocPhanModule = () => {
    * =================================================
    */
 
-  console.log('Lop', lopHocPhan);
-
   return (
     <Row className={prefix}>
       <Col span={4} />

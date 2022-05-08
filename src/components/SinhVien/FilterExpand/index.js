@@ -24,6 +24,7 @@ const ExpandFilter = ({
   onFilterChange,
   currentFilterData,
   onClear,
+  showPrimaryButton,
 }) => {
   const [form] = useForm();
 
@@ -131,14 +132,19 @@ const ExpandFilter = ({
         </div>
 
         <div className={`${prefix}__top__right`}>
-          <Button onClick={onAddAStudentClick} type="primary">
-            {' '}
-            + Thêm 1 sinh viên
-          </Button>
-          <Button onClick={onAddWithFileClick} type="ghost">
-            {' '}
-            + Thêm bằng file excel
-          </Button>
+          {showPrimaryButton && (
+            <>
+              <Button onClick={onAddAStudentClick} type="primary">
+                {' '}
+                + Thêm 1 sinh viên
+              </Button>
+              <Button onClick={onAddWithFileClick} type="ghost">
+                {' '}
+                + Thêm bằng file excel
+              </Button>
+            </>
+          )}
+
           {renderArrow}
           <ClearOutlined onClick={handleClearFilter} />
         </div>
@@ -173,6 +179,7 @@ ExpandFilter.propTypes = {
   onFilterChange: PropTypes.func,
   currentFilterData: PropTypes.objectOf(PropTypes.any).isRequired,
   onClear: PropTypes.func,
+  showPrimaryButton: PropTypes.bool,
 };
 
 ExpandFilter.defaultProps = {
@@ -181,4 +188,5 @@ ExpandFilter.defaultProps = {
   onFilterChange: () => {},
   currentFilterData: {},
   onClear: () => {},
+  showPrimaryButton: true,
 };

@@ -1,11 +1,12 @@
 import { Button, Collapse, Table } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import ModalSinhVien from './ModalSinhVien';
 
 const prefix = 'sinh-vien-list-panel';
 const { Panel } = Collapse;
 
-const SinhVienList = ({ lopHocPhan }) => {
+const SinhVienList = ({ lopHocPhan, refetchGetLopHocPhan }) => {
   const listSinhVien = lopHocPhan?.sinhVienLopHocPhans || [];
 
   const listSinhVienFormat = listSinhVien?.map((item) => ({
@@ -25,6 +26,8 @@ const SinhVienList = ({ lopHocPhan }) => {
       diemThuongKy: item?.diemThuongKy,
     },
   }));
+
+  const [isModalSinhVien, setIsModalSinhVien] = useState(false);
 
   const columns = [
     {
@@ -78,6 +81,21 @@ const SinhVienList = ({ lopHocPhan }) => {
   ];
 
   /**
+   * Function
+   * =============================================
+   */
+
+  const handleClickButtonThemSinhVien = (e) => {
+    e?.stopPropagation();
+    setIsModalSinhVien(true);
+  };
+
+  const handleWhenModalAddSinhVienSuccess = () => {
+    setIsModalSinhVien(false);
+    refetchGetLopHocPhan();
+  };
+
+  /**
    * Render view
    * ===================================================
    */
@@ -87,18 +105,28 @@ const SinhVienList = ({ lopHocPhan }) => {
         <div className={`${prefix}__header__left`}>Danh sách sinh viên</div>
         <div className={`${prefix}__header__right`}>
           <Button danger>Xóa sinh viên đã chọn</Button>
-          <Button type="primary">Thêm sinh viên</Button>
+          <Button onClick={handleClickButtonThemSinhVien} type="primary">
+            Thêm sinh viên
+          </Button>
         </div>
       </div>
     );
   };
 
   return (
-    <Collapse className={prefix}>
-      <Panel className={prefix} showArrow={false} header={renderHeadOfPanel()} key="1">
-        <Table dataSource={listSinhVienFormat} columns={columns} />
-      </Panel>
-    </Collapse>
+    <>
+      <Collapse defaultActiveKey={[1]} className={prefix}>
+        <Panel className={prefix} showArrow={false} header={renderHeadOfPanel()} key="1">
+          <Table dataSource={listSinhVienFormat} columns={columns} />
+        </Panel>
+      </Collapse>
+      <ModalSinhVien
+        onCallAPISuccess={handleWhenModalAddSinhVienSuccess}
+        lopHocPhan={lopHocPhan}
+        onClose={() => setIsModalSinhVien(false)}
+        visible={isModalSinhVien}
+      />
+    </>
   );
 };
 
