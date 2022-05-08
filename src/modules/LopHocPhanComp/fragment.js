@@ -57,6 +57,7 @@ hocKyNormal {
   }
 }
 sinhVienLopHocPhans {
+  ghiChu
   diemThuongKy
   diemThucHanh
   diemGiuaKy
@@ -67,6 +68,12 @@ sinhVienLopHocPhans {
     maSinhVien
     hoTenDem
     ten
+    soDienThoai
+    email
+    lop {
+      id
+      ten
+    }
   }
 }
 `;

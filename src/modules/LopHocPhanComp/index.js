@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Card, Col, PageHeader, Row } from 'antd';
+import { Button, Card, Col, PageHeader, Row } from 'antd';
 import ListLichHocPanel from './LichHocPanel';
 import ListSinhVienPanel from './SinhVienPanel';
 import queries from 'core/graphql';
@@ -48,7 +48,7 @@ const LopHocPhanModule = () => {
           title="Chi tiết lớp học phần"
         />
 
-        <Card title="Thôn lớp tin học phần">
+        <Card extra={<Button type="primary">Sửa</Button>} title="Thôn lớp tin học phần">
           <Row gutter={[24, 16]}>
             <Col span={8}>
               <b>Môn học:</b> {lopHocPhan?.hocPhan?.monHoc?.ten}
@@ -73,6 +73,18 @@ const LopHocPhanModule = () => {
               <b>Mã lớp học phần:</b> {lopHocPhan?.maLopHocPhan}
             </Col>
             <Col span={8}>
+              <b>Trạng thái:</b> {lopHocPhan?.trangThaiLopHocPhan}
+            </Col>
+            <Col span={8}>
+              <b>Số lượng tối đa:</b> {lopHocPhan?.soLuongToiDa}
+            </Col>
+            <Col span={8}>
+              <b>Số lượng hiện tại:</b> {lopHocPhan?.soLuongHienTai}
+            </Col>
+            <Col span={8}>
+              <b>Số nhóm thực hành:</b> {lopHocPhan?.soNhomThucHanh}
+            </Col>
+            <Col span={8}>
               <b>Tên lớp:</b> {lopHocPhan?.lopDuKien}
             </Col>
             <Col span={8}>
@@ -86,7 +98,7 @@ const LopHocPhanModule = () => {
           lopHocPhanId={lop_hoc_phan_id}
           refetchGetLopHocPhan={refetchGetLopHocPhan}
         />
-        <ListSinhVienPanel />
+        <ListSinhVienPanel lopHocPhan={lopHocPhan} refetchGetLopHocPhan={refetchGetLopHocPhan} />
       </Col>
       <Col span={4} />
     </Row>

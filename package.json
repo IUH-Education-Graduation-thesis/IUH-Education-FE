@@ -28,7 +28,7 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "SKIP_PREFLIGHT_CHECK=true react-scripts start",
     "start-be-dev": "SKIP_PREFLIGHT_CHECK=true REACT_APP_BE_ENV=dev react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
