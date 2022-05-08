@@ -2,6 +2,7 @@ import { Button, Collapse, Table } from 'antd';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import ModalSinhVien from './ModalSinhVien';
+import ModalDiem from './ModalDiem';
 
 const prefix = 'sinh-vien-list-panel';
 const { Panel } = Collapse;
@@ -28,42 +29,51 @@ const SinhVienList = ({ lopHocPhan, refetchGetLopHocPhan }) => {
   }));
 
   const [isModalSinhVien, setIsModalSinhVien] = useState(false);
+  const [isModalDiem, setIsModalDiem] = useState(false);
+  const [currentSinhVien, setCurrentSinhVien] = useState({});
 
   const columns = [
     {
       key: 'id',
       dataIndex: 'id',
       title: 'ID',
+      width: '100px',
     },
     {
       key: 'maSinhVien',
       dataIndex: 'maSinhVien',
       title: 'Mã sinh viên',
+      width: 150,
     },
     {
       key: 'hoTenDem',
       dataIndex: 'hoTenDem',
       title: 'Họ tên đệm',
+      width: 200,
     },
     {
       key: 'ten',
       dataIndex: 'ten',
       title: 'Tên',
+      width: 100,
     },
     {
       key: 'email',
       dataIndex: 'email',
       title: 'Email',
+      width: 150,
     },
     {
       key: 'soDienThoai',
       dataIndex: 'soDienThoai',
       title: 'Số điện thoại',
+      width: 150,
     },
     {
       key: 'lop',
       dataIndex: 'lop',
       title: 'Lớp',
+      width: 150,
     },
 
     {
@@ -71,9 +81,15 @@ const SinhVienList = ({ lopHocPhan, refetchGetLopHocPhan }) => {
       key: 'operation',
       fixed: 'right',
       width: 200,
-      render: () => (
+      render: (_, record) => (
         <div>
-          <Button type="primary">Điểm</Button>
+          <Button
+            onClick={() => handleClickXemDiem(record)}
+            style={{ marginRight: 10 }}
+            type="primary"
+          >
+            Điểm
+          </Button>
           <Button>Xóa</Button>
         </div>
       ),
@@ -85,6 +101,11 @@ const SinhVienList = ({ lopHocPhan, refetchGetLopHocPhan }) => {
    * =============================================
    */
 
+  const handleClickXemDiem = (sinhVien) => {
+    setIsModalDiem(true);
+    setCurrentSinhVien(sinhVien);
+  };
+
   const handleClickButtonThemSinhVien = (e) => {
     e?.stopPropagation();
     setIsModalSinhVien(true);
@@ -92,6 +113,11 @@ const SinhVienList = ({ lopHocPhan, refetchGetLopHocPhan }) => {
 
   const handleWhenModalAddSinhVienSuccess = () => {
     setIsModalSinhVien(false);
+    refetchGetLopHocPhan();
+  };
+
+  const handleWhenApiEditSuccess = () => {
+    setIsModalDiem(false);
     refetchGetLopHocPhan();
   };
 
@@ -117,7 +143,11 @@ const SinhVienList = ({ lopHocPhan, refetchGetLopHocPhan }) => {
     <>
       <Collapse defaultActiveKey={[1]} className={prefix}>
         <Panel className={prefix} showArrow={false} header={renderHeadOfPanel()} key="1">
-          <Table dataSource={listSinhVienFormat} columns={columns} />
+          <Table
+            scroll={{ x: '100%', y: '100%' }}
+            dataSource={listSinhVienFormat}
+            columns={columns}
+          />
         </Panel>
       </Collapse>
       <ModalSinhVien
@@ -125,6 +155,12 @@ const SinhVienList = ({ lopHocPhan, refetchGetLopHocPhan }) => {
         lopHocPhan={lopHocPhan}
         onClose={() => setIsModalSinhVien(false)}
         visible={isModalSinhVien}
+      />
+      <ModalDiem
+        sinhVien={currentSinhVien}
+        visible={isModalDiem}
+        onClose={() => setIsModalDiem(false)}
+        onCallAPISuccess={handleWhenApiEditSuccess}
       />
     </>
   );

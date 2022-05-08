@@ -49,6 +49,7 @@ import themLichHoc from './themLichHoc';
 import findGiangVien from './findGiangVien';
 import suaLopHocPhan from './suaLopHocPhan';
 import themSinnhVienVaoLopHocPhan from './themSinnhVienVaoLopHocPhan';
+import suaDiemSinhVien from './suaDiemSinhVien';
 
 const query = {
   ...GetProfile.query,
@@ -105,6 +106,7 @@ const mutation = {
   ...suaLopHocPhan.mutation,
   ...themLichHoc.mutation,
   ...themSinnhVienVaoLopHocPhan.mutation,
+  ...suaDiemSinhVien.mutation,
 };
 
 export default {
