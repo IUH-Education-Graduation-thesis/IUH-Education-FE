@@ -6,6 +6,7 @@ tenLopHocPhan
 soLuongToiDa
 soNhomThucHanh
 trangThaiLopHocPhan
+trangThaiLopHocPhanEnum
 hocPhan {
   id
   soTinChiLyThuyet

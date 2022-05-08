@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Modal, Form, Input, notification } from 'antd';
+import { Modal, Form, Input, notification, Select } from 'antd';
 import queries from 'core/graphql';
 import PropTypes from 'prop-types';
 
@@ -8,7 +8,30 @@ import { useMutation } from '@apollo/client';
 import { checkTrulyObject } from 'components/helper';
 
 const themLopHocPhanMutation = queries.mutation.themLopHocPhan('id');
-const suaHocPhanMutation = queries.mutation.suaHocPhan('id');
+const suaLopHocPhanMutation = queries.mutation.suaLopHocPhan('id');
+
+const dataTrangThaiLopHocPhan = [
+  {
+    label: 'Chờ sinh viên đăng ký',
+    value: 'CHO_SINH_VIEN_DANG_KY',
+  },
+  {
+    label: 'Đang lên kế hoạch',
+    value: 'DANG_LEN_KE_HOACH',
+  },
+  {
+    label: 'Chấp nhận mở lớp',
+    value: 'CHAP_NHAN_MO_LOP',
+  },
+  {
+    label: 'Bị Hủy',
+    value: 'HUY_LOP_HOC_PHAN',
+  },
+  {
+    label: 'Đã khóa',
+    value: 'DA_KHOA',
+  },
+];
 
 const ModalLopHocPhan = ({
   visible,
@@ -57,10 +80,10 @@ const ModalLopHocPhan = ({
       });
     },
   });
-  const [actSuaHocPhan, { loading: loadingSuaHocPhan }] = useMutation(suaHocPhanMutation, {
+  const [actSuaLopHocPhan, { loading: loadingSuaLopHocPhan }] = useMutation(suaLopHocPhanMutation, {
     onCompleted: (dataRes) => {
-      const _errors = dataRes?.suaHocPhan?.errors || [];
-      const _data = dataRes?.suaHocPhan?.data || [];
+      const _errors = dataRes?.suaLopHocPhan?.errors || [];
+      const _data = dataRes?.suaLopHocPhan?.data || [];
 
       if (!isEmpty(_errors))
         return _errors?.map((item) =>
@@ -97,7 +120,7 @@ const ModalLopHocPhan = ({
   };
 
   const handleCallAPIEdit = (inputs, id) => {
-    actSuaHocPhan({
+    actSuaLopHocPhan({
       variables: {
         inputs,
         id,
@@ -119,6 +142,7 @@ const ModalLopHocPhan = ({
           lopDuKien: _dataForm?.lopDuKien,
           hocPhanId,
           hocKyNormalId: hocKyId,
+          trangThaiLopHocPhan: _dataForm?.trangThaiLopHocPhan,
         };
 
         const _inputsFormat = checkTrulyObject(_inputs);
@@ -150,13 +174,8 @@ const ModalLopHocPhan = ({
     }
 
     form.setFieldsValue({
-      id: data?.id,
-      batBuoc: data?.batBuoc,
-      soTinChiLyThuyet: data?.soTinChiLyThuyet,
-      soTinChiThucHanh: data?.soTinChiThucHanh,
-      maHocPhan: data?.maHocPhan,
-      moTa: data?.moTa,
-      monHocId: data?.monHoc?.id,
+      ...data,
+      trangThaiLopHocPhan: data?.trangThaiLopHocPhanEnum,
     });
   }, [data, form]);
 
@@ -182,6 +201,19 @@ const ModalLopHocPhan = ({
           label="Mã lớp học phần"
         >
           <Input />
+        </Form.Item>
+        <Form.Item
+          hidden={type === 'add'}
+          rules={[
+            {
+              required: type === 'edit',
+              message: 'Không được bỏ trống!',
+            },
+          ]}
+          name={'trangThaiLopHocPhan'}
+          label="Trạng thái"
+        >
+          <Select options={dataTrangThaiLopHocPhan} />
         </Form.Item>
         <Form.Item
           rules={[
@@ -228,7 +260,7 @@ const ModalLopHocPhan = ({
       visible={visible}
       onCancel={() => closeModal(false)}
       width={1000}
-      confirmLoading={loadingThemHocPhan || loadingSuaHocPhan}
+      confirmLoading={loadingThemHocPhan || loadingSuaLopHocPhan}
       onOk={handleButtonOkClick}
       okText={type === 'add' ? 'Thêm' : 'Sửa'}
     >

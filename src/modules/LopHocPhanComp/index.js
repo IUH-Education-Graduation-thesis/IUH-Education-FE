@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Button, Card, Col, PageHeader, Row } from 'antd';
 import ListLichHocPanel from './LichHocPanel';
@@ -9,12 +9,15 @@ import 'modules/LopHocPhanComp/LopHocPhanComp.scss';
 import { GET_LOP_HOC_PHAN } from './fragment';
 import { useQuery } from '@apollo/client';
 import { useParams } from 'react-router-dom';
+import ModalLopHocPhan from 'modules/HocPhanPage/LopHocPhanList/ModalLopHocPhan';
 
 const prefix = 'chi-tiet-lop-hoc-phan';
 const getLopHocPhanQuery = queries.query.getLopHocPhan(GET_LOP_HOC_PHAN);
 
 const LopHocPhanModule = () => {
-  const { lop_hoc_phan_id } = useParams();
+  const { lop_hoc_phan_id, hoc_phan_id } = useParams();
+
+  const [showModalEdit, setShowModalEdit] = useState(false);
 
   /**
    * API
@@ -31,9 +34,21 @@ const LopHocPhanModule = () => {
   const lopHocPhan = dataGetLopHocPhan?.getLopHocPhan?.data?.[0] || {};
 
   /**
+   * Function
+   * ==========================================================
+   */
+
+  const handleWhenModalLopHocPhanSuccess = () => {
+    setShowModalEdit(false);
+    refetchGetLopHocPhan();
+  };
+
+  /**
    * Render view
    * =================================================
    */
+
+  console.log('Lop', lopHocPhan);
 
   return (
     <Row className={prefix}>
@@ -48,7 +63,14 @@ const LopHocPhanModule = () => {
           title="Chi tiết lớp học phần"
         />
 
-        <Card extra={<Button type="primary">Sửa</Button>} title="Thôn lớp tin học phần">
+        <Card
+          extra={
+            <Button onClick={() => setShowModalEdit(true)} type="primary">
+              Sửa
+            </Button>
+          }
+          title="Thôn lớp tin học phần"
+        >
           <Row gutter={[24, 16]}>
             <Col span={8}>
               <b>Môn học:</b> {lopHocPhan?.hocPhan?.monHoc?.ten}
@@ -101,6 +123,15 @@ const LopHocPhanModule = () => {
         <ListSinhVienPanel lopHocPhan={lopHocPhan} refetchGetLopHocPhan={refetchGetLopHocPhan} />
       </Col>
       <Col span={4} />
+      <ModalLopHocPhan
+        onCallAPISuccess={handleWhenModalLopHocPhanSuccess}
+        type="edit"
+        data={lopHocPhan}
+        hocPhanId={hoc_phan_id}
+        hocKyId={lopHocPhan?.hocKyNormal?.id}
+        visible={showModalEdit}
+        closeModal={() => setShowModalEdit(false)}
+      />
     </Row>
   );
 };
