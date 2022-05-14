@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Divider, notification, Table } from 'antd';
+import { Button, Divider, Table } from 'antd';
 
 import queries from 'core/graphql';
-import { useMutation, useQuery } from '@apollo/client';
-import { get, isEmpty } from 'lodash';
+import { useLazyQuery } from '@apollo/client';
 
 import './NamHoc.scss';
 import { GET_NAMHOC_FRAGMENT } from './fragment';
 import ModalNamHoc from './FormAddNamHoc';
 import TableExpand from './TableExpand';
 import ExpandFilter from './FilterExpand';
+import { checkTrulyObject } from 'components/helper';
 
 // Call API
-const getAllNamHocQuery = queries.query.findNamHoc(GET_NAMHOC_FRAGMENT);
-const deleteMutation = queries.mutation.xoaNamHoc(GET_NAMHOC_FRAGMENT);
+const filterNamHocQuery = queries.query.filterNamHoc(GET_NAMHOC_FRAGMENT);
 
 const NamHoc = () => {
   const [visibleModalEdit, setVisibleModalEdit] = useState(false);
@@ -21,14 +20,74 @@ const NamHoc = () => {
   const [namHoc, setNamHoc] = useState({});
   const [data, setData] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [currentConfig, setCurrentConfig] = useState({});
 
-  const { data: dataGetNamHoc } = useQuery(getAllNamHocQuery);
-  const [actDelete] = useMutation(deleteMutation);
+  /**
+   * API
+   * ============================================================
+   */
 
+  const [actFilterNamHoc, { data: dataFilterNamHoc }] = useLazyQuery(filterNamHocQuery);
+
+  const dataForTableNamHoc = dataFilterNamHoc?.filterNamHoc?.data?.[0]?.result?.map((item) => ({
+    ...item,
+    key: item?.id,
+  }));
+
+  /**
+   * useEffect
+   * ==========================================================
+   */
+
+  // handle call api when page int or current data filter change
   useEffect(() => {
-    const _listDayNha = dataGetNamHoc?.findNamHoc?.data || [];
-    setData(_listDayNha);
-  }, [dataGetNamHoc]);
+    const _inputs = checkTrulyObject(currentConfig);
+
+    actFilterNamHoc({
+      variables: {
+        inputs: {
+          ..._inputs,
+        },
+      },
+    });
+  }, [actFilterNamHoc, currentConfig]);
+
+  /**
+   * function
+   * ==================================================================
+   *
+   */
+
+  const handlerEditButton = (e) => {
+    setNamHoc(e);
+    setVisibleModalEdit(true);
+  };
+
+  const handleButtonDelete = async () => {};
+
+  const handleCreateComplete = (e) => {
+    setVisibleModalAdd(false);
+    let _data = data;
+    _data = [e, ..._data];
+    setData(_data);
+  };
+
+  const handleSelectedRowChange = (payload) => {
+    setSelectedRowKeys(payload);
+  };
+
+  const handleFilterComponentChange = (currentField, allField) => {
+    setCurrentConfig(allField);
+  };
+
+  const handleClearFilter = () => {
+    setCurrentConfig({});
+  };
+
+  /**
+   * render view
+   * ================================================================
+   */
 
   const columns = [
     {
@@ -38,21 +97,21 @@ const NamHoc = () => {
       width: 130,
     },
     {
-      title: 'Ngày bắt đầu',
-      dataIndex: 'ngayBatDau',
-      key: 'ngayBatDau',
+      title: 'Năm bắt đầu',
+      dataIndex: 'namBatDau',
+      key: 'namBatDau',
       width: 300,
     },
     {
-      title: 'Ngày kết thúc',
-      dataIndex: 'ngayKetThuc',
-      key: 'ngayKetThuc',
+      title: 'Năm kết thúc',
+      dataIndex: 'namKetThuc',
+      key: 'namKetThuc',
       width: 300,
     },
     {
       title: 'Mô tả',
-      dataIndex: 'moTa',
-      key: 'moTa',
+      dataIndex: 'ghiChu',
+      key: 'ghiChu',
       width: 300,
     },
     {
@@ -72,75 +131,15 @@ const NamHoc = () => {
     },
   ];
 
-  const handlerEditButton = (e) => {
-    setNamHoc(e);
-    setVisibleModalEdit(true);
-  };
-
-  /**
-   * function
-   * ==================================================================
-   *
-   */
-
-  const handleButtonDelete = async (e) => {
-    const _dataReutrn = await actDelete({
-      variables: {
-        id: e?.id,
-      },
-    });
-
-    const dataReturn = get(_dataReutrn, 'data', {});
-
-    const errors = get(dataReturn, 'xoaNamHoc.errors', []);
-    if (!isEmpty(errors)) {
-      errors?.map((item) =>
-        notification['error']({
-          message: item?.message,
-        }),
-      );
-      return;
-    }
-
-    const status = get(dataReturn, 'xoaNamHoc.status', '');
-    if (status === 'OK') {
-      const _index = data?.findIndex((item) => item?.id === e?.id);
-
-      let _listNamHoc = data;
-      _listNamHoc = [..._listNamHoc.slice(0, _index), ..._listNamHoc.slice(_index + 1)];
-
-      setData(_listNamHoc);
-      notification.open({
-        message: 'Thông báo',
-        description: status,
-      });
-      return;
-    }
-
-    console.log('Loi ket noi');
-  };
-
-  const handleCreateComplete = (e) => {
-    setVisibleModalAdd(false);
-    let _data = data;
-    _data = [e, ..._data];
-    setData(_data);
-  };
-
-  const handleSelectedRowChange = (payload) => {
-    setSelectedRowKeys(payload);
-  };
-
-  /**
-   * render view
-   * ================================================================
-   */
-
   return (
     <div className="namHoc">
       <h3>DANH SÁCH NĂM HỌC </h3>
 
-      <ExpandFilter />
+      <ExpandFilter
+        currentFilterData={currentConfig}
+        onFilterChange={handleFilterComponentChange}
+        onClear={handleClearFilter}
+      />
       <Divider />
       <div className="namHoc__action">
         <Button danger>Xóa năm học đã chọn</Button>
@@ -148,7 +147,7 @@ const NamHoc = () => {
       <Table
         className="ant-table-wrapper"
         columns={columns}
-        dataSource={data}
+        dataSource={dataForTableNamHoc}
         scroll={{ x: 1500, y: '50vh' }}
         rowSelection={{
           selectedRowKeys,

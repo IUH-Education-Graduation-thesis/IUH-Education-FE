@@ -8,7 +8,7 @@ import themPhongHoc from './themPhongHoc';
 import findPhongHoc from './findPhongHoc';
 import xoaPhongHoc from './xoaPhongHoc';
 import xoaNamHoc from './xoaNamHoc';
-import findNamHoc from './findNamHoc';
+import findNamHoc from './filterNamHoc';
 import themNamHoc from './themNamHoc';
 import findKhoaHocs from './findKhoaHocs';
 import xoaKhoaHoc from './xoaKhoaHoc';
@@ -50,6 +50,7 @@ import findGiangVien from './findGiangVien';
 import suaLopHocPhan from './suaLopHocPhan';
 import themSinnhVienVaoLopHocPhan from './themSinnhVienVaoLopHocPhan';
 import suaDiemSinhVien from './suaDiemSinhVien';
+import filterNamHoc from './filterNamHoc';
 
 const query = {
   ...GetProfile.query,
@@ -64,6 +65,7 @@ const query = {
   ...getNamHocs.query,
   ...getLopHocPhan.query,
   ...findGiangVien.query,
+  ...filterNamHoc.query,
 };
 
 const mutation = {

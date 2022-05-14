@@ -9,6 +9,7 @@ import './HomePage.scss';
 import { isEmpty } from 'lodash';
 import KhoaHocComponent from 'components/KhoaHoc';
 import DayNha from 'components/DayNha';
+import NamHocComp from 'components/NamHoc';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -24,7 +25,10 @@ const listComponent = [
     key: '6',
     component: KhoaComponent,
   },
-
+  {
+    key: '7',
+    component: NamHocComp,
+  },
   {
     key: '12',
     component: KhoaHocComponent,
@@ -75,6 +79,7 @@ const HomePage = () => {
               <Menu.Item key="5">Sinh Viên</Menu.Item>
               <Menu.Item key="6">Khoa</Menu.Item>
               <Menu.Item key="12">Khóa học</Menu.Item>
+              <Menu.Item key="7">Năm học</Menu.Item>
               <Menu.Item key="13">Dãy nhà</Menu.Item>
             </SubMenu>
           </Menu>
