@@ -20,11 +20,7 @@ const NamHoc = () => {
   const [namHoc, setNamHoc] = useState({});
   const [data, setData] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [currentConfig] = useState({
-    id: '',
-    formYear: '',
-    toYear: '',
-  });
+  const [currentConfig, setCurrentConfig] = useState({});
 
   /**
    * API
@@ -80,6 +76,14 @@ const NamHoc = () => {
     setSelectedRowKeys(payload);
   };
 
+  const handleFilterComponentChange = (currentField, allField) => {
+    setCurrentConfig(allField);
+  };
+
+  const handleClearFilter = () => {
+    setCurrentConfig({});
+  };
+
   /**
    * render view
    * ================================================================
@@ -131,7 +135,11 @@ const NamHoc = () => {
     <div className="namHoc">
       <h3>DANH SÁCH NĂM HỌC </h3>
 
-      <ExpandFilter />
+      <ExpandFilter
+        currentFilterData={currentConfig}
+        onFilterChange={handleFilterComponentChange}
+        onClear={handleClearFilter}
+      />
       <Divider />
       <div className="namHoc__action">
         <Button danger>Xóa năm học đã chọn</Button>

@@ -18,6 +18,25 @@ const ExpandFilter = ({ onAddAStudentClick, onFilterChange, currentFilterData, o
    */
 
   const handleFilterCHange = (payload) => {
+    if (payload?.[0]?.name?.[0] === 'date') {
+      const _value = payload?.[0]?.value;
+
+      const _formYear = _value?.[0]?.format('YYYY');
+      const _toYear = _value?.[_value?.length - 1]?.format('YYYY');
+
+      const _fieldChange = {
+        fromYear: _formYear,
+        toYear: _toYear,
+      };
+
+      const _currentFilterData = {
+        ...currentFilterData,
+        ..._fieldChange,
+      };
+
+      return onFilterChange(_fieldChange, _currentFilterData, payload?.name?.[0]);
+    }
+
     const _fieldChange = {
       [payload?.[0]?.name?.[0]]: payload?.[0]?.value,
     };
