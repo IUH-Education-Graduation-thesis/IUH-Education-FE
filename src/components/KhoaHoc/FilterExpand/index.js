@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-
+import queries from 'core/graphql';
 import { Button, Form, Input, Select } from 'antd';
 import {
   SearchOutlined,
@@ -9,31 +9,12 @@ import {
   ClearOutlined,
   ArrowUpOutlined,
 } from '@ant-design/icons';
+import { useQuery } from '@apollo/client';
+import { FIND_KHOA_VIEN } from 'components/SinhVien/fragment';
 
 const prefix = 'sinh-vien--filter';
 
-const dataMockKhoaVien = [
-  {
-    id: 1,
-    label: 'Công nghệ thông tin',
-    value: 2,
-  },
-  {
-    id: 2,
-    label: 'May thời trang',
-    value: 3,
-  },
-  {
-    id: 3,
-    label: 'Tài ngân',
-    value: 4,
-  },
-  {
-    id: 4,
-    label: 'Xây dựng',
-    value: 25,
-  },
-];
+const findKhoaVienQuery = queries.query.findKhoaVien(FIND_KHOA_VIEN);
 
 const { useForm } = Form;
 
@@ -41,6 +22,26 @@ const ExpandFilter = ({ onAddAStudentClick, onFilterChange, currentFilterData, o
   const [form] = useForm();
 
   const [expanded, setExpanded] = useState(false);
+  const [currentKhoaVien, setCurrentKhoaVien] = useState(null);
+
+  /**
+   * API
+   * ==================================================
+   */
+
+  const { data: dataFindKhoaVien } = useQuery(findKhoaVienQuery);
+
+  const dataForKhoaVien = dataFindKhoaVien?.findKhoaVien?.data?.[0]?.data?.map((item) => ({
+    ...item,
+    value: item?.id,
+    label: item?.ten,
+  }));
+
+  const dataForChuyenNganh = currentKhoaVien?.chuyenNganhs?.map((item) => ({
+    ...item,
+    value: item?.id,
+    label: item?.ten,
+  }));
 
   /**
    * function
@@ -63,6 +64,12 @@ const ExpandFilter = ({ onAddAStudentClick, onFilterChange, currentFilterData, o
   const handleClearFilter = () => {
     form.resetFields();
     onClear();
+  };
+
+  const handleKhoaVienSelectChange = (id) => {
+    const _khoaVien = dataForKhoaVien?.find((item) => item?.id === id);
+
+    setCurrentKhoaVien(_khoaVien);
   };
 
   /**
@@ -105,11 +112,15 @@ const ExpandFilter = ({ onAddAStudentClick, onFilterChange, currentFilterData, o
           expanded,
         })}
       >
-        <Form.Item name="khoa_vien">
-          <Select options={dataMockKhoaVien} mode="multiple" placeholder="Khoa Viện"></Select>
+        <Form.Item name="khoaVienId">
+          <Select
+            onChange={handleKhoaVienSelectChange}
+            options={dataForKhoaVien}
+            placeholder="Khoa Viện"
+          ></Select>
         </Form.Item>
-        <Form.Item name="chuyen_nganh">
-          <Select options={dataMockKhoaVien} mode="multiple" placeholder="Chuyên ngành"></Select>
+        <Form.Item name="chuyenNganhId">
+          <Select options={dataForChuyenNganh} placeholder="Chuyên ngành"></Select>
         </Form.Item>
       </div>
     </Form>

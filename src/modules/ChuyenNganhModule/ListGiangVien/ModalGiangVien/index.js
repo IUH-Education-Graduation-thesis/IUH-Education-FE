@@ -113,7 +113,7 @@ const ModalGiangVien = ({ visible, closeModal, type, data, onCallAPISuccess, chu
           hocHam: 'THAC_SI',
         };
 
-        const _inputsFormat = checkTrulyObject(_inputs);
+        const _inputsFormat = checkTrulyObject(_inputs, ['gioiTinh']);
 
         if (type === 'add') {
           handleCallAPIAdd(_inputsFormat);
