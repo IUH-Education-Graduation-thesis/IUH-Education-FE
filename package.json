@@ -30,6 +30,7 @@
   "scripts": {
     "start": "SKIP_PREFLIGHT_CHECK=true react-scripts start",
     "start-be-dev": "SKIP_PREFLIGHT_CHECK=true REACT_APP_BE_ENV=dev react-scripts start",
+    "start-windows": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
