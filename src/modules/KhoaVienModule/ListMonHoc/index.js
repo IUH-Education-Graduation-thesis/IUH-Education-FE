@@ -21,6 +21,11 @@ const ListMonHoc = ({ data, khoaVienID, refetchFindKhoaVien }) => {
       title: 'ID',
     },
     {
+      key: 'maMonHoc',
+      dataIndex: 'maMonHoc',
+      title: 'Mã môn học',
+    },
+    {
       key: 'ten',
       dataIndex: 'ten',
       title: 'Tên môn học',

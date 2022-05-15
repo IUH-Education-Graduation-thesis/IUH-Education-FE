@@ -117,7 +117,7 @@ const ModalMonHoc = ({ visible, closeModal, type, data, onCallAPISuccess, khoaVi
           return;
         }
 
-        const _id = form?.getFieldValue('id');
+        const _id = data?.id;
 
         handleCallAPIEdit(_inputsFormat, _id);
       })
@@ -140,6 +140,7 @@ const ModalMonHoc = ({ visible, closeModal, type, data, onCallAPISuccess, khoaVi
     form.setFieldsValue({
       id: data.id,
       ten: data.ten,
+      maMonHoc: data?.maMonHoc,
     });
   }, [data, form]);
 
@@ -151,7 +152,7 @@ const ModalMonHoc = ({ visible, closeModal, type, data, onCallAPISuccess, khoaVi
   const renderForm = () => {
     return (
       <Form {...layout} form={form} name="nest-messages">
-        <Form.Item name={'id'} label="Mã môn học">
+        <Form.Item name={'maMonHoc'} label="Mã môn học">
           <Input disabled />
         </Form.Item>
         <Form.Item
@@ -165,6 +166,9 @@ const ModalMonHoc = ({ visible, closeModal, type, data, onCallAPISuccess, khoaVi
           label="Tên Môn học"
         >
           <Input />
+        </Form.Item>
+        <Form.Item name={'moTa'} label="Mô tả">
+          <Input.TextArea />
         </Form.Item>
       </Form>
     );

@@ -12,6 +12,7 @@ monHocs {
   id
   moTa
   ten
+  maMonHoc
   khoaVien {
     id
   }
