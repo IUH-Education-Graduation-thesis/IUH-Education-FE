@@ -8,13 +8,7 @@ const prefix = 'sinh-vien--filter';
 
 const { useForm } = Form;
 
-const ExpandFilter = ({
-  onAddAStudentClick,
-  onAddWithFileClick,
-  onFilterChange,
-  currentFilterData,
-  onClear,
-}) => {
+const ExpandFilter = ({ onAddAStudentClick, onFilterChange, currentFilterData, onClear }) => {
   const [form] = useForm();
 
   /**
@@ -61,10 +55,6 @@ const ExpandFilter = ({
           <Button onClick={onAddAStudentClick} type="primary">
             {' '}
             + Thêm 1 khoa viện
-          </Button>
-          <Button onClick={onAddWithFileClick} type="ghost">
-            {' '}
-            + Thêm bằng file excel
           </Button>
           <ClearOutlined onClick={handleClearFilter} />
         </div>
