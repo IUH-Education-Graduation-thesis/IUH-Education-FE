@@ -12,7 +12,7 @@ const prefix = 'khoa-hoc-ky';
 const { Panel } = Collapse;
 const xoaHocKysMutation = queries.mutation.xoaHocKys('id');
 
-const ListHocKy = ({ data, khoaId, refetchFindKhoaHoc }) => {
+const ListHocKy = ({ data, khoaId, refetchFindKhoaHoc, khoaHoc }) => {
   const columns = [
     {
       key: 'id',
@@ -23,6 +23,9 @@ const ListHocKy = ({ data, khoaId, refetchFindKhoaHoc }) => {
       key: 'thuTu',
       dataIndex: 'thuTu',
       title: 'Tên học kỳ',
+      render: (thuTu) => {
+        return `Học kỳ ${thuTu} khóa ${khoaHoc?.khoa}`;
+      },
     },
     {
       key: 'moTa',
@@ -119,7 +122,9 @@ const ListHocKy = ({ data, khoaId, refetchFindKhoaHoc }) => {
     setShowModalAdd(true);
   };
 
-  const handleDeleteMultiRow = () => {
+  const handleDeleteMultiRow = (e) => {
+    e?.stopPropagation();
+
     const _ids = selectedRowKeys || [];
 
     actXoaHocKys({
@@ -152,7 +157,7 @@ const ListHocKy = ({ data, khoaId, refetchFindKhoaHoc }) => {
 
   return (
     <>
-      <Collapse className={prefix}>
+      <Collapse defaultActiveKey={['1']} className={prefix}>
         <Panel className={prefix} showArrow={false} header={renderHeadOfPanel()} key="1">
           <Table
             bordered
@@ -200,6 +205,7 @@ ListHocKy.propTypes = {
   data: PropTypes.objectOf(PropTypes.any).isRequired,
   khoaId: PropTypes.string.isRequired,
   refetchFindKhoaHoc: PropTypes.func,
+  khoaHoc: PropTypes.object.isRequired,
 };
 
 ListHocKy.defaultProps = {

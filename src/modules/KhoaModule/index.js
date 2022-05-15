@@ -71,7 +71,12 @@ const KhoaHocModule = () => {
             </Col>
           </Row>
         </Card>
-        <ListHocKy refetchFindKhoaHoc={refetchFindKhoaHoc} khoaId={khoa_id} data={listHocKy} />
+        <ListHocKy
+          khoaHoc={khoaHoc}
+          refetchFindKhoaHoc={refetchFindKhoaHoc}
+          khoaId={khoa_id}
+          data={listHocKy}
+        />
       </Col>
       <Col span={4}></Col>
     </Row>

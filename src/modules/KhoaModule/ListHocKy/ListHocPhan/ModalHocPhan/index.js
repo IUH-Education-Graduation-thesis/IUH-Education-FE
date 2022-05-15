@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Modal, Form, Input, notification, Switch, Select } from 'antd';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Modal, Form, Input, notification, Switch, Select, Radio } from 'antd';
 import queries from 'core/graphql';
 import PropTypes from 'prop-types';
 
@@ -7,10 +7,12 @@ import { isEmpty } from 'lodash';
 import { useMutation, useQuery } from '@apollo/client';
 import { checkTrulyObject } from 'components/helper';
 import { FIND_KHOA_VIEN_FRAGMENT } from 'modules/KhoaModule/fragment';
+import ContentThemHocPhan from './ContentHocPhan';
 
 const themHocPhanMutation = queries.mutation.themHocPhan('id');
 const suaHocPhanMutation = queries.mutation.suaHocPhan('id');
 const findKhoaVien = queries.query.findKhoaVien(FIND_KHOA_VIEN_FRAGMENT);
+const themHocPhanVaoHocKyMutation = queries.mutation.themHocPhanVaoHocKy('id');
 
 const ModalHocPhan = ({ visible, closeModal, type, data, onCallAPISuccess, hocKyId }) => {
   const layout = {
@@ -21,11 +23,42 @@ const ModalHocPhan = ({ visible, closeModal, type, data, onCallAPISuccess, hocKy
   const [form] = Form.useForm();
 
   const [currentKhoaVien, setCurrentKhoaVien] = useState(null);
+  const [isThemMoiHocPhan, setIsThemMoiHocPhan] = useState(true);
 
   /**
    * API
    * ===========================================================
    */
+
+  const [actThemHocPhanVaoHocKy, { loading: loadingThemLopHocPhanVaoHocKy }] = useMutation(
+    themHocPhanVaoHocKyMutation,
+    {
+      onCompleted: (dataRes) => {
+        const _errors = dataRes?.themHocPhanVaoHocKy?.errors || [];
+        const _data = dataRes?.themHocPhanVaoHocKy?.data || [];
+
+        if (!isEmpty(_errors))
+          return _errors?.map((item) =>
+            notification['error']({
+              message: item?.message,
+            }),
+          );
+
+        if (isEmpty(_data)) {
+          notification['error']({
+            message: 'Lỗi hệ thống!',
+          });
+          return;
+        }
+
+        onCallAPISuccess(_data?.[0]);
+
+        notification['success']({
+          message: 'Thêm học phần thành công.',
+        });
+      },
+    },
+  );
 
   const { data: dataFindKhoaVien } = useQuery(findKhoaVien);
 
@@ -153,6 +186,17 @@ const ModalHocPhan = ({ visible, closeModal, type, data, onCallAPISuccess, hocKy
     setCurrentKhoaVien(payload);
   };
 
+  const handleContentThemHocPhanTonTaiSubmit = useCallback(
+    (ids) => {
+      actThemHocPhanVaoHocKy({
+        variables: {
+          hocPhanIds: ids,
+          hocKyId: hocKyId,
+        },
+      });
+    },
+    [actThemHocPhanVaoHocKy, hocKyId],
+  );
   /**
    * useEffect
    * =============================================================
@@ -179,23 +223,14 @@ const ModalHocPhan = ({ visible, closeModal, type, data, onCallAPISuccess, hocKy
    * ============================================================================
    */
 
-  const renderForm = () => {
+  const renderForm = useMemo(() => {
     return (
       <Form {...layout} form={form} name="nest-messages">
         <Form.Item name={'id'} label="ID">
           <Input disabled />
         </Form.Item>
-        <Form.Item
-          rules={[
-            {
-              required: true,
-              message: 'Không được bỏ trống!',
-            },
-          ]}
-          name={'maHocPhan'}
-          label="Mã học phần"
-        >
-          <Input />
+        <Form.Item name={'maHocPhan'} label="Mã học phần">
+          <Input disabled />
         </Form.Item>
         <Form.Item label="Bắt buộc" name={'batBuoc'}>
           <Switch />
@@ -246,7 +281,25 @@ const ModalHocPhan = ({ visible, closeModal, type, data, onCallAPISuccess, hocKy
         </Form.Item>
       </Form>
     );
-  };
+  }, [dataForKhoaVien, dataForMonHoc, form, layout]);
+
+  const renderContentModal = useMemo(() => {
+    if (isThemMoiHocPhan) {
+      return renderForm;
+    }
+
+    return (
+      <ContentThemHocPhan
+        onSubmit={handleContentThemHocPhanTonTaiSubmit}
+        dataFilter={dataFindKhoaVien?.findKhoaVien?.data?.[0]?.data}
+      />
+    );
+  }, [
+    dataFindKhoaVien?.findKhoaVien?.data,
+    handleContentThemHocPhanTonTaiSubmit,
+    isThemMoiHocPhan,
+    renderForm,
+  ]);
 
   return (
     <Modal
@@ -256,11 +309,26 @@ const ModalHocPhan = ({ visible, closeModal, type, data, onCallAPISuccess, hocKy
       visible={visible}
       onCancel={() => closeModal(false)}
       width={1000}
-      confirmLoading={loadingThemHocPhan || loadingSuaHocPhan}
+      confirmLoading={loadingThemHocPhan || loadingSuaHocPhan || loadingThemLopHocPhanVaoHocKy}
       onOk={handleButtonOkClick}
       okText={type === 'add' ? 'Thêm' : 'Sửa'}
     >
-      {renderForm()}
+      <Radio.Group
+        style={{ marginBottom: 20 }}
+        options={[
+          {
+            label: 'Thêm mới',
+            value: true,
+          },
+          {
+            label: 'Thêm đã tồn tại',
+            value: false,
+          },
+        ]}
+        onChange={(value) => setIsThemMoiHocPhan(value?.target?.value)}
+        optionType="button"
+      />
+      {renderContentModal}
     </Modal>
   );
 };

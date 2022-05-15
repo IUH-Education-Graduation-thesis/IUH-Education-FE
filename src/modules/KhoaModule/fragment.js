@@ -33,9 +33,20 @@ chuyenNganh {
 
 export const FIND_KHOA_VIEN_FRAGMENT = `
 id
-ten
-monHocs {
-  id
-  ten
-}
+        ten
+        monHocs {
+          id
+          ten
+          hocPhans {
+            id
+            maHocPhan
+            batBuoc
+            soTinChiLyThuyet
+            soTinChiThucHanh
+            monHoc {
+              id
+              ten
+            }
+          }
+        }
 `;
