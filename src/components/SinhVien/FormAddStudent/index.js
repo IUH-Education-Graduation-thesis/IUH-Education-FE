@@ -47,6 +47,13 @@ const ModalStudent = ({ visible, closeModal, type, data, onAddSuccess }) => {
 
   useEffect(() => {
     if (isEmpty(data)) {
+      const _currentDate = moment();
+
+      form?.setFieldsValue({
+        _ngayVaoTruong: _currentDate,
+        ngayVaoTruong: _currentDate?.format('YYYY-MM-DD'),
+      });
+
       return;
     }
 
