@@ -51,6 +51,7 @@ import suaLopHocPhan from './suaLopHocPhan';
 import themSinnhVienVaoLopHocPhan from './themSinnhVienVaoLopHocPhan';
 import suaDiemSinhVien from './suaDiemSinhVien';
 import filterNamHoc from './filterNamHoc';
+import xoaGiangViensOfMonHoc from './xoaGiangViensOfMonHoc';
 
 const query = {
   ...GetProfile.query,
@@ -109,6 +110,7 @@ const mutation = {
   ...themLichHoc.mutation,
   ...themSinnhVienVaoLopHocPhan.mutation,
   ...suaDiemSinhVien.mutation,
+  ...xoaGiangViensOfMonHoc.mutation,
 };
 
 export default {

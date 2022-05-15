@@ -1,13 +1,22 @@
-import { Button, Table } from 'antd';
+import { Button, notification, Table } from 'antd';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-
+import queries from 'core/graphql';
 import ModalGiangVien from './ModalGiangVien';
+import { useMutation } from '@apollo/client';
+import { isEmpty } from 'lodash';
 
 const prefix = 'list-mon-hoc-in-khoa-vien';
 
+const xoaGiangViensOfMonHocMutation = queries.mutation.xoaGiangViensOfMonHoc('id');
+
 const ListGiangVien = ({ data, monHoc, refetchFindKhoaVien }) => {
   const [showModalAdd, setShowModalAdd] = useState(false);
+
+  const dataForTable = data?.map((item) => ({
+    ...item,
+    key: item?.id,
+  }));
 
   const columns = [
     {
@@ -40,9 +49,11 @@ const ListGiangVien = ({ data, monHoc, refetchFindKhoaVien }) => {
       key: 'operation',
       fixed: 'right',
       width: 200,
-      render: () => (
+      render: (_, record) => (
         <div>
-          <Button>Xóa</Button>
+          <Button onClick={() => handleXoa1GiangVien(record)} loading={loadingXoaGiangViens}>
+            Xóa
+          </Button>
         </div>
       ),
     },
@@ -51,9 +62,55 @@ const ListGiangVien = ({ data, monHoc, refetchFindKhoaVien }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   /**
+   * API
+   * ===============================================================
+   */
+
+  const [actXoaGiangVien, { loading: loadingXoaGiangViens }] = useMutation(
+    xoaGiangViensOfMonHocMutation,
+    {
+      onCompleted: (dataRes) => {
+        const _errors = dataRes?.xoaGiangViensOfMonHoc?.errors || [];
+        const _data = dataRes?.xoaGiangViensOfMonHoc?.data || [];
+
+        if (!isEmpty(_errors))
+          return _errors?.map((item) =>
+            notification['error']({
+              message: item?.message,
+            }),
+          );
+
+        if (isEmpty(_data)) {
+          notification['error']({
+            message: 'Lỗi hệ thống!',
+          });
+          return;
+        }
+
+        refetchFindKhoaVien();
+
+        notification['success']({
+          message: `Xóa thành công ${_data?.length} giảng viên khỏi khoa viện.`,
+        });
+      },
+    },
+  );
+
+  /**
    * function
    * ==========================================
    */
+
+  const handleXoa1GiangVien = (record) => {
+    const _id = record?.id;
+
+    actXoaGiangVien({
+      variables: {
+        giangVienIds: [_id],
+        monHocId: monHoc?.id,
+      },
+    });
+  };
 
   const handleChangeSelectedRow = (payload) => {
     setSelectedRowKeys(payload);
@@ -68,6 +125,17 @@ const ListGiangVien = ({ data, monHoc, refetchFindKhoaVien }) => {
     refetchFindKhoaVien();
   };
 
+  const handleXoaMultipleGiangVien = () => {
+    const _ids = selectedRowKeys || [];
+
+    actXoaGiangVien({
+      variables: {
+        giangVienIds: [..._ids],
+        monHocId: monHoc?.id,
+      },
+    });
+  };
+
   /**
    * render view
    * =====================================================================
@@ -76,7 +144,9 @@ const ListGiangVien = ({ data, monHoc, refetchFindKhoaVien }) => {
   return (
     <div className={prefix}>
       <div className={`${prefix}__head`}>
-        <Button danger>Xóa giảng viên đã chọn</Button>
+        <Button onClick={handleXoaMultipleGiangVien} loading={loadingXoaGiangViens} danger>
+          Xóa giảng viên đã chọn
+        </Button>
         <Button onClick={handleThemGiangVien} type="primary">
           Thêm giảng viên
         </Button>
@@ -89,7 +159,7 @@ const ListGiangVien = ({ data, monHoc, refetchFindKhoaVien }) => {
             onChange: handleChangeSelectedRow,
           }}
           columns={columns}
-          dataSource={data}
+          dataSource={dataForTable}
         />
       </div>
       <ModalGiangVien
