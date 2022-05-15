@@ -140,7 +140,11 @@ const ChuyenNganhList = ({ data, refetchKhoaVien }) => {
       <div className={`${prefix}__header`}>
         <div className={`${prefix}__header__left`}>Danh sách chuyên ngành</div>
         <div className={`${prefix}__header__right`}>
-          <Button onClick={(e) => handleDeleteMultiChuyenNganh(e)} danger>
+          <Button
+            disabled={selectedRowKeys?.length <= 0}
+            onClick={(e) => handleDeleteMultiChuyenNganh(e)}
+            danger
+          >
             Xóa chuyên ngành đã chọn
           </Button>
           <Button onClick={handleThemChuyenNganhClick} type="primary">
@@ -153,7 +157,7 @@ const ChuyenNganhList = ({ data, refetchKhoaVien }) => {
 
   return (
     <>
-      <Collapse className={prefix}>
+      <Collapse defaultActiveKey={['1']} className={prefix}>
         <Panel className={prefix} showArrow={false} header={renderHeadOfPanel()} key="1">
           <Table
             onRow={(record) => {
@@ -179,6 +183,7 @@ const ChuyenNganhList = ({ data, refetchKhoaVien }) => {
         onCallAPISuccess={handleCallAPIAddSuccess}
         khoaVienID={khoaVienId}
         type="add"
+        closeModal={() => setShowModalAdd(false)}
         visible={showModalAdd}
       />
       <ModalChuyenNganh
@@ -186,6 +191,7 @@ const ChuyenNganhList = ({ data, refetchKhoaVien }) => {
         onCallAPISuccess={handleCallAPIAddSuccess}
         khoaVienID={khoaVienId}
         type="edit"
+        closeModal={() => setShowModalSua(false)}
         visible={showModalSua}
       />
     </>

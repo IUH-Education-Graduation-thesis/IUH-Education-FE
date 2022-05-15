@@ -134,7 +134,12 @@ const ListMonHoc = ({ data, khoaVienID, refetchFindKhoaVien }) => {
       <div className={`${prefix}__header`}>
         <div className={`${prefix}__header__left`}>Danh sách môn học</div>
         <div className={`${prefix}__header__right`}>
-          <Button loading={loadingXoaMonHoc} onClick={handleDeleteMultiMonHoc} danger>
+          <Button
+            disabled={selectedRowKeys?.length <= 0}
+            loading={loadingXoaMonHoc}
+            onClick={handleDeleteMultiMonHoc}
+            danger
+          >
             Xóa môn học đã chọn
           </Button>
           <Button onClick={handleThemMonHoc} type="primary">
@@ -147,7 +152,7 @@ const ListMonHoc = ({ data, khoaVienID, refetchFindKhoaVien }) => {
 
   return (
     <>
-      <Collapse className={prefix}>
+      <Collapse defaultActiveKey={['1']} className={prefix}>
         <Panel className={prefix} showArrow={false} header={renderHeadOfPanel()} key="1">
           <Table
             rowSelection={{
