@@ -1,11 +1,16 @@
-import { Button, Collapse, Table } from 'antd';
+import { Button, Collapse, notification, Table } from 'antd';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import ModalLichHoc from './ModalLichHoc';
 import moment from 'moment';
+import queries from 'core/graphql';
+import { useMutation } from '@apollo/client';
+import { isEmpty } from 'lodash';
 
 const prefix = 'list-lich-hoc-panel';
 const { Panel } = Collapse;
+
+const xoaLichHocsMutation = queries.mutation.xoaLichHocs('id');
 
 const ListLichHocPanel = ({ refetchGetLopHocPhan, lopHocPhan }) => {
   const columns = [
@@ -13,6 +18,7 @@ const ListLichHocPanel = ({ refetchGetLopHocPhan, lopHocPhan }) => {
       key: 'id',
       dataIndex: 'id',
       title: 'ID',
+      width: 70,
     },
     {
       key: 'isLichThi',
@@ -67,10 +73,10 @@ const ListLichHocPanel = ({ refetchGetLopHocPhan, lopHocPhan }) => {
       key: 'operation',
       fixed: 'right',
       width: 200,
-      render: () => (
+      render: (_, recrod) => (
         <div>
           <Button danger>Chỉnh sửa</Button>
-          <Button>Xóa</Button>
+          <Button onClick={() => handleXoa1LichHoc(recrod?.id)}>Xóa</Button>
         </div>
       ),
     },
@@ -89,11 +95,53 @@ const ListLichHocPanel = ({ refetchGetLopHocPhan, lopHocPhan }) => {
   });
 
   const [showMoldaAdd, setShowMoldaAdd] = useState(false);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+  /**
+   * API
+   * =============================================
+   */
+
+  const [actXoaLichHocs, { loading: loadingXoaLichHoc }] = useMutation(xoaLichHocsMutation, {
+    onCompleted: (dataRes) => {
+      const _errors = dataRes?.xoaLichHocs?.errors || [];
+      const _data = dataRes?.xoaLichHocs?.data || [];
+
+      if (!isEmpty(_errors))
+        return _errors?.map((item) =>
+          notification['error']({
+            message: item?.message,
+          }),
+        );
+
+      if (isEmpty(_data)) {
+        notification['error']({
+          message: 'Lỗi hệ thống!',
+        });
+        return;
+      }
+
+      setSelectedRowKeys([]);
+      refetchGetLopHocPhan();
+
+      notification['success']({
+        message: `Xóa ${_data?.length} lịch học thành công.`,
+      });
+    },
+  });
 
   /**
    * Function
    * ==========================================
    */
+
+  const handleXoa1LichHoc = (id) => {
+    actXoaLichHocs({
+      variables: {
+        ids: [id],
+      },
+    });
+  };
 
   const handleModalSuccess = () => {
     setShowMoldaAdd(false);
@@ -105,6 +153,19 @@ const ListLichHocPanel = ({ refetchGetLopHocPhan, lopHocPhan }) => {
     setShowMoldaAdd(true);
   };
 
+  const handleTableSelectChange = (keys) => {
+    setSelectedRowKeys(keys);
+  };
+
+  const handleXoaMultiLichHoc = () => {
+    if (isEmpty(selectedRowKeys)) return;
+
+    actXoaLichHocs({
+      variables: {
+        ids: selectedRowKeys,
+      },
+    });
+  };
   /**
    * Render view
    * ===================================================
@@ -114,7 +175,9 @@ const ListLichHocPanel = ({ refetchGetLopHocPhan, lopHocPhan }) => {
       <div className={`${prefix}__header`}>
         <div className={`${prefix}__header__left`}>Danh sách lịch học</div>
         <div className={`${prefix}__header__right`}>
-          <Button danger>Xóa lịch học đã chọn</Button>
+          <Button loading={loadingXoaLichHoc} onClick={handleXoaMultiLichHoc} danger>
+            Xóa lịch học đã chọn
+          </Button>
           <Button onClick={handleThemLichHoc} type="primary">
             Thêm lịch học
           </Button>
@@ -126,7 +189,15 @@ const ListLichHocPanel = ({ refetchGetLopHocPhan, lopHocPhan }) => {
   return (
     <Collapse defaultActiveKey={['1']} className={prefix}>
       <Panel className={prefix} showArrow={false} header={renderHeadOfPanel()} key="1">
-        <Table scroll={{ y: '100%', x: '100%' }} columns={columns} dataSource={lichHocs} />
+        <Table
+          rowSelection={{
+            selectedRowKeys,
+            onChange: handleTableSelectChange,
+          }}
+          scroll={{ y: '100%', x: '100%' }}
+          columns={columns}
+          dataSource={lichHocs}
+        />
       </Panel>
 
       <ModalLichHoc
