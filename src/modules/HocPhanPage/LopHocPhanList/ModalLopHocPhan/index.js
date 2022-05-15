@@ -135,7 +135,6 @@ const ModalLopHocPhan = ({
         const _dataForm = form?.getFieldsValue(true);
 
         const _inputs = {
-          maLopHocPhan: _dataForm?.maLopHocPhan,
           moTa: _dataForm?.moTa,
           soNhomThucHanh: _dataForm?.soNhomThucHanh,
           soLuongToiDa: _dataForm?.soLuongToiDa,
