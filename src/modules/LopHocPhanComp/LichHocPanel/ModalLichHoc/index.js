@@ -12,7 +12,7 @@ import moment from 'moment';
 
 const findDayNhaQuery = queries.query.findDayNha(FIND_DAY_NHA_FRAGMENT);
 const themLichHocMutation = queries.mutation.themLichHoc('id');
-const suaHocKyMutation = queries.mutation.suaHocKy('id');
+const suaLichHocMutation = queries.mutation.suaLichHoc('id');
 
 const ModalLichHoc = ({ visible, closeModal, type, data, onCallAPISuccess, lopHocPhan }) => {
   const [currentDayNha, setCurrentDayNha] = useState(null);
@@ -116,10 +116,10 @@ const ModalLichHoc = ({ visible, closeModal, type, data, onCallAPISuccess, lopHo
       });
     },
   });
-  const [actSuaHocKy, { loading: loadingSuaHocKy }] = useMutation(suaHocKyMutation, {
+  const [actSuaLichHoc, { loading: loadingSuaLichHoc }] = useMutation(suaLichHocMutation, {
     onCompleted: (dataRes) => {
-      const _errors = dataRes?.suaHocKy?.errors || [];
-      const _data = dataRes?.suaHocKy?.data || [];
+      const _errors = dataRes?.suaLichHoc?.errors || [];
+      const _data = dataRes?.suaLichHoc?.data || [];
 
       if (!isEmpty(_errors))
         return _errors?.map((item) =>
@@ -138,7 +138,7 @@ const ModalLichHoc = ({ visible, closeModal, type, data, onCallAPISuccess, lopHo
       onCallAPISuccess(_data?.[0]);
 
       notification['success']({
-        message: 'Sửa học kỳ thành công.',
+        message: 'Sửa lịch học thành công.',
       });
     },
   });
@@ -169,7 +169,7 @@ const ModalLichHoc = ({ visible, closeModal, type, data, onCallAPISuccess, lopHo
   };
 
   const handleCallAPIEdit = (inputs, id) => {
-    actSuaHocKy({
+    actSuaLichHoc({
       variables: {
         inputs,
         id,
@@ -226,12 +226,26 @@ const ModalLichHoc = ({ visible, closeModal, type, data, onCallAPISuccess, lopHo
 
   useEffect(() => {
     if (isEmpty(data)) {
+      form?.setFieldsValue({
+        type: 1,
+      });
+
       return;
     }
+
+    const _thoiGianBatDau = moment(data?.thoiGianBatDau);
+
     form.setFieldsValue({
       id: data.id,
-      thuTu: data.thuTu,
-      moTa: data.moTa,
+      ngayHocTrongTuan: data.ngayHocTrongTuan,
+      nhomThucHanh: data?.nhomThucHanh,
+      moTa: data.ghiChu,
+      tietHocBatDau: data?.tietHocBatDau,
+      tietHocKetThuc: data?.tietHocKetThuc,
+      thoiGianBatDau: _thoiGianBatDau,
+      giangVienId: data?.giangVien?.id,
+      phongHocId: data?.phongHoc?.id,
+      type: 1,
     });
   }, [data, form]);
 
@@ -243,7 +257,7 @@ const ModalLichHoc = ({ visible, closeModal, type, data, onCallAPISuccess, lopHo
   const renderForm = () => {
     return (
       <Form {...layout} form={form} name="nest-messages">
-        <Form.Item label="Loại lịch học">
+        <Form.Item name="type" label="Loại lịch học">
           <Radio.Group
             onChange={(value) => setCurrentType(value)}
             options={optionsForType}
@@ -334,7 +348,7 @@ const ModalLichHoc = ({ visible, closeModal, type, data, onCallAPISuccess, lopHo
       visible={visible}
       onCancel={() => closeModal(false)}
       width={1000}
-      confirmLoading={loadingThemLichHoc || loadingSuaHocKy}
+      confirmLoading={loadingThemLichHoc || loadingSuaLichHoc}
       onOk={handleButtonOkClick}
       okText={type === 'add' ? 'Thêm' : 'Sửa'}
     >

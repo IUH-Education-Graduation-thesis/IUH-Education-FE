@@ -75,7 +75,9 @@ const ListLichHocPanel = ({ refetchGetLopHocPhan, lopHocPhan }) => {
       width: 200,
       render: (_, recrod) => (
         <div>
-          <Button danger>Chỉnh sửa</Button>
+          <Button onClick={() => handleClickEditRow(recrod)} danger>
+            Chỉnh sửa
+          </Button>
           <Button onClick={() => handleXoa1LichHoc(recrod?.id)}>Xóa</Button>
         </div>
       ),
@@ -96,6 +98,8 @@ const ListLichHocPanel = ({ refetchGetLopHocPhan, lopHocPhan }) => {
 
   const [showMoldaAdd, setShowMoldaAdd] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [showModalEdit, setShowModalEdit] = useState(false);
+  const [currentLichHoc, setCurrentLichHoc] = useState(null);
 
   /**
    * API
@@ -135,6 +139,11 @@ const ListLichHocPanel = ({ refetchGetLopHocPhan, lopHocPhan }) => {
    * ==========================================
    */
 
+  const handleClickEditRow = (record) => {
+    setCurrentLichHoc(record);
+    setShowModalEdit(true);
+  };
+
   const handleXoa1LichHoc = (id) => {
     actXoaLichHocs({
       variables: {
@@ -145,6 +154,7 @@ const ListLichHocPanel = ({ refetchGetLopHocPhan, lopHocPhan }) => {
 
   const handleModalSuccess = () => {
     setShowMoldaAdd(false);
+    setShowModalEdit(false);
     refetchGetLopHocPhan();
   };
 
@@ -205,6 +215,15 @@ const ListLichHocPanel = ({ refetchGetLopHocPhan, lopHocPhan }) => {
         lopHocPhan={lopHocPhan}
         visible={showMoldaAdd}
         closeModal={() => setShowMoldaAdd(false)}
+      />
+
+      <ModalLichHoc
+        onCallAPISuccess={handleModalSuccess}
+        lopHocPhan={lopHocPhan}
+        visible={showModalEdit}
+        type="edit"
+        data={currentLichHoc}
+        closeModal={() => setShowModalEdit(false)}
       />
     </Collapse>
   );
