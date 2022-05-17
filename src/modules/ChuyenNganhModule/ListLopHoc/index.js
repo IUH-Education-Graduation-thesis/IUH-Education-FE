@@ -6,6 +6,7 @@ import ModalKhoaHoc from './ModalKhoaHoc';
 import queries from 'core/graphql';
 import { useMutation } from '@apollo/client';
 import { isEmpty } from 'lodash';
+import moment from 'moment';
 
 const xoaKhoaHocsMutation = queries.mutation.xoaKhoaHocs('id');
 
@@ -28,11 +29,19 @@ const ListLopHoc = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
       key: 'thoiGianBatDau',
       dataIndex: 'thoiGianBatDau',
       title: 'Thời gian bắt đầu',
+      render: (date) => {
+        const _dateMoment = moment(date)?.format('DD/MM/YYYY');
+        return _dateMoment;
+      },
     },
     {
       key: 'thoiGianKetThuc',
       dataIndex: 'thoiGianKetThuc',
       title: 'Thời gian kết thúc',
+      render: (date) => {
+        const _dateMoment = moment(date)?.format('DD/MM/YYYY');
+        return _dateMoment;
+      },
     },
     {
       title: 'Action',
@@ -159,7 +168,7 @@ const ListLopHoc = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
 
   return (
     <>
-      <Collapse className={prefix}>
+      <Collapse defaultActiveKey={['1']} className={prefix}>
         <Panel className={prefix} showArrow={false} header={renderHeadOfPanel()} key="1">
           <Table
             rowSelection={{

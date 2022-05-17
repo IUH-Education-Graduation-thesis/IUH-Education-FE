@@ -12,8 +12,10 @@ thoiGianBatDau
 thoiGianKetThuc
 chuyenNganh {
     id
+    ten
     khoaVien {
         id
+        ten
     }
 }
 `;

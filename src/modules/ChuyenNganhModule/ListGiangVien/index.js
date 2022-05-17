@@ -157,7 +157,7 @@ const ListGiangVien = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
 
   return (
     <>
-      <Collapse className={prefix}>
+      <Collapse defaultActiveKey={['1']} className={prefix}>
         <Panel className={prefix} showArrow={false} header={renderHeadOfPanel()} key="1">
           <Table
             rowSelection={{

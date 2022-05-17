@@ -1,21 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Table, Divider } from 'antd';
+import { Table, Divider } from 'antd';
 import './KhoaHoc.scss';
-import ModalAddKhoaHoc from './FormAddKhoaHoc';
 import queries from 'core/graphql';
 import { FIND_KHOA_HOC } from './fragment';
 import { useLazyQuery } from '@apollo/client';
 import ExpandFilter from './FilterExpand';
 import { checkTrulyObject } from 'components/helper';
+import moment from 'moment';
 
 const findKhoaHocQuery = queries.query.findKhoaHocs(FIND_KHOA_HOC);
 
 const KhoaHocComponent = () => {
-  const [visibleModalEdit, setVisibleModalEdit] = useState(false);
-  const [visibleModalAdd, setVisibleModalAdd] = useState(false);
-  const [khoaHoc, setKhoa] = useState({});
-  const [data, setData] = useState([]);
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [currentFilter, setCurrentFilter] = useState({
     id: '',
     tenKhoaHoc: '',
@@ -39,45 +34,44 @@ const KhoaHocComponent = () => {
       title: 'ID',
       dataIndex: 'id',
       key: 'id',
-      width: 100,
+      width: 50,
     },
     {
       title: 'Tên khóa học',
       dataIndex: 'khoa',
       key: 'khoa',
-      width: 400,
+      width: 100,
+      render: (khoaHoc) => `Khóa ${khoaHoc}`,
+    },
+    {
+      title: 'Chuyên ngành',
+      width: 100,
+      render: (_, record) => record?.chuyenNganh?.ten,
+    },
+    {
+      title: 'Khoa viện',
+      width: 100,
+      render: (_, record) => record?.chuyenNganh?.khoaVien?.ten,
     },
     {
       title: 'Năm bắt đầu',
       dataIndex: 'thoiGianBatDau',
       key: 'thoiGianBatDau',
-      width: 200,
+      width: 100,
+      render: (date) => moment?.(date)?.format('DD/MM/YYYY'),
     },
     {
       title: 'Năm kết thúc',
       dataIndex: 'thoiGianKetThuc',
       key: 'thoiGianKetThuc',
-      width: 200,
+      width: 100,
+      render: (date) => moment?.(date)?.format('DD/MM/YYYY'),
     },
     {
       title: 'Mô tả',
       dataIndex: 'moTa',
       key: 'moTa',
       width: 300,
-    },
-    {
-      title: 'Thao tác',
-      key: 'thaoTac',
-      width: 300,
-      fixed: 'right',
-      render: (e) => (
-        <div>
-          <Button danger onClick={() => handlerEditButton(e)}>
-            Chỉnh sửa
-          </Button>
-          <Button style={{ marginLeft: 10 }}>Xóa</Button>
-        </div>
-      ),
     },
   ];
 
@@ -103,21 +97,6 @@ const KhoaHocComponent = () => {
    * Function
    * ====================================================================
    */
-  const handlerEditButton = (khoaHoc) => {
-    setKhoa(khoaHoc);
-    setVisibleModalEdit(true);
-  };
-
-  const handleCreateComplete = (e) => {
-    setVisibleModalAdd(false);
-    let _data = data;
-    _data = [e, ..._data];
-    setData(_data);
-  };
-
-  const handleSelectedRowChange = (payload) => {
-    setSelectedRowKeys(payload);
-  };
 
   const handleClickTableRow = (e, record) => {
     const _origin = window?.location?.origin;
@@ -142,36 +121,18 @@ const KhoaHocComponent = () => {
       <h3>DANH SÁCH KHÓA HỌC</h3>
       <ExpandFilter onFilterChange={handleFilterChange} currentFilterData={currentFilter} />
       <Divider />
-      <div className="khoaHoc__action">
-        <Button danger>Xóa khóa học đã chọn</Button>
-      </div>
+
       <Table
         loading={loadingFindKhoaHoc}
         className="ant-table-wrapper"
         columns={columns}
         dataSource={listKhoa}
         scroll={{ x: 1500, y: '50vh' }}
-        rowSelection={{
-          selectedRowKeys,
-          onChange: handleSelectedRowChange,
-        }}
         onRow={(record) => {
           return {
             onClick: (e) => handleClickTableRow(e, record),
           };
         }}
-      />
-      <ModalAddKhoaHoc
-        type="add"
-        visible={visibleModalAdd}
-        closeModal={setVisibleModalAdd}
-        onCreateComplete={(e) => handleCreateComplete(e)}
-      />
-      <ModalAddKhoaHoc
-        type="edit"
-        visible={visibleModalEdit}
-        closeModal={setVisibleModalEdit}
-        data={khoaHoc}
       />
     </div>
   );

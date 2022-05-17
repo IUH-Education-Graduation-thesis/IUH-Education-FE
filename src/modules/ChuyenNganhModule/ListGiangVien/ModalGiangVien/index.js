@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Modal, Form, Input, notification } from 'antd';
+import { Modal, Form, Input, notification, Switch } from 'antd';
 import queries from 'core/graphql';
 import PropTypes from 'prop-types';
 
@@ -183,6 +183,9 @@ const ModalGiangVien = ({ visible, closeModal, type, data, onCallAPISuccess, chu
           label="Tên"
         >
           <Input />
+        </Form.Item>
+        <Form.Item label="Giới tính" name={'gioiTinh'}>
+          <Switch checkedChildren="Nam" unCheckedChildren="Nữ" />
         </Form.Item>
         <Form.Item name={'email'} label="Email">
           <Input />

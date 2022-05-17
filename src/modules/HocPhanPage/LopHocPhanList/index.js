@@ -24,7 +24,20 @@ const LopHocPhanList = ({ data, refetchFindHocPhan }) => {
    * =======================================================
    */
 
-  const { data: dataGetNamHocs } = useQuery(getNamHocsQuery);
+  const { data: dataGetNamHocs } = useQuery(getNamHocsQuery, {
+    onCompleted: (dataRes) => {
+      const _data = dataRes?.getNamHocs?.data;
+
+      const _lastNamHoc = _data?.[_data?.length - 1] || {};
+
+      const _listHocKyOfLastNamHoc = _lastNamHoc?.hocKyNormals || [];
+
+      const _lastHocKyOfNamHoc = _listHocKyOfLastNamHoc?.[_listHocKyOfLastNamHoc?.length - 1] || {};
+
+      setCurrentNamHoc(_lastNamHoc);
+      setCurrentHocKy(_lastHocKyOfNamHoc);
+    },
+  });
 
   const dataForSelectNamHoc =
     dataGetNamHocs?.getNamHocs?.data?.map((item) => ({
@@ -116,6 +129,11 @@ const LopHocPhanList = ({ data, refetchFindHocPhan }) => {
       title: 'Số lượng tối đa',
     },
     {
+      key: 'soLuongHienTai',
+      dataIndex: 'soLuongHienTai',
+      title: 'Số lượng hiện tại',
+    },
+    {
       title: 'Action',
       key: 'operation',
       fixed: 'right',
@@ -152,13 +170,19 @@ const LopHocPhanList = ({ data, refetchFindHocPhan }) => {
       <Form className={`${prefix}__filter`}>
         <Form.Item label="Năm học">
           <Select
+            value={currentNamHoc?.id}
             onChange={handleNamHocChange}
             options={dataForSelectNamHoc}
             placeholder="Năm học"
           />
         </Form.Item>
         <Form.Item label="Học kỳ">
-          <Select onChange={handleHocKyChange} options={dataForSelectHocKy} placeholder="Học kỳ" />
+          <Select
+            value={currentHocKy?.id}
+            onChange={handleHocKyChange}
+            options={dataForSelectHocKy}
+            placeholder="Học kỳ"
+          />
         </Form.Item>
       </Form>
 

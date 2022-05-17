@@ -189,17 +189,8 @@ const ModalLopHocPhan = ({
         <Form.Item name={'id'} label="ID">
           <Input disabled />
         </Form.Item>
-        <Form.Item
-          rules={[
-            {
-              required: true,
-              message: 'Không được bỏ trống!',
-            },
-          ]}
-          name={'maLopHocPhan'}
-          label="Mã lớp học phần"
-        >
-          <Input />
+        <Form.Item name={'maLopHocPhan'} label="Mã lớp học phần">
+          <Input disabled />
         </Form.Item>
         <Form.Item
           hidden={type === 'add'}

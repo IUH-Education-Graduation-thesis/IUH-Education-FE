@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import queries from 'core/graphql';
-import { Button, Form, Input, Select } from 'antd';
+import { Form, Input, Select } from 'antd';
 import {
   SearchOutlined,
   ArrowDownOutlined,
@@ -18,7 +18,7 @@ const findKhoaVienQuery = queries.query.findKhoaVien(FIND_KHOA_VIEN);
 
 const { useForm } = Form;
 
-const ExpandFilter = ({ onAddAStudentClick, onFilterChange, currentFilterData, onClear }) => {
+const ExpandFilter = ({ onFilterChange, currentFilterData, onClear }) => {
   const [form] = useForm();
 
   const [expanded, setExpanded] = useState(false);
@@ -98,11 +98,6 @@ const ExpandFilter = ({ onAddAStudentClick, onFilterChange, currentFilterData, o
         </div>
 
         <div className={`${prefix}__top__right`}>
-          <Button onClick={onAddAStudentClick} type="primary">
-            {' '}
-            + Thêm 1 khóa học
-          </Button>
-
           {renderArrow}
           <ClearOutlined onClick={handleClearFilter} />
         </div>
