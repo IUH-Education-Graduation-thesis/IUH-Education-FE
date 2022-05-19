@@ -56,6 +56,7 @@ import themHocPhanVaoHocKy from './themHocPhanVaoHocKy';
 import xoaLichHocs from './xoaLichHocs';
 import suaLichHoc from './suaLichHoc';
 import suaNamHoc from './suaNamHoc';
+import themHocKyNormal from './themHocKyNormal';
 
 const query = {
   ...GetProfile.query,
@@ -119,6 +120,7 @@ const mutation = {
   ...xoaLichHocs.mutation,
   ...suaLichHoc.mutation,
   ...suaNamHoc.mutation,
+  ...themHocKyNormal.mutation,
 };
 
 export default {

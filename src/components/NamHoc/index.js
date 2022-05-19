@@ -151,6 +151,18 @@ const NamHoc = () => {
     });
   }, [actXoaNamHocs, selectedRowKeys]);
 
+  const handleRefetchFilterNamHoc = () => {
+    const _inputs = checkTrulyObject(currentConfig);
+
+    actFilterNamHoc({
+      variables: {
+        inputs: {
+          ..._inputs,
+        },
+      },
+    });
+  };
+
   /**
    * render view
    * ================================================================
@@ -226,7 +238,9 @@ const NamHoc = () => {
           onChange: handleSelectedRowChange,
         }}
         expandable={{
-          expandedRowRender: (record) => <TableExpand data={record} />,
+          expandedRowRender: (record) => (
+            <TableExpand refectFilterNamHoc={handleRefetchFilterNamHoc} data={record} />
+          ),
         }}
       />
       <ModalNamHoc
