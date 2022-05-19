@@ -8,6 +8,7 @@ import './SinhVien.scss';
 import ExpandFilter from './FilterExpand';
 import { FIND_SINH_VIEN_FRAGMENT } from './fragment';
 import { isEmpty } from 'lodash';
+import ModalAddSinhVienWithFile from './ModalAddSinhVienWithFile';
 
 const findSinhVienQuery = queries.query.findSinhVien(FIND_SINH_VIEN_FRAGMENT);
 const xoaSinhViensQuery = queries.mutation.xoaSinhViens('id');
@@ -15,6 +16,7 @@ const xoaSinhViensQuery = queries.mutation.xoaSinhViens('id');
 const SinhVienComponent = () => {
   const [visibleModalEdit, setVisibleModalEdit] = useState(false);
   const [visibleModalAdd, setVisibleModalAdd] = useState(false);
+  const [visibleModalAddFile, setVisibleModalAddFile] = useState(false);
   const [sinhVien, setSinhVien] = useState({});
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
@@ -113,7 +115,7 @@ const SinhVienComponent = () => {
    * =======================================================
    */
 
-  const [actXoaSinhViens, { loadingXoaSinhViens }] = useMutation(xoaSinhViensQuery, {
+  const [actXoaSinhViens, { loading: loadingXoaSinhViens }] = useMutation(xoaSinhViensQuery, {
     onCompleted: (dataRes) => {
       const _errors = dataRes?.xoaSinhViens?.errors || [];
       const _data = dataRes?.xoaSinhViens?.data || [];
@@ -224,6 +226,11 @@ const SinhVienComponent = () => {
     currentFilter?.tenSinhVien,
   ]);
 
+  const handleModalSuccess = () => {
+    callAPIFindSinhVien();
+    setVisibleModalAddFile(false);
+  };
+
   const handleXoaSinhViens = useCallback(() => {
     if (isEmpty(selectedRowKeys)) return;
 
@@ -281,12 +288,18 @@ const SinhVienComponent = () => {
         onFilterChange={handleFilterChange}
         onAddAStudentClick={() => setVisibleModalAdd(true)}
         onClear={handleClearFilter}
+        onAddWithFileClick={() => setVisibleModalAddFile(true)}
       />
 
       <Divider />
 
       <div className="sinhvien__action">
-        <Button onClick={handleXoaSinhViens} disabled={isEmpty(selectedRowKeys)} danger>
+        <Button
+          loading={loadingXoaSinhViens}
+          onClick={handleXoaSinhViens}
+          disabled={isEmpty(selectedRowKeys)}
+          danger
+        >
           Xóa sinh vien đã chọn
         </Button>
       </div>
@@ -314,6 +327,11 @@ const SinhVienComponent = () => {
         closeModal={setVisibleModalEdit}
         data={sinhVien}
         onAddSuccess={handleOnAddSinhVienSuccess}
+      />
+      <ModalAddSinhVienWithFile
+        visible={visibleModalAddFile}
+        closeModal={() => setVisibleModalAddFile(false)}
+        onSuccess={handleModalSuccess}
       />
     </div>
   );

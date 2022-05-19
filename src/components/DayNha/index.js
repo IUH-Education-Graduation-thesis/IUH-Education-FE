@@ -39,24 +39,25 @@ const DayNha = () => {
       title: 'Mã dãy nhà',
       dataIndex: 'id',
       key: 'id',
-      width: 100,
+      width: 50,
     },
     {
       title: 'Tên dãy nhà',
       dataIndex: 'tenDayNha',
       key: 'tenDayNha',
-      width: 400,
+      width: 100,
+      render: (dayNha) => `Nhà ${dayNha}`,
     },
     {
       title: 'Mô tả',
       dataIndex: 'moTa',
       key: 'moTa',
-      width: 300,
+      width: 100,
     },
     {
       title: 'Thao tác',
       key: 'thaoTac',
-      width: 300,
+      width: 100,
       render: (e) => (
         <div>
           <Button danger onClick={() => handlerEditButton(e)}>
@@ -155,7 +156,7 @@ const DayNha = () => {
         className="ant-table-wrapper"
         columns={columns}
         dataSource={data}
-        scroll={{ x: 1500, y: '50vh' }}
+        scroll={{ x: 700, y: '50vh' }}
         rowSelection={{
           selectedRowKeys,
           onChange: handleSelectedRowChange,

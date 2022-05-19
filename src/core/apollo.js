@@ -5,7 +5,8 @@ import { onError } from '@apollo/client/link/error';
 
 import { clientCache } from 'helpers';
 import config from 'config';
-import { createHttpLink } from '@apollo/client/core';
+// import { createHttpLink } from '@apollo/client/core';
+import { createUploadLink } from 'apollo-upload-client/public';
 
 const getAccessToken = () => {
   // get the authentication token from local storage if it exists
@@ -14,7 +15,11 @@ const getAccessToken = () => {
   return token;
 };
 
-const httpLink = createHttpLink({
+// const httpLink = createHttpLink({
+//   uri: config.GRAPHQL_URL,
+// });
+
+const httpLink = createUploadLink({
   uri: config.GRAPHQL_URL,
 });
 
