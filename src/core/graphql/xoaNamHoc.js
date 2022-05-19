@@ -2,20 +2,20 @@ import { gql } from '@apollo/client';
 
 export default {
   mutation: {
-    xoaNamHoc: (fragment) => gql`
-        mutation DELETE_NAMHOC($id: ID!) {
-            xoaNamHoc(id: $id) {
-                status
-                message
-                errors {
-                  message
-                  error_fields
-                }
-                data {
-                  ${fragment}
-                }
-              }
+    xoaNamHocs: (fragment) => gql`
+      mutation ($ids: [ID!]) {
+        xoaNamHocs(ids: $ids) {
+          status
+          errors {
+            message
+            error_fields
+          }
+          message
+          data {
+            ${fragment}
+          }
         }
-        `,
+      }
+    `,
   },
 };

@@ -7,7 +7,7 @@ import suaDayNha from './suaDayNha';
 import themPhongHoc from './themPhongHoc';
 import findPhongHoc from './findPhongHoc';
 import xoaPhongHoc from './xoaPhongHoc';
-import xoaNamHoc from './xoaNamHoc';
+import xoaNamHocs from './xoaNamHoc';
 import findNamHoc from './filterNamHoc';
 import themNamHoc from './themNamHoc';
 import findKhoaHocs from './findKhoaHocs';
@@ -80,7 +80,7 @@ const mutation = {
   ...themPhongHoc.mutation,
   ...xoaPhongHoc.mutation,
   ...themNamHoc.mutation,
-  ...xoaNamHoc.mutation,
+  ...xoaNamHocs.mutation,
   ...themKhoaHoc.mutation,
   ...xoaKhoaHoc.mutation,
   ...xoaSinhViens.mutation,

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Divider, Table } from 'antd';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Button, Divider, notification, Table } from 'antd';
+import { isEmpty } from 'lodash';
 
 import queries from 'core/graphql';
-import { useLazyQuery } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 
 import './NamHoc.scss';
 import { GET_NAMHOC_FRAGMENT } from './fragment';
@@ -13,6 +14,7 @@ import { checkTrulyObject } from 'components/helper';
 
 // Call API
 const filterNamHocQuery = queries.query.filterNamHoc(GET_NAMHOC_FRAGMENT);
+const xoaNamHocs = queries.mutation.xoaNamHocs('id');
 
 const NamHoc = () => {
   const [visibleModalEdit, setVisibleModalEdit] = useState(false);
@@ -26,8 +28,47 @@ const NamHoc = () => {
    * ============================================================
    */
 
-  const [actFilterNamHoc, { data: dataFilterNamHoc, loading: loadingFilterNamHoc }] =
-    useLazyQuery(filterNamHocQuery);
+  const [actXoaNamHocs, { loading: loadingXoaKhoaVien }] = useMutation(xoaNamHocs, {
+    onCompleted: (dataRes) => {
+      const _errors = dataRes?.xoaNamHocs?.errors || [];
+      const _data = dataRes?.xoaNamHocs?.data || [];
+
+      if (!isEmpty(_errors))
+        return _errors?.map((item) =>
+          notification['error']({
+            message: item?.message,
+          }),
+        );
+
+      if (isEmpty(_data)) {
+        notification['error']({
+          message: 'Lỗi hệ thống!',
+        });
+        return;
+      }
+
+      const _inputs = checkTrulyObject(currentConfig);
+
+      actFilterNamHoc({
+        variables: {
+          inputs: {
+            ..._inputs,
+          },
+        },
+      });
+
+      notification['success']({
+        message: `Xóa thành công ${_data?.length} năm học.`,
+      });
+    },
+  });
+
+  const [actFilterNamHoc, { data: dataFilterNamHoc, loading: loadingFilterNamHoc }] = useLazyQuery(
+    filterNamHocQuery,
+    {
+      fetchPolicy: 'network-only',
+    },
+  );
 
   const dataForTableNamHoc = dataFilterNamHoc?.filterNamHoc?.data?.[0]?.result?.map((item) => ({
     ...item,
@@ -63,7 +104,20 @@ const NamHoc = () => {
     setVisibleModalEdit(true);
   };
 
-  const handleButtonDelete = async () => {
+  const handleButtonDelete = (record) => {
+    const _id = record?.id;
+
+    actXoaNamHocs({
+      variables: {
+        ids: [_id],
+      },
+    });
+  };
+
+  const handleModalNamHocSuccess = () => {
+    setVisibleModalEdit(false);
+    setVisibleModalAdd(false);
+
     const _inputs = checkTrulyObject(currentConfig);
 
     actFilterNamHoc({
@@ -73,11 +127,6 @@ const NamHoc = () => {
         },
       },
     });
-  };
-
-  const handleModalNamHocSuccess = () => {
-    setVisibleModalEdit(false);
-    setVisibleModalAdd(false);
   };
 
   const handleSelectedRowChange = (payload) => {
@@ -91,6 +140,16 @@ const NamHoc = () => {
   const handleClearFilter = () => {
     setCurrentConfig({});
   };
+
+  const handleXoaMultipleNamHoc = useCallback(() => {
+    if (isEmpty(selectedRowKeys)) return;
+
+    actXoaNamHocs({
+      variables: {
+        ids: selectedRowKeys,
+      },
+    });
+  }, [actXoaNamHocs, selectedRowKeys]);
 
   /**
    * render view
@@ -127,12 +186,12 @@ const NamHoc = () => {
       key: 'thaoTac',
       fixed: 'right',
       width: 100,
-      render: (e) => (
+      render: (_, record) => (
         <div>
-          <Button danger onClick={() => handlerEditButton(e)}>
+          <Button danger onClick={() => handlerEditButton(record)}>
             Chỉnh sửa
           </Button>
-          <Button style={{ marginLeft: 10 }} onClick={() => handleButtonDelete(e)}>
+          <Button style={{ marginLeft: 10 }} onClick={() => handleButtonDelete(record)}>
             Xóa
           </Button>
         </div>
@@ -152,7 +211,9 @@ const NamHoc = () => {
       />
       <Divider />
       <div className="namHoc__action">
-        <Button danger>Xóa năm học đã chọn</Button>
+        <Button onClick={handleXoaMultipleNamHoc} loading={loadingXoaKhoaVien} danger>
+          Xóa năm học đã chọn
+        </Button>
       </div>
       <Table
         loading={loadingFilterNamHoc}
