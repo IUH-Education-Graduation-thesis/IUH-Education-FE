@@ -7,8 +7,9 @@ import { isEmpty } from 'lodash';
 import { useMutation } from '@apollo/client';
 import { checkTrulyObject } from 'components/helper';
 import TextArea from 'antd/lib/input/TextArea';
+import moment from 'moment';
 
-const suaGiangVienMutation = queries.mutation.suaGiangVien('id');
+const suaNamHocMutation = queries.mutation.suaNamHoc('id');
 const themNamHocMutation = queries.mutation.themNamHoc('id');
 
 const ModalNamHoc = ({ visible, closeModal, type, data, onCallAPISuccess }) => {
@@ -51,10 +52,10 @@ const ModalNamHoc = ({ visible, closeModal, type, data, onCallAPISuccess }) => {
       });
     },
   });
-  const [actSuaGiangVien, { loading: loadingSuaGiangVien }] = useMutation(suaGiangVienMutation, {
+  const [actSuaNamHoc, { loading: loadingSuaNamHoc }] = useMutation(suaNamHocMutation, {
     onCompleted: (dataRes) => {
-      const _errors = dataRes?.suaGiangVien?.errors || [];
-      const _data = dataRes?.suaGiangVien?.data || [];
+      const _errors = dataRes?.suaNamHoc?.errors || [];
+      const _data = dataRes?.suaNamHoc?.data || [];
 
       if (!isEmpty(_errors))
         return _errors?.map((item) =>
@@ -73,7 +74,7 @@ const ModalNamHoc = ({ visible, closeModal, type, data, onCallAPISuccess }) => {
       onCallAPISuccess(_data?.[0]);
 
       notification['success']({
-        message: 'Sửa giảng viên thành công.',
+        message: 'Sửa năm học thành công.',
       });
     },
   });
@@ -91,7 +92,7 @@ const ModalNamHoc = ({ visible, closeModal, type, data, onCallAPISuccess }) => {
   };
 
   const handleCallAPIEdit = (inputs, id) => {
-    actSuaGiangVien({
+    actSuaNamHoc({
       variables: {
         inputs,
         id,
@@ -145,15 +146,23 @@ const ModalNamHoc = ({ visible, closeModal, type, data, onCallAPISuccess }) => {
    */
 
   useEffect(() => {
+    if (!visible) return;
+
+    form?.resetFields();
+  }, [form, visible]);
+
+  useEffect(() => {
     if (isEmpty(data)) {
       return;
     }
+
+    const _namBatDauMonment = moment(data?.namBatDau, 'YYYY');
+    const _namKetThucMoment = moment(data?.namKetThuc, 'YYYY');
+
     form.setFieldsValue({
-      id: data.id,
-      ten: data.ten,
-      hoTenDem: data?.hoTenDem,
-      email: data?.email,
-      soDienThoai: data?.soDienThoai,
+      id: data?.id,
+      _namHoc: [_namBatDauMonment, _namKetThucMoment],
+      ghiChu: data?.ghiChu,
     });
   }, [data, form]);
 
@@ -194,7 +203,7 @@ const ModalNamHoc = ({ visible, closeModal, type, data, onCallAPISuccess }) => {
       visible={visible}
       onCancel={() => closeModal(false)}
       width={1000}
-      confirmLoading={loadingThemNamHoc || loadingSuaGiangVien}
+      confirmLoading={loadingThemNamHoc || loadingSuaNamHoc}
       onOk={handleButtonOkClick}
       okText={type === 'add' ? 'Thêm' : 'Sửa'}
     >
