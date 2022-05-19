@@ -12,7 +12,7 @@ const { Panel } = Collapse;
 
 const xoaLichHocsMutation = queries.mutation.xoaLichHocs('id');
 
-const ListLichHocPanel = ({ refetchGetLopHocPhan, lopHocPhan }) => {
+const ListLichHocPanel = ({ refetchGetLopHocPhan, lopHocPhan, loading }) => {
   const columns = [
     {
       key: 'id',
@@ -200,6 +200,7 @@ const ListLichHocPanel = ({ refetchGetLopHocPhan, lopHocPhan }) => {
     <Collapse defaultActiveKey={['1']} className={prefix}>
       <Panel className={prefix} showArrow={false} header={renderHeadOfPanel()} key="1">
         <Table
+          loading={loading}
           rowSelection={{
             selectedRowKeys,
             onChange: handleTableSelectChange,

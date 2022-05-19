@@ -13,7 +13,9 @@ const { Panel } = Collapse;
 
 const xoaMonHocsMutation = queries.mutation.xoaMonHocs('id');
 
-const ListMonHoc = ({ data, khoaVienID, refetchFindKhoaVien }) => {
+const ListMonHoc = ({ data, khoaVienID, refetchFindKhoaVien, loading }) => {
+  const dataSorted = data?.sort((a, b) => b?.id - a?.id);
+
   const columns = [
     {
       key: 'id',
@@ -160,6 +162,7 @@ const ListMonHoc = ({ data, khoaVienID, refetchFindKhoaVien }) => {
       <Collapse defaultActiveKey={['1']} className={prefix}>
         <Panel className={prefix} showArrow={false} header={renderHeadOfPanel()} key="1">
           <Table
+            loading={loading}
             rowSelection={{
               selectedRowKeys,
               onChange: handleSelectedKeyChange,
@@ -174,7 +177,7 @@ const ListMonHoc = ({ data, khoaVienID, refetchFindKhoaVien }) => {
               ),
             }}
             columns={columns}
-            dataSource={data}
+            dataSource={dataSorted}
           />
         </Panel>
       </Collapse>

@@ -21,7 +21,11 @@ const KhoaVienModule = () => {
    * ======================================================
    */
 
-  const { data: dataFindKhoaVien, refetch: refetchFindKhoaVien } = useQuery(findKhoaVienQuery, {
+  const {
+    data: dataFindKhoaVien,
+    loading: loadingFindKhoaVien,
+    refetch: refetchFindKhoaVien,
+  } = useQuery(findKhoaVienQuery, {
     fetchPolicy: 'network-only',
     skip: !id,
     variables: {
@@ -78,11 +82,16 @@ const KhoaVienModule = () => {
           </Row>
         </Card>
         <ListMonHoc
+          loading={loadingFindKhoaVien}
           refetchFindKhoaVien={refetchFindKhoaVien}
           khoaVienID={id}
           data={dataForMonHoc}
         />
-        <ListChuyenNganh refetchKhoaVien={refetchFindKhoaVien} data={dataForChuyenNganh} />
+        <ListChuyenNganh
+          loading={loadingFindKhoaVien}
+          refetchKhoaVien={refetchFindKhoaVien}
+          data={dataForChuyenNganh}
+        />
       </Col>
       <Col span={4}></Col>
     </Row>

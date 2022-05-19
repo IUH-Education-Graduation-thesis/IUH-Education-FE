@@ -12,7 +12,7 @@ const prefix = 'khoa-vien-chuyen-nganh';
 
 const xoaChuyenNganhMutation = queries.mutation.xoaChuyenNganhs('id');
 
-const ChuyenNganhList = ({ data, refetchKhoaVien }) => {
+const ChuyenNganhList = ({ data, refetchKhoaVien, loading }) => {
   const { id: khoaVienId } = useParams();
 
   const columns = [
@@ -160,6 +160,7 @@ const ChuyenNganhList = ({ data, refetchKhoaVien }) => {
       <Collapse defaultActiveKey={['1']} className={prefix}>
         <Panel className={prefix} showArrow={false} header={renderHeadOfPanel()} key="1">
           <Table
+            loading={loading}
             onRow={(record) => {
               return {
                 onClick: () => {

@@ -21,7 +21,11 @@ const HocPhanModule = () => {
    * =================================================
    */
 
-  const { data: dataFindHocPhan, refetch: refetchFindHocPhan } = useQuery(findHocPhanQuery, {
+  const {
+    data: dataFindHocPhan,
+    loading: loadingFindHocPhan,
+    refetch: refetchFindHocPhan,
+  } = useQuery(findHocPhanQuery, {
     skip: !hoc_phan_id,
     variables: {
       inputs: {
@@ -80,7 +84,11 @@ const HocPhanModule = () => {
           </Row>
         </Card>
         <MonHocCollapse />
-        <LopHocPhanList data={dataForListLopHocPhan} refetchFindHocPhan={refetchFindHocPhan} />
+        <LopHocPhanList
+          loading={loadingFindHocPhan}
+          data={dataForListLopHocPhan}
+          refetchFindHocPhan={refetchFindHocPhan}
+        />
       </Col>
       <Col span={4}></Col>
     </Row>

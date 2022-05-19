@@ -7,6 +7,7 @@ import queries from 'core/graphql';
 import { useMutation } from '@apollo/client';
 import { isEmpty } from 'lodash';
 import moment from 'moment';
+import { useParams } from 'react-router-dom';
 
 const xoaKhoaHocsMutation = queries.mutation.xoaKhoaHocs('id');
 
@@ -14,6 +15,10 @@ const { Panel } = Collapse;
 const prefix = 'chuyen-nganh-lop-hoc';
 
 const ListLopHoc = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
+  const params = useParams();
+
+  console.log('params', params);
+
   const columns = [
     {
       key: 'id',
@@ -146,6 +151,16 @@ const ListLopHoc = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
       },
     });
   };
+
+  const handleClickRowTable = (e, record) => {
+    const _origin = window?.location?.origin;
+
+    const _khoaVienId = params?.id;
+    const _chuyenNganhId = params?.chuyen_nganh_id;
+
+    window.location.href = `${_origin}/khoa-vien/${_khoaVienId}/chuyen-nganh/${_chuyenNganhId}/khoa/${record?.id}`;
+  };
+
   /**
    * Render view
    * ===================================================
@@ -174,6 +189,11 @@ const ListLopHoc = ({ data, chuyenNganhId, refetchFindChuyenNganh }) => {
             rowSelection={{
               selectedRowKeys,
               onChange: handleSelectedRowChange,
+            }}
+            onRow={(record) => {
+              return {
+                onClick: (e) => handleClickRowTable(e, record),
+              };
             }}
             expandable={{
               expandedRowRender: (record) => (

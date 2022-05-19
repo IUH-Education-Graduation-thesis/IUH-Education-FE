@@ -12,7 +12,7 @@ const prefix = 'khoa-hoc-ky';
 const { Panel } = Collapse;
 const xoaHocKysMutation = queries.mutation.xoaHocKys('id');
 
-const ListHocKy = ({ data, khoaId, refetchFindKhoaHoc, khoaHoc }) => {
+const ListHocKy = ({ data, khoaId, refetchFindKhoaHoc, khoaHoc, loading }) => {
   const columns = [
     {
       key: 'id',
@@ -160,6 +160,7 @@ const ListHocKy = ({ data, khoaId, refetchFindKhoaHoc, khoaHoc }) => {
       <Collapse defaultActiveKey={['1']} className={prefix}>
         <Panel className={prefix} showArrow={false} header={renderHeadOfPanel()} key="1">
           <Table
+            loading={loading}
             bordered
             rowSelection={{
               selectedRowKeys,

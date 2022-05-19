@@ -24,7 +24,11 @@ const LopHocPhanModule = () => {
    * =======================================================
    */
 
-  const { data: dataGetLopHocPhan, refetch: refetchGetLopHocPhan } = useQuery(getLopHocPhanQuery, {
+  const {
+    data: dataGetLopHocPhan,
+    loading: loadingGetLopHocPhan,
+    refetch: refetchGetLopHocPhan,
+  } = useQuery(getLopHocPhanQuery, {
     skip: !lop_hoc_phan_id,
     variables: {
       id: lop_hoc_phan_id,
@@ -114,11 +118,16 @@ const LopHocPhanModule = () => {
         </Card>
 
         <ListLichHocPanel
+          loading={loadingGetLopHocPhan}
           lopHocPhan={lopHocPhan}
           lopHocPhanId={lop_hoc_phan_id}
           refetchGetLopHocPhan={refetchGetLopHocPhan}
         />
-        <ListSinhVienPanel lopHocPhan={lopHocPhan} refetchGetLopHocPhan={refetchGetLopHocPhan} />
+        <ListSinhVienPanel
+          loading={loadingGetLopHocPhan}
+          lopHocPhan={lopHocPhan}
+          refetchGetLopHocPhan={refetchGetLopHocPhan}
+        />
       </Col>
       <Col span={4} />
       <ModalLopHocPhan

@@ -19,7 +19,11 @@ const KhoaHocModule = () => {
    * =======================================================
    */
 
-  const { data: dataFindKhoaHoc, refetch: refetchFindKhoaHoc } = useQuery(findKhoaHocQuery, {
+  const {
+    data: dataFindKhoaHoc,
+    refetch: refetchFindKhoaHoc,
+    loading: loadingKhoaHoc,
+  } = useQuery(findKhoaHocQuery, {
     skip: !khoa_id,
     fetchPolicy: 'network-only',
     variables: {
@@ -72,6 +76,7 @@ const KhoaHocModule = () => {
           </Row>
         </Card>
         <ListHocKy
+          loading={loadingKhoaHoc}
           khoaHoc={khoaHoc}
           refetchFindKhoaHoc={refetchFindKhoaHoc}
           khoaId={khoa_id}

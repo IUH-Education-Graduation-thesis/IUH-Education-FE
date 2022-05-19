@@ -1,3 +1,4 @@
+/* eslint-disable no-unsafe-optional-chaining */
 import { Button, Divider, notification, Table } from 'antd';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
@@ -143,16 +144,12 @@ const TableExpand = ({ data, refectFilterNamHoc }) => {
   };
 
   const handleThemHocKy = () => {
-    const _newHocKy =
-      hocKySorted?.reduce(
-        (a, b) => (a?.thuTuHocKy > b?.thuTuHocKy ? a?.thuTuHocKy : b?.thuTuHocKy),
-        0,
-      ) + 1 || 1;
+    const _max = Math?.max(...[...hocKySorted?.map((item) => item?.thuTuHocKy)]) || 0;
 
     actThemHocKyNormal({
       variables: {
         inputs: {
-          thuTuHocKy: _newHocKy,
+          thuTuHocKy: _max + 1,
           namHocId: data?.id,
         },
       },

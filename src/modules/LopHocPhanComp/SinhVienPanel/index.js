@@ -1,14 +1,20 @@
-import { Button, Collapse, Table } from 'antd';
+import { Button, Collapse, notification, Table } from 'antd';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import ModalSinhVien from './ModalSinhVien';
 import ModalDiem from './ModalDiem';
+import queries from 'core/graphql';
+import { useMutation } from '@apollo/client';
+import { isEmpty } from 'lodash';
 
 const prefix = 'sinh-vien-list-panel';
 const { Panel } = Collapse;
+const xoaSinhVienMutation = queries.mutation.xoaSinhVienOfLopHocPhan('id');
 
-const SinhVienList = ({ lopHocPhan, refetchGetLopHocPhan }) => {
+const SinhVienList = ({ lopHocPhan, refetchGetLopHocPhan, loading }) => {
   const listSinhVien = lopHocPhan?.sinhVienLopHocPhans || [];
+
+  console.log('lopHocPhan', lopHocPhan);
 
   const listSinhVienFormat = listSinhVien?.map((item) => ({
     key: item?.sinhVien?.id,
@@ -31,6 +37,7 @@ const SinhVienList = ({ lopHocPhan, refetchGetLopHocPhan }) => {
   const [isModalSinhVien, setIsModalSinhVien] = useState(false);
   const [isModalDiem, setIsModalDiem] = useState(false);
   const [currentSinhVien, setCurrentSinhVien] = useState({});
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const columns = [
     {
@@ -90,16 +97,61 @@ const SinhVienList = ({ lopHocPhan, refetchGetLopHocPhan }) => {
           >
             Điểm
           </Button>
-          <Button>Xóa</Button>
+          <Button loading={loadingXoaSinhVien} onClick={() => handleXoaSinhVien(record)}>
+            Xóa
+          </Button>
         </div>
       ),
     },
   ];
 
   /**
+   * API
+   * ====================================================
+   */
+
+  const [actXoaSinhVien, { loading: loadingXoaSinhVien }] = useMutation(xoaSinhVienMutation, {
+    onCompleted: (dataRes) => {
+      const _errors = dataRes?.xoaSinhVienOfLopHocPhan?.errors || [];
+      const _data = dataRes?.xoaSinhVienOfLopHocPhan?.data || [];
+
+      if (!isEmpty(_errors))
+        return _errors?.map((item) =>
+          notification['error']({
+            message: item?.message,
+          }),
+        );
+
+      if (isEmpty(_data)) {
+        notification['error']({
+          message: 'Lỗi hệ thống!',
+        });
+        return;
+      }
+
+      refetchGetLopHocPhan();
+
+      notification['success']({
+        message: `Xóa ${_data?.length} học sinh khỏi lớp học phần thành công.`,
+      });
+    },
+  });
+
+  /**
    * Function
    * =============================================
    */
+
+  const handleXoaSinhVien = (record) => {
+    const _id = record?.id;
+
+    actXoaSinhVien({
+      variables: {
+        sinhVienIds: [_id],
+        lopHocPhanId: lopHocPhan?.id,
+      },
+    });
+  };
 
   const handleClickXemDiem = (sinhVien) => {
     setIsModalDiem(true);
@@ -121,6 +173,17 @@ const SinhVienList = ({ lopHocPhan, refetchGetLopHocPhan }) => {
     refetchGetLopHocPhan();
   };
 
+  const handleXoaMultiSinhVien = (e) => {
+    e?.stopPropagation();
+
+    actXoaSinhVien({
+      variables: {
+        sinhVienIds: [...selectedRowKeys],
+        lopHocPhanId: lopHocPhan?.id,
+      },
+    });
+  };
+
   /**
    * Render view
    * ===================================================
@@ -130,7 +193,9 @@ const SinhVienList = ({ lopHocPhan, refetchGetLopHocPhan }) => {
       <div className={`${prefix}__header`}>
         <div className={`${prefix}__header__left`}>Danh sách sinh viên</div>
         <div className={`${prefix}__header__right`}>
-          <Button danger>Xóa sinh viên đã chọn</Button>
+          <Button onClick={handleXoaMultiSinhVien} loading={loadingXoaSinhVien} danger>
+            Xóa sinh viên đã chọn
+          </Button>
           <Button onClick={handleClickButtonThemSinhVien} type="primary">
             Thêm sinh viên
           </Button>
@@ -144,6 +209,11 @@ const SinhVienList = ({ lopHocPhan, refetchGetLopHocPhan }) => {
       <Collapse defaultActiveKey={[1]} className={prefix}>
         <Panel className={prefix} showArrow={false} header={renderHeadOfPanel()} key="1">
           <Table
+            rowSelection={{
+              selectedRowKeys,
+              onChange: (value) => setSelectedRowKeys(value),
+            }}
+            loading={loading}
             scroll={{ x: '100%', y: '100%' }}
             dataSource={listSinhVienFormat}
             columns={columns}

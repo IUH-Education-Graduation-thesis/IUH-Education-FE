@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 const prefix = 'danh-sach-lop-hoc-phan';
 const getNamHocsQuery = queries.query.getNamHocs(GET_NAM_HOC_FRAGMENT);
 
-const LopHocPhanList = ({ data, refetchFindHocPhan }) => {
+const LopHocPhanList = ({ data, refetchFindHocPhan, loading }) => {
   const { hoc_phan_id } = useParams();
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -24,7 +24,7 @@ const LopHocPhanList = ({ data, refetchFindHocPhan }) => {
    * =======================================================
    */
 
-  const { data: dataGetNamHocs } = useQuery(getNamHocsQuery, {
+  const { data: dataGetNamHocs, loading: loadingGetNamHoc } = useQuery(getNamHocsQuery, {
     onCompleted: (dataRes) => {
       const _data = dataRes?.getNamHocs?.data;
 
@@ -134,16 +134,10 @@ const LopHocPhanList = ({ data, refetchFindHocPhan }) => {
       title: 'Số lượng hiện tại',
     },
     {
-      title: 'Action',
-      key: 'operation',
-      fixed: 'right',
-      width: 200,
-      render: () => (
-        <div>
-          <Button danger>Chỉnh sửa</Button>
-          <Button>Xóa</Button>
-        </div>
-      ),
+      title: 'Lớp',
+      render: (_, record) => {
+        return record?.lopDuKien;
+      },
     },
   ];
 
@@ -187,6 +181,7 @@ const LopHocPhanList = ({ data, refetchFindHocPhan }) => {
       </Form>
 
       <Table
+        loading={loading || loadingGetNamHoc}
         onRow={(record) => ({
           onClick: (e) => handleClickRowTable(e, record),
         })}
