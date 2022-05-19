@@ -18,7 +18,6 @@ const NamHoc = () => {
   const [visibleModalEdit, setVisibleModalEdit] = useState(false);
   const [visibleModalAdd, setVisibleModalAdd] = useState(false);
   const [namHoc, setNamHoc] = useState({});
-  const [data, setData] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [currentConfig, setCurrentConfig] = useState({});
 
@@ -27,7 +26,8 @@ const NamHoc = () => {
    * ============================================================
    */
 
-  const [actFilterNamHoc, { data: dataFilterNamHoc }] = useLazyQuery(filterNamHocQuery);
+  const [actFilterNamHoc, { data: dataFilterNamHoc, loading: loadingFilterNamHoc }] =
+    useLazyQuery(filterNamHocQuery);
 
   const dataForTableNamHoc = dataFilterNamHoc?.filterNamHoc?.data?.[0]?.result?.map((item) => ({
     ...item,
@@ -63,13 +63,21 @@ const NamHoc = () => {
     setVisibleModalEdit(true);
   };
 
-  const handleButtonDelete = async () => {};
+  const handleButtonDelete = async () => {
+    const _inputs = checkTrulyObject(currentConfig);
 
-  const handleCreateComplete = (e) => {
+    actFilterNamHoc({
+      variables: {
+        inputs: {
+          ..._inputs,
+        },
+      },
+    });
+  };
+
+  const handleModalNamHocSuccess = () => {
+    setVisibleModalEdit(false);
     setVisibleModalAdd(false);
-    let _data = data;
-    _data = [e, ..._data];
-    setData(_data);
   };
 
   const handleSelectedRowChange = (payload) => {
@@ -94,30 +102,31 @@ const NamHoc = () => {
       title: 'Mã năm học',
       dataIndex: 'id',
       key: 'id',
-      width: 130,
+      width: 50,
     },
     {
       title: 'Năm bắt đầu',
       dataIndex: 'namBatDau',
       key: 'namBatDau',
-      width: 300,
+      width: 100,
     },
     {
       title: 'Năm kết thúc',
       dataIndex: 'namKetThuc',
       key: 'namKetThuc',
-      width: 300,
+      width: 100,
     },
     {
       title: 'Mô tả',
       dataIndex: 'ghiChu',
       key: 'ghiChu',
-      width: 300,
+      width: 200,
     },
     {
       title: 'Thao tác',
       key: 'thaoTac',
-      width: 400,
+      fixed: 'right',
+      width: 100,
       render: (e) => (
         <div>
           <Button danger onClick={() => handlerEditButton(e)}>
@@ -136,6 +145,7 @@ const NamHoc = () => {
       <h3>DANH SÁCH NĂM HỌC </h3>
 
       <ExpandFilter
+        onAddAStudentClick={() => setVisibleModalAdd(true)}
         currentFilterData={currentConfig}
         onFilterChange={handleFilterComponentChange}
         onClear={handleClearFilter}
@@ -145,6 +155,7 @@ const NamHoc = () => {
         <Button danger>Xóa năm học đã chọn</Button>
       </div>
       <Table
+        loading={loadingFilterNamHoc}
         className="ant-table-wrapper"
         columns={columns}
         dataSource={dataForTableNamHoc}
@@ -160,14 +171,15 @@ const NamHoc = () => {
       <ModalNamHoc
         type="add"
         visible={visibleModalAdd}
-        closeModal={setVisibleModalAdd}
-        onCreateComplete={(e) => handleCreateComplete(e)}
+        closeModal={() => setVisibleModalAdd(false)}
+        onCallAPISuccess={handleModalNamHocSuccess}
       />
       <ModalNamHoc
         type="edit"
         visible={visibleModalEdit}
-        closeModal={setVisibleModalEdit}
+        closeModal={() => setVisibleModalEdit(false)}
         data={namHoc}
+        onCallAPISuccess={handleModalNamHocSuccess}
       />
     </div>
   );
