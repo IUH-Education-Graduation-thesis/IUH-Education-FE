@@ -7,6 +7,7 @@ import { isEmpty } from 'lodash';
 
 const prefix = 'day-nha-expand';
 const themHocKyNormalQuery = queries.mutation.themHocKyNormal();
+const xoaHocKyNormalMutation = queries?.mutation.xoaHocKyNormals('id');
 
 const TableExpand = ({ data, refectFilterNamHoc }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -38,9 +39,14 @@ const TableExpand = ({ data, refectFilterNamHoc }) => {
       title: 'Thao tác',
       key: 'thaoTac',
       width: 100,
-      render: () => (
+      render: (_, record) => (
         <div>
-          <Button danger style={{ marginLeft: 10 }}>
+          <Button
+            onClick={() => handleXoaHocKy(record)}
+            loading={loadingXoaHocKyNormal}
+            danger
+            style={{ marginLeft: 10 }}
+          >
             Xóa
           </Button>
         </div>
@@ -60,6 +66,36 @@ const TableExpand = ({ data, refectFilterNamHoc }) => {
    * API
    * =====================================================
    */
+
+  const [actXoaHocKyNormal, { loading: loadingXoaHocKyNormal }] = useMutation(
+    xoaHocKyNormalMutation,
+    {
+      onCompleted: (dataRes) => {
+        const _errors = dataRes?.xoaHocKyNormals?.errors || [];
+        const _data = dataRes?.xoaHocKyNormals?.data || [];
+
+        if (!isEmpty(_errors))
+          return _errors?.map((item) =>
+            notification['error']({
+              message: item?.message,
+            }),
+          );
+
+        if (isEmpty(_data)) {
+          notification['error']({
+            message: 'Lỗi hệ thống!',
+          });
+          return;
+        }
+
+        refectFilterNamHoc();
+
+        notification['success']({
+          message: `Xóa thành ${_data?.length} công học kỳ khỏi năm học năm học.`,
+        });
+      },
+    },
+  );
 
   const [actThemHocKyNormal, { loading: loadingThemHocKyNormal }] = useMutation(
     themHocKyNormalQuery,
@@ -96,9 +132,22 @@ const TableExpand = ({ data, refectFilterNamHoc }) => {
    * =======================================================
    */
 
+  const handleXoaHocKy = (record) => {
+    const _id = record?.id;
+
+    actXoaHocKyNormal({
+      variables: {
+        ids: [_id],
+      },
+    });
+  };
+
   const handleThemHocKy = () => {
     const _newHocKy =
-      hocKySorted?.reduce((a, b) => a?.thuTuHocKy > b?.thuTuHocKy && a?.thuTuHocKy, 0) + 1 || 1;
+      hocKySorted?.reduce(
+        (a, b) => (a?.thuTuHocKy > b?.thuTuHocKy ? a?.thuTuHocKy : b?.thuTuHocKy),
+        0,
+      ) + 1 || 1;
 
     actThemHocKyNormal({
       variables: {
@@ -114,6 +163,16 @@ const TableExpand = ({ data, refectFilterNamHoc }) => {
     setSelectedRowKeys(payload);
   };
 
+  const handleXoaMultiHocKy = () => {
+    const _ids = selectedRowKeys || [];
+
+    actXoaHocKyNormal({
+      variables: {
+        ids: [..._ids],
+      },
+    });
+  };
+
   /**
    * render view
    * ==========================================================
@@ -125,7 +184,9 @@ const TableExpand = ({ data, refectFilterNamHoc }) => {
         <Button onClick={handleThemHocKy} loading={loadingThemHocKyNormal} type="primary">
           + Thêm học kỳ
         </Button>
-        <Button danger>Xóa học kỳ đã chọn</Button>
+        <Button loading={loadingXoaHocKyNormal} onClick={handleXoaMultiHocKy} danger>
+          Xóa học kỳ đã chọn
+        </Button>
       </div>
       <Divider />
       <Table
