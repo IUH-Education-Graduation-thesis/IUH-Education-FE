@@ -19,6 +19,9 @@ const TableExpand = ({ data }) => {
       dataIndex: 'thuTuHocKy',
       key: 'thuTuHocKy',
       width: 400,
+      render: (thuTuHocKy) => {
+        return `Học kỳ ${thuTuHocKy} (${data?.namBatDau} - ${data?.namKetThuc})`;
+      },
     },
 
     {
@@ -39,6 +42,14 @@ const TableExpand = ({ data }) => {
       ),
     },
   ];
+
+  const hocKys =
+    data?.hocKyNormals?.map((item) => ({
+      ...item,
+      key: item?.id,
+    })) || [];
+
+  const hocKySorted = hocKys?.sort((a, b) => b.thuTuHocKy - a.thuTuHocKy);
 
   /**
    * function
@@ -63,7 +74,7 @@ const TableExpand = ({ data }) => {
       <Divider />
       <Table
         columns={columns}
-        dataSource={data}
+        dataSource={hocKySorted}
         rowSelection={{
           selectedRowKeys,
           onChange: handleSelectedRowChange,

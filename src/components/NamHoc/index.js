@@ -226,7 +226,7 @@ const NamHoc = () => {
           onChange: handleSelectedRowChange,
         }}
         expandable={{
-          expandedRowRender: (record) => <TableExpand data={record?.hocKys} />,
+          expandedRowRender: (record) => <TableExpand data={record} />,
         }}
       />
       <ModalNamHoc
