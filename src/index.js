@@ -1,15 +1,24 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { ApolloProvider } from "@apollo/client";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { ApolloProvider } from '@apollo/client';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import client from "core/apollo";
-import reportWebVitals from "./reportWebVitals";
-import { LoginPage as Login, HomePage } from "pages";
+import client from 'core/apollo';
+import reportWebVitals from './reportWebVitals';
+import {
+  LoginPage as Login,
+  HomePage,
+  HocPhanPage,
+  LopHocPhanPage,
+  KhoaVienPage,
+  ChuyenNganhPage,
+  LopPage,
+  KhoaHocPage,
+} from 'pages';
 
-import "./index.css";
-import "assets/styles/main.scss";
-import "antd/dist/antd.css";
+import './index.css';
+import 'assets/styles/main.scss';
+import 'antd/dist/antd.css';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -19,6 +28,25 @@ ReactDOM.render(
           <Route exact path="/">
             <HomePage />
           </Route>
+
+          <Route exact path="/khoa-vien/:id">
+            <KhoaVienPage />
+          </Route>
+          <Route exact path="/khoa-vien/:id/chuyen-nganh/:chuyen_nganh_id">
+            <ChuyenNganhPage />
+          </Route>
+          <Route exact path="/khoa-vien/:id/chuyen-nganh/:chuyen_nganh_id/lop/:lop_id">
+            <LopPage />
+          </Route>
+          <Route exact path="/khoa-vien/:id/chuyen-nganh/:chuyen_nganh_id/khoa/:khoa_id">
+            <KhoaHocPage />
+          </Route>
+          <Route exact path="/hoc-phan/:hoc_phan_id">
+            <HocPhanPage />
+          </Route>
+          <Route exact path="/hoc-phan/:hoc_phan_id/lop-hoc-phan/:lop_hoc_phan_id">
+            <LopHocPhanPage />
+          </Route>
           <Route path="/login">
             <Login />
           </Route>
@@ -26,7 +54,7 @@ ReactDOM.render(
       </Router>
     </ApolloProvider>
   </React.StrictMode>,
-  document.getElementById("root")
+  document.getElementById('root'),
 );
 
 // If you want to start measuring performance in your app, pass a function

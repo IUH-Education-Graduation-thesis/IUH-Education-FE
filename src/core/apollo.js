@@ -1,11 +1,12 @@
-import { ApolloClient, InMemoryCache, ApolloLink, split } from "@apollo/client";
-import { setContext } from "@apollo/client/link/context";
-import { from } from "@apollo/client/core";
-import { onError } from "@apollo/client/link/error";
+import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+import { from } from '@apollo/client/core';
+import { onError } from '@apollo/client/link/error';
 
-import { clientCache } from "helpers";
-import config from "config";
-import { createHttpLink } from "@apollo/client/core";
+import { clientCache } from 'helpers';
+import config from 'config';
+// import { createHttpLink } from '@apollo/client/core';
+import { createUploadLink } from 'apollo-upload-client/public';
 
 const getAccessToken = () => {
   // get the authentication token from local storage if it exists
@@ -14,7 +15,11 @@ const getAccessToken = () => {
   return token;
 };
 
-const httpLink = createHttpLink({
+// const httpLink = createHttpLink({
+//   uri: config.GRAPHQL_URL,
+// });
+
+const httpLink = createUploadLink({
   uri: config.GRAPHQL_URL,
 });
 
@@ -25,7 +30,7 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : "",
+      authorization: token ? `Bearer ${token}` : '',
     },
   };
 });
@@ -34,9 +39,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
     graphQLErrors.map(({ message, locations, path }) =>
       // eslint-disable-next-line
-      console.error(
-        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-      )
+      console.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`),
     );
   // eslint-disable-next-line
   if (networkError) console.error(`[Network error]: ${networkError}`);

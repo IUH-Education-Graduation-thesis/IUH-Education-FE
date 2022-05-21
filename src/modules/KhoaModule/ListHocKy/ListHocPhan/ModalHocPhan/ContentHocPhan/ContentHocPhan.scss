@@ -1,0 +1,10 @@
+.content-modal-them-hoc-phan {
+  &__content {
+    &__head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+  }
+}

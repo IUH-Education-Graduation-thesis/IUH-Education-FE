@@ -1,5 +1,5 @@
-import { props } from "bluebird";
-import React, { createContext, useState } from "react";
+import { props } from 'bluebird';
+import React, { createContext, useState } from 'react';
 
 const GlobalContext = createContext();
 const GlobalConsumer = GlobalContext.Consumer;
@@ -9,11 +9,7 @@ const GlobalProvider = () => {
 
   const store = { state, setState };
 
-  return (
-    <GlobalContext.Provider value={store}>
-      {props.children}
-    </GlobalContext.Provider>
-  );
+  return <GlobalContext.Provider value={store}>{props.children}</GlobalContext.Provider>;
 };
 
 export { GlobalContext, GlobalConsumer, GlobalProvider };

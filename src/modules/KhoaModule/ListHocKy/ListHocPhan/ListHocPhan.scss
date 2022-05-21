@@ -1,0 +1,21 @@
+@import 'modules/KhoaModule/ListHocKy/ListHocPhan/ModalHocPhan/ContentHocPhan/ContentHocPhan.scss';
+
+.khoa-hoc-ky-hoc-phan {
+  &__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+
+    &__left {
+      font-weight: bold;
+      font-size: 19px;
+    }
+
+    &__right {
+      display: flex;
+      column-gap: 16px;
+      align-items: center;
+    }
+  }
+}

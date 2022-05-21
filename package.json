@@ -3,21 +3,41 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
+    "@apollo/client": "^3.4.13",
     "@material-ui/core": "^4.12.3",
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@progress/kendo-react-dropdowns": "^4.9.0",
+    "antd": "^4.16.13",
+    "apollo-upload-client": "^16.0.0",
+    "apollo-utilities": "^1.3.4",
+    "classnames": "^2.3.1",
+    "graphql": "^16.4.0",
+    "graphql-upload": "^13.0.0",
+    "history": "^5.3.0",
+    "js-cookie": "^3.0.1",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.1",
     "node-sass": "^6.0.1",
+    "prop-types": "^15.8.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
     "react-select": "^5.1.0",
+    "styled-components": "^5.3.3",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "SKIP_PREFLIGHT_CHECK=true react-scripts start",
+    "start-be-dev": "SKIP_PREFLIGHT_CHECK=true REACT_APP_BE_ENV=dev react-scripts start",
+    "start-windows": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "graphql": "^15.6.0",
+    "format": "prettier --check ./src",
+    "lint": "eslint --fix --ext .js,.jsx ."
   },
   "eslintConfig": {
     "extends": [
@@ -38,16 +58,19 @@
     ]
   },
   "devDependencies": {
-    "@ant-design/icons": "^4.7.0",
-    "@apollo/client": "^3.4.13",
-    "antd": "^4.16.13",
-    "apollo-upload-client": "^16.0.0",
-    "apollo-utilities": "^1.3.4",
+    "@babel/eslint-parser": "^7.17.0",
+    "@babel/eslint-plugin": "^7.17.7",
+    "@typescript-eslint/eslint-plugin": "^5.22.0",
+    "@typescript-eslint/parser": "^5.22.0",
+    "babel-eslint": "^10.1.0",
     "babel-loader": "8.1.0",
-    "graphql": "^15.6.0",
+    "eslint": "^8.15.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-react-hooks": "^4.5.0",
     "import": "^0.0.6",
-    "js-cookie": "^3.0.1",
-    "lodash": "^4.17.21",
-    "react-router-dom": "^5.3.0"
+    "prettier": "^2.6.2"
   }
 }

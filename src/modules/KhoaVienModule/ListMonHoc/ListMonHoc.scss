@@ -1,0 +1,20 @@
+.khoa-vien-mon-hoc {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &__left {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    &__right {
+      display: flex;
+      align-items: center;
+      column-gap: 16px;
+    }
+  }
+}
+
+@import 'modules/KhoaVienModule/ListMonHoc/ListGiangVien/ListGiangVien.scss';

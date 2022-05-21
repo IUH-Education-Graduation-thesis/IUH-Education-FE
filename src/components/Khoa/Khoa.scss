@@ -1,11 +1,29 @@
-.khoa{
+.khoa {
+  &__action {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  margin: 0px;
+  h1 {
     margin: 0px;
-    h1{
-        margin: 0px;
-        text-align: center;
+    text-align: center;
+  }
+  .ant-btn-primary {
+    margin-bottom: 5px;
+  }
+
+  .ant-table-wrapper {
+    margin-top: 24px;
+  }
+
+  .table {
+    &__child-wrapper {
+      &__head {
+        display: flex;
+        flex-direction: row-reverse;
+        column-gap: 16px;
+      }
     }
-    .ant-btn-primary{
-        margin-bottom: 5px;
-    }
-    
+  }
 }

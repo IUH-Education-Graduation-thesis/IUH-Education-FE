@@ -1,4 +1,4 @@
-import ClientCache from "./clientCache";
+import ClientCache from './clientCache';
 
 export const clientCache = new ClientCache();
 
