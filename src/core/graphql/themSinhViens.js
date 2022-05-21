@@ -3,8 +3,8 @@ import { gql } from '@apollo/client';
 export default {
   mutation: {
     themSinhViens: (fragment = 'id') => gql`
-      mutation ($files: [Upload!]!) {
-        themSinhViens(files: $files) {
+      mutation ($files: [Upload!]!, $lopId: ID!) {
+        themSinhViens(files: $files, lopId: $lopId) {
           status
           errors {
             message
