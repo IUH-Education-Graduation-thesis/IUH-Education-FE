@@ -29,7 +29,7 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "SKIP_PREFLIGHT_CHECK=true react-scripts start",
+    "start": "react-scripts start",
     "start-be-dev": "SKIP_PREFLIGHT_CHECK=true REACT_APP_BE_ENV=dev react-scripts start",
     "start-windows": "react-scripts start",
     "build": "react-scripts build",
@@ -64,7 +64,6 @@
     "@typescript-eslint/parser": "^5.22.0",
     "babel-eslint": "^10.1.0",
     "babel-loader": "8.1.0",
-    "eslint": "^8.15.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
