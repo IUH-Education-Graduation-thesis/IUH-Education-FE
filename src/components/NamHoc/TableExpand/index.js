@@ -144,7 +144,11 @@ const TableExpand = ({ data, refectFilterNamHoc }) => {
   };
 
   const handleThemHocKy = () => {
-    const _max = Math?.max(...[...hocKySorted?.map((item) => item?.thuTuHocKy)]) || 0;
+    let _max = Math?.max(...[...hocKySorted?.map((item) => item?.thuTuHocKy)]);
+
+    if (_max === -Infinity || _max === +Infinity || _max === null || _max === undefined) {
+      _max = 0;
+    }
 
     actThemHocKyNormal({
       variables: {
